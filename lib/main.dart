@@ -1,13 +1,14 @@
-import 'package:bench_test_buddies/provider/google_sign.dart';
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'onboarding_screen/get_started_screen.dart';
+import './provider/google_sign.dart';
+import './screens/onboarding_screen/get_started_screen.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-      create: (context) => Googlesign(),
+      create: (context) => Exercises(),
     ),
   ], child: MyApp()));
 }
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
             centerTitle: true,
             color: Colors.white,
+            iconTheme: IconThemeData(color: Colors.black),
             elevation: 0,
             actionsIconTheme: IconThemeData(
               color: Colors.blue,
