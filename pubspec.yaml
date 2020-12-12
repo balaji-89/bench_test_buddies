@@ -32,11 +32,13 @@ dependencies:
   provider: 4.3.2+2
   firebase_auth: ^0.18.4
   google_sign_in: ^4.5.6
-  device_preview: ^0.5.5
-  flutter_svg: any
-  flutter_form_field_validator: ^1.0.0
   country_list_pick: ^1.0.1+2
   roundcheckbox: ^1.0.0+1
+  device_preview: ^0.5.5
+  flutter_svg: any
+  intro_views_flutter: ^2.8.2
+  flutter_form_field_validator: ^1.0.0
+  
 
 dev_dependencies:
   flutter_test:
