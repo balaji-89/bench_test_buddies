@@ -1,7 +1,7 @@
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
-import 'package:bench_test_buddies/screens/app_ui/section_view2.dart';
+import './section_view2.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
@@ -55,8 +55,8 @@ class SectionView extends StatelessWidget {
                         height: 1.3,
                         fontWeight: FontWeight.w500,
                         color: Colors.black.withOpacity(0.7),
-                        wordSpacing: 1.3,
-                        fontSize: 15,
+                        wordSpacing: 1.2,
+                        fontSize: 14,
                       ),
                     ),
                   ),

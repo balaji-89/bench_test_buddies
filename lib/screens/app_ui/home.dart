@@ -1,10 +1,15 @@
-import 'package:bench_test_buddies/screens/app_ui/section_view2.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/section_view2.dart';
 import 'package:bench_test_buddies/screens/onboarding_screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../app_ui/section_view.dart';
+import '../app_ui/section_view_tab/section_view.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   final List<Tab> tabBar = [
     Tab(
       text: 'Section',
@@ -14,6 +19,14 @@ class HomePage extends StatelessWidget {
     ),
     Tab(text: 'Bookmarks')
   ];
+  TabController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller=TabController(length: 3,vsync: this,initialIndex: 0);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +35,13 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).accentColor,
         appBar: AppBar(
-          leading: Icon(
+          leading: IconButton(icon:Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
+          onPressed: (){
+
+          },),
           title: Text('Exercise Section',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -62,6 +78,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
+          controller: controller,
           children: [
             SectionView(),
             SectionViewTwo(),

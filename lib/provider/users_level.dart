@@ -7,6 +7,7 @@ class Users with ChangeNotifier {
     userId: 01,
     userName: 'Balaji J',
     userExerciseId: 1,
+
   );
 
   UserDetailsAndLevel get userData {
