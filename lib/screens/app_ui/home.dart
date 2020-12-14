@@ -1,3 +1,4 @@
+import 'package:bench_test_buddies/screens/app_ui/attempt_tab/attempt.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/section_view2.dart';
 import 'package:bench_test_buddies/screens/onboarding_screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +20,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     ),
     Tab(text: 'Bookmarks')
   ];
-  TabController controller;
 
-  @override
-  void initState() {
-    super.initState();
-    controller=TabController(length: 3,vsync: this,initialIndex: 0);
-  }
+
 
 
   @override
@@ -78,11 +74,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           ),
         ),
         body: TabBarView(
-          controller: controller,
           children: [
             SectionView(),
+            AttemptTab(),
             SectionViewTwo(),
-            SignInPage(),
           ],
         ),
       ),

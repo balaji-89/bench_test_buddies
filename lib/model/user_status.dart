@@ -10,9 +10,6 @@ class UserDetailsAndLevel {
   Stages currentSection;
   List completedExercise;
   List upcomingSection;
-  List<UserAttempt> userAttempt=[
-    UserAttempt(userExerciseId:1,attempt: 0,)
-  ];
 
   UserDetailsAndLevel({
     @required this.userId,
@@ -36,6 +33,6 @@ class UserDetailsAndLevel {
       Stages.Uploaded_images,
       Stages.Uploaded_images,
     ],
-    this.userAttempt
+
   });
 }

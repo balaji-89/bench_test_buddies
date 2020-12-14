@@ -1,3 +1,4 @@
+import 'package:bench_test_buddies/model/attempt_model.dart';
 import 'package:bench_test_buddies/model/user_status.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ class Users with ChangeNotifier {
     userId: 01,
     userName: 'Balaji J',
     userExerciseId: 1,
-
   );
 
   UserDetailsAndLevel get userData {
@@ -26,4 +26,6 @@ class Users with ChangeNotifier {
     _user.upcomingSection = updatedList;
     notifyListeners();
   }
+
+
 }

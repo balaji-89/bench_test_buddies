@@ -1,3 +1,4 @@
+import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:flutter/material.dart';
 
 import '../app_ui/home.dart';
@@ -73,7 +74,7 @@ class SucceededPasswordScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                                  builder: (context) => SetupScreen()));
                         },
                       )),
                 ],

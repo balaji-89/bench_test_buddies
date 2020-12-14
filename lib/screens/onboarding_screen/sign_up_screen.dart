@@ -1,3 +1,4 @@
+import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:flutter/material.dart';
 
 import '../onboarding_screen/sign_in_screen.dart';
@@ -116,7 +117,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           textColor: Colors.white,
                           color: Color(0xFF4667EE),
                           child: Text('Sign up'),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SetupScreen()));
+                          },
                         )),
                       
 

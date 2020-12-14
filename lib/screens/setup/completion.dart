@@ -96,7 +96,7 @@ class Completion extends StatelessWidget {
                       child: Center(
                           child: Text(
                         "Continue to home screen",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                       )),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../onboarding_screen/forget_password.dart';
 import '../onboarding_screen/sign_up_screen.dart';
+import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -117,7 +118,9 @@ class _SignInPageState extends State<SignInPage> {
                         textColor: Colors.white,
                         color: Color(0xFF4667EE),
                         child: Text('Sign in'),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SetupScreen()));
+                        },
                       )),
                        
         

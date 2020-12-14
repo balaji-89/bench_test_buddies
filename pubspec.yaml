@@ -62,6 +62,7 @@ flutter:
     - assets/on_boarding_images/3.0x/
     - assets/on_boarding_images/2.0x/
     - assets/Home_page_images/
+    - assets/attempt_images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

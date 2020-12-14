@@ -1,3 +1,6 @@
+
+import 'package:bench_test_buddies/provider/attempt_provider.dart';
+import 'package:bench_test_buddies/provider/country_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
@@ -11,6 +14,12 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => Users(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => CountryProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => AttemptedList(),
     ),
     ChangeNotifierProvider(
       create: (context) => ExerciseStages(),
