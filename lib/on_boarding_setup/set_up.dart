@@ -60,10 +60,10 @@ class _SetupScreenState extends State<SetupScreen> {
                   )),
         ),
         SizedBox(
-          height: constraints.maxHeight * 0.11,
+          height: constraints.maxHeight * 0.1,
           child: ListTile(
             leading: CircleAvatar(
-              radius: 30,
+              radius: 25,
               backgroundImage:
                   AssetImage("assets/on_boarding_images/setup1.png"),
             ),
@@ -71,7 +71,7 @@ class _SetupScreenState extends State<SetupScreen> {
               'Enter your Origin Country',
               style: TextStyle(
                 fontFamily: 'SF Pro Text',
-                fontSize: 20,
+                fontSize: 19,
                 color: const Color(0xff232323),
                 fontWeight: FontWeight.w500,
                 height: 1.3333333333333333,
@@ -98,7 +98,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 color: Color(0xFF4667EE),
                 child: Text(
                   'Next',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 16),
                 ),
                 onPressed: () {
                   setState(() {
@@ -142,7 +142,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
                 child: ListTile(
                   leading: CircleAvatar(
-                    radius: 30,
+                    radius: 26,
                     backgroundImage:
                         AssetImage("assets/on_boarding_images/setup2.png"),
                   ),
@@ -152,7 +152,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       'Have you attended a professional bench test course?',
                       style: TextStyle(
                         fontFamily: 'SF Pro Text',
-                        fontSize: 20,
+                        fontSize: 17,
                         color: const Color(0xff232323),
                         fontWeight: FontWeight.w500,
                         height: 1.3333333333333333,
@@ -169,7 +169,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return new ListTile(
                           trailing: SizedBox(
-                            height: 20,
+                            height: constraints.maxHeight*0.03,
                             width: 20,
                             child: Image.asset(
                                 "assets/on_boarding_images/2.0x/completionSuccess.png"),
@@ -177,7 +177,7 @@ class _SetupScreenState extends State<SetupScreen> {
                           title: Text(question1list[index],
                               style: TextStyle(
                                 fontFamily: 'SF Pro Text',
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: const Color(0xff232323),
                                 fontWeight: FontWeight.normal,
                                 height: 1.3333333333333333,
@@ -198,7 +198,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     child: Text(
                       'Next',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                     onPressed: () {
@@ -240,7 +240,7 @@ class _SetupScreenState extends State<SetupScreen> {
           margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
           child: ListTile(
             leading: CircleAvatar(
-              radius: 30,
+              radius: 26,
               backgroundImage:
                   AssetImage("assets/on_boarding_images/setup3.png"),
             ),
@@ -248,7 +248,7 @@ class _SetupScreenState extends State<SetupScreen> {
               'Enter your experience level in bench preparation',
               style: TextStyle(
                 fontFamily: 'SF Pro Text',
-                fontSize: 20,
+                fontSize: 17,
                 color: const Color(0xff232323),
                 fontWeight: FontWeight.w500,
                 height: 1.3333333333333333,
@@ -267,7 +267,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     height: constraints.maxHeight*0.07,
                     child: ListTile(
                       trailing: SizedBox(
-                        height: 20,
+                        height: constraints.maxHeight*0.03,
                         width: 20,
                         child: Image.asset(
                             "assets/on_boarding_images/2.0x/completionSuccess.png"),
@@ -275,7 +275,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       title: Text(question2list[index],
                           style: TextStyle(
                             fontFamily: 'SF Pro Text',
-                            fontSize: 16,
+                            fontSize: 14,
                             color: const Color(0xff232323),
                             fontWeight: FontWeight.normal,
                             height: 1.3333333333333333,
@@ -290,7 +290,7 @@ class _SetupScreenState extends State<SetupScreen> {
               textColor: Colors.white,
               color: Color(0xFF4667EE),
               child: Text('Next',style:TextStyle(
-                fontSize: 20,
+                fontSize: 17,
               )),
               onPressed: () {
                 setState(() {
@@ -329,17 +329,17 @@ class _SetupScreenState extends State<SetupScreen> {
             )),
       ),
       SizedBox(
-        height: constraints.maxHeight*0.14,
+        height: constraints.maxHeight*0.16,
         child: ListTile(
           leading:  CircleAvatar(
-          radius: 30,
+          radius: 26,
           backgroundImage:AssetImage("assets/on_boarding_images/3.0x/completionSuccess.png"),
           ),
           title: Text(
             'Hey! You are done with the intial setup.Start practicing.Best wishes.',
             style: TextStyle(
               fontFamily: 'SF Pro Text',
-              fontSize: 19,
+              fontSize: 17,
               color: const Color(0xff232323),
               fontWeight: FontWeight.w500,
               height: 1.3333333333333333,

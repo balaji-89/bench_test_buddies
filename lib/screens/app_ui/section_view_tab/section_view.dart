@@ -17,7 +17,7 @@ class SectionView extends StatelessWidget {
 
     final userUpcomingStage =
         Provider.of<ExerciseStages>(context, listen: false)
-            .findByStages(userData.upcomingSection);
+            .findByStages(userData.inProgressSection);
     final currentExerciseStages =
         Provider.of<ExerciseStages>(context, listen: false)
             .findByStage(userData.currentSection);

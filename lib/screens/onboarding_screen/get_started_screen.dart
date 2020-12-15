@@ -1,5 +1,8 @@
+import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
+import 'package:bench_test_buddies/provider/google_sign.dart';
 import 'package:flutter/material.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 import '../onboarding_screen/sign_in_screen.dart';
 import '../onboarding_screen/sign_up_screen.dart';
@@ -14,7 +17,7 @@ class GetStartedScreen extends StatefulWidget {
 class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   void initState() {
-    //  Firebase.initializeApp();
+      Firebase.initializeApp();
     super.initState();
   }
 
@@ -137,13 +140,13 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                     style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(5)),
             onPressed: () {
-              // if (buttonName == 'Google')
-              //   Provider.of<Googlesign>(context, listen: false)
-              //       .googleSignIn()
-              //       .whenComplete(() => Navigator.of(context).push(
-              //           MaterialPageRoute(builder: (context) => Country())));
-              // else
-              //   print('facebook');
+              if (buttonName == 'Google')
+                Provider.of<Googlesign>(context, listen: false)
+                    .googleSignIn()
+                    .whenComplete(() => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => SetupScreen())));
+              else
+                print('facebook');
             },
           )),
     );

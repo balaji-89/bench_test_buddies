@@ -10,6 +10,7 @@ class UserDetailsAndLevel {
   Stages currentSection;
   List completedExercise;
   List upcomingSection;
+  List inProgressSection;
 
   UserDetailsAndLevel({
     @required this.userId,
@@ -23,15 +24,19 @@ class UserDetailsAndLevel {
         'attempts':0,
       }
     ],
+    this.inProgressSection=const[
+      Stages.Uploaded_images,
+      Stages.Evaluate_the_result,
+      Stages.View_the_results,
+    ],
 
     this.upcomingSection = const [
-
       Stages.View_the_results,
     ],
     this.completedExercise=const[
       Stages.Start_the_excerise,
       Stages.Uploaded_images,
-      Stages.Uploaded_images,
+      Stages.Evaluate_the_result,
     ],
 
   });

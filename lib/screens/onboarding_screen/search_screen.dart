@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bench_test_buddies/provider/country_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,14 +43,14 @@ class SearchScreen extends SearchDelegate<String> {
 
   }
 
-  // @override
-  // ThemeData appBarTheme(BuildContext context) {
-  //   return ThemeData(
-  //     backgroundColor: Theme.of(context).accentColor,
-  //
-  //
-  //   );
-  // }
+   @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData(
+      backgroundColor: Theme.of(context).accentColor,
+
+
+    );
+  }
 
   @override
   Widget buildResults(BuildContext context) {
