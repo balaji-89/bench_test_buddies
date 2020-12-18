@@ -1,5 +1,6 @@
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../onboarding_screen/sign_in_screen.dart';
 
@@ -9,13 +10,15 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController userController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
+
+    final TextEditingController userController = Provider.of<SignInPage>(context).
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -74,6 +77,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       keyboardType: TextInputType.name,
                       controller: userController,
                       textInputAction: TextInputAction.next,
+                      onChanged: (String value){
+                        setState(() {
+
+                        });
+                      },
                     ),
                     TextFormField(
                       decoration: InputDecoration(
@@ -91,6 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       keyboardType: TextInputType.emailAddress,
                       controller: emailController,
                       textInputAction: TextInputAction.next,
+                      onChanged: (String value){},
                     ),
                     TextFormField(
                       decoration: InputDecoration(
@@ -104,18 +113,24 @@ class _SignUpPageState extends State<SignUpPage> {
                             borderSide: BorderSide(
                                 color: Color(0xFFFF0000), width: 2.0),
                           ),
+
                           suffixIcon: Icon(Icons.visibility)),
                       keyboardType: TextInputType.visiblePassword,
                       controller: passwordController,
                       textInputAction: TextInputAction.done,
+                      onChanged: (String value){
+                        setState(() {
+
+                        });
+                      },
                     ),
                     Container(
                         height: mediaQueryHeight * 0.065,
                         width: MediaQuery.of(context).size.width - 30,
                         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: RaisedButton(
-                          textColor: Colors.white,
-                          color: Color(0xFF4667EE),
+                          textColor:userController.text.isEmpty||passwordController.text.isEmpty||passwordController.text.isEmpty?Colors.black: Colors.white,
+                          color: userController.text.isEmpty||passwordController.text.isEmpty||passwordController.text.isEmpty?Theme.of(context).accentColor:Theme.of(context).primaryColor,
                           child: Text('Sign up'),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SetupScreen()));

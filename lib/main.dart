@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.blue,
+        primaryColor: Color(0xFF4667EE),
         backgroundColor: Colors.white,
         accentColor: Color.fromRGBO(240, 238, 235, 1),
         appBarTheme: AppBarTheme(
