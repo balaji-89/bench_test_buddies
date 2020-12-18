@@ -1,7 +1,14 @@
 library bench_test_service;
 
 export 'service/user.dart';
+export 'model/request/register.dart';
+export 'model/request/login.dart';
+export 'model/response/login.dart';
+export 'model/response/register.dart';
+export 'model/response/response_status.dart';
+
 /**
+ *
  * * Register 👍
  * * Login 👍
  * ! Forgot Password
