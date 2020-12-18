@@ -141,7 +141,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 borderRadius: BorderRadius.circular(5)),
             onPressed: () {
               if (buttonName == 'Google')
-                Provider.of<Googlesign>(context, listen: false)
+                Provider.of<GoogleSign>(context, listen: false)
                     .googleSignIn()
                     .whenComplete(() => Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => SetupScreen())));

@@ -1,6 +1,5 @@
 import 'package:bench_test_buddies/screens/app_ui/attempt_tab/attempt.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/section_view2.dart';
-import 'package:bench_test_buddies/screens/onboarding_screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../app_ui/section_view_tab/section_view.dart';

@@ -18,70 +18,76 @@ class AttemptTab extends StatelessWidget {
 
     final exerciseAttempt=Provider.of<AttemptedList>(context).getUserAttempt(userData.userExerciseId);
 
-    return SizedBox(
-      height: mediaQueryHeight,
-      width: mediaQueryWidth,
-      child: ListView(
-        children: [
-          Container(
-              height: mediaQueryHeight * 0.10,
-              width: mediaQueryWidth,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding:EdgeInsets.only(top: 10),
-                    child: Text(userCurrentExercise.name,
+    return Scaffold(
+      backgroundColor: Theme.of(context).accentColor,
+      body: SizedBox(
+        height: mediaQueryHeight,
+        width: mediaQueryWidth,
+        child: ListView(
+          children: [
+            Container(
+                height: mediaQueryHeight * 0.10,
+                width: mediaQueryWidth,
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(bottom:mediaQueryHeight*0.012),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:EdgeInsets.only(top: 10),
+                      child: Text(userCurrentExercise.name,
 
-                        style: TextStyle(height: 1,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        )),
-                  ),
-                   RichText(
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Total Attempts',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextSpan(
-                          text: exerciseAttempt.length.toString(),
-                          style: TextStyle(
-                            color:Theme.of(context).primaryColor,
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
+                          style: TextStyle(height: 1,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          )),
                     ),
-                  ),
-                ],
-              )),
-          Container(
-            height: mediaQueryHeight*85,
-            width: mediaQueryWidth,
-            color: Colors.white,
-            child: ListView.builder(itemCount:exerciseAttempt.length,itemBuilder:(context,index)=>AttemptCard(
-               attemptNumber: index+1,
-               attemptedDate: exerciseAttempt[index].attemptedDate,
-              scoreCard: exerciseAttempt[index].scoreCard,
-            ) ),
+                     RichText(
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Total Attempts : ',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            text: exerciseAttempt.length.toString(),
+                            style: TextStyle(
+                              color:Theme.of(context).primaryColor,
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+            Container(
+              height: mediaQueryHeight*85,
+              width: mediaQueryWidth,
+              color: Colors.white,
+              padding: EdgeInsets.only(top:mediaQueryHeight*0.012),
+              child: ListView.builder(itemCount:exerciseAttempt.length,itemBuilder:(context,index)=>AttemptCard(
+                 attemptNumber: index+1,
+                 attemptedId:exerciseAttempt[index].attemptId ,
+                 attemptedDate: exerciseAttempt[index].attemptedDate,
+                scoreCard: exerciseAttempt[index].userScoreCard,
+              ) ),
 
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:bench_test_buddies/model/attempt_model.dart';
+
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:flutter/cupertino.dart';
 

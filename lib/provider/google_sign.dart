@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class Googlesign with ChangeNotifier {
+class GoogleSign with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   final gooleSignIn = GoogleSignIn();
 
@@ -46,9 +45,11 @@ class Googlesign with ChangeNotifier {
 
       User user = auth.currentUser;
       print(user.uid);
+      print(result);
 
       return Future.value(true);
     }
+
   }
 
 // instead of returning true or false

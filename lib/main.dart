@@ -16,6 +16,9 @@ void main() {
       create: (context) => Users(),
     ),
     ChangeNotifierProvider(
+      create: (context) => GoogleSign(),
+    ),
+    ChangeNotifierProvider(
       create: (context) => CountryProvider(),
     ),
     ChangeNotifierProvider(
