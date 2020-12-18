@@ -120,8 +120,7 @@ class _ViewResultsState extends State<ViewResults> {
                   height: constraints.maxHeight * 0.13,
                   width: constraints.maxWidth,
                   child: ListView.builder(
-                    padding: EdgeInsets.only(left: 10
-                    ),
+                      padding: EdgeInsets.only(left: 10),
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: numbers.length,
                       scrollDirection: Axis.horizontal,
@@ -197,7 +196,7 @@ class _ViewResultsState extends State<ViewResults> {
                       padding: EdgeInsets.all(0),
                       alignment: Alignment.centerRight,
                       icon: Icon(
-                        Icons.arrow_forward_ios_rounded,
+                        Icons.arrow_forward,
                         color: Colors.black,
                         size: 18,
                       ),

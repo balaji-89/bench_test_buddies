@@ -40,6 +40,8 @@ dependencies:
   flutter_form_field_validator: ^1.0.0
   intl:
   flutter_circular_chart: ^0.1.0
+  bench_test_service:
+    path: ./bench_test_service
 
 
 dev_dependencies:
