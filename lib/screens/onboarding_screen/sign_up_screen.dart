@@ -1,6 +1,5 @@
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../onboarding_screen/sign_in_screen.dart';
 
@@ -10,15 +9,13 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
+  final TextEditingController userController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
-
-    final TextEditingController userController = Provider.of<SignInPage>(context).
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
