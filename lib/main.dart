@@ -3,6 +3,7 @@ import 'package:bench_test_buddies/provider/attempt_provider.dart';
 import 'package:bench_test_buddies/provider/country_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,12 @@ void main() {
       create: (context) => CountryProvider(),
     ),
     ChangeNotifierProvider(
+      create: (context) => SignInUp(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => SignIn(),
+    ),
+    ChangeNotifierProvider(
       create: (context) => AttemptedList(),
     ),
     ChangeNotifierProvider(
@@ -36,6 +43,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).unfocus();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
