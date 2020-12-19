@@ -56,4 +56,18 @@ class User {
       throw ErrorResponse.fromJson(err.response.data);
     }
   }
+
+  update(String name, String token) async {
+    try {
+      Response response = await dio.post('/user-data/update',
+          data: {"name": name},
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          }));
+      return response.data['message'];
+    } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
 }
