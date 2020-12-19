@@ -1,4 +1,4 @@
-library bench_test_service;
+// library bench_test_service;
 
 export 'service/user.dart';
 export 'model/request/register.dart';
@@ -11,8 +11,8 @@ export 'model/response/response_status.dart';
  *
  * * Register 👍
  * * Login 👍
- * ! Forgot Password
- * ! Reset Password
+ * * Forgot Password 👍
+ * ! ? Reset Password
  * ! ? Update User
  * ! ? Get User
  * ? Country List

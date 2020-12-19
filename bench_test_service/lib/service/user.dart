@@ -37,12 +37,8 @@ class User {
     try {
       Response response =
           await dio.post('/forgot-password', data: {"email": email});
-      // todo:  Remove
-      return 'GK: It has bug in Backend do some other stuff';
       return response.data['message'];
     } on DioError catch (err) {
-      // todo:  Remove
-      return "GK: It has bug in Backend do some other stuff";
       throw ErrorResponse.fromJson(err.response.data);
     }
   }
