@@ -13,12 +13,12 @@ export 'model/response/response_status.dart';
  * * Login 👍
  * * Forgot Password 👍
  * * Update Country 👍
+ * * Update User 👍
+ * * Get User 👍
  * ! ? Reset Password // not working
- * ! ? Update User
- * ! ? Get User
- * ? Country List
+ * ! ? Country List // Empty data
+ * ! * Sign up Answers
  * ? User Sign up ques
- * * Sign up Answers
  *
  * ? All Exercise
  * ? New Attempt

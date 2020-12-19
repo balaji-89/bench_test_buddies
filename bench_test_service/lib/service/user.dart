@@ -1,3 +1,4 @@
+import 'package:bench_test_service/model/response/get_user_response.dart';
 import 'package:dio/dio.dart';
 
 import '../model/request/login.dart';
@@ -66,6 +67,19 @@ class User {
             "Authorization": "Bearer $token"
           }));
       return response.data['message'];
+    } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
+  fetch(String token) async {
+    try {
+      Response response = await dio.get('/user-data/get',
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token",
+          }));
+      return GetUserResponse.fromJson(response.data['data'][0]);
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
     }
