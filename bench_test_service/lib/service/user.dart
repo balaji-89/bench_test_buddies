@@ -43,5 +43,17 @@ class User {
     }
   }
 
-  getUser() {}
+  updateCountry(int countryId, String token) async {
+    try {
+      Response response = await dio.put('/user-country',
+          data: {"country": countryId},
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          }));
+      return response.data['message'];
+    } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
 }
