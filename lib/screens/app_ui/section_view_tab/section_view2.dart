@@ -4,6 +4,7 @@ import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
 import 'package:provider/provider.dart';
+import 'package:im_stepper/stepper.dart';
 
 class SectionViewTwo extends StatelessWidget {
   @override
@@ -15,12 +16,18 @@ class SectionViewTwo extends StatelessWidget {
       context,
     ).userData;
 
-
-    final userUpcomingStage = Provider.of<ExerciseStages>(context).findByStages(userData.upcomingSection);
-    final userFinishedExercise = Provider.of<ExerciseStages>(context).findByStages(userData.completedExercise);
+    final userUpcomingStage = Provider.of<ExerciseStages>(context)
+        .findByStages(userData.upcomingSection);
+    final userFinishedExercise = Provider.of<ExerciseStages>(context)
+        .findByStages(userData.completedExercise);
     final stages=Provider.of<ExerciseStages>(context,listen: false).stages;
-   // final currentExerciseStages = Provider.of<ExerciseStages>(context).findByStage(userData.currentSection);
-    final userCurrentExercise = Provider.of<Exercises>(context).findExerciseById(userData.userExerciseId);
+    final currentExerciseStages = Provider.of<ExerciseStages>(context)
+        .findByStage(userData.currentSection);
+    final userCurrentExercise = Provider.of<Exercises>(context)
+        .findExerciseById(userData.userExerciseId);
+
+    final numbers =
+        Provider.of<ExerciseStages>(context).getPositionsOfExerciseStages;
 
     return Scaffold(
       body: SizedBox(
@@ -45,7 +52,7 @@ class SectionViewTwo extends StatelessWidget {
             color: Colors.white,
             margin: EdgeInsets.symmetric(vertical: 7),
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric( vertical: 11),
+            padding: EdgeInsets.symmetric(vertical: 11),
             child: LayoutBuilder(builder: (context, constraints) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,105 +69,74 @@ class SectionViewTwo extends StatelessWidget {
                         ),
                       )),
                   SizedBox(
-                    height: constraints.maxHeight * 0.68,
+                    height: constraints.maxHeight * 0.5,
                     width: constraints.maxWidth * 0.9,
-                    child: ListView.builder(
-                      padding: EdgeInsets.all(0),
-                       scrollDirection: Axis.horizontal,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount:stages.length,
-                      itemBuilder:(context,index){
-                        return SizedBox(
-                          height: constraints.maxHeight * 0.7,
-                          width: constraints.maxWidth * 0.22,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: constraints.maxHeight * 0.32,
-                                width: constraints.maxWidth * 0.2,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 1,
-                                      width: 5,
-                                      color: Theme.of(context).backgroundColor,
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      width: 5,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      width: 5,
-                                      color: Theme.of(context).backgroundColor,
-                                    ),
-                                    Container(
-                                      height:1,
-                                      width: 5,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      width: 5,
-                                      color: Theme.of(context).backgroundColor,
-                                    ),
-                                    CircleAvatar(
-                                    radius: constraints.maxHeight * 0.13,
-                                    backgroundColor: Theme.of(context).primaryColor,
-                                    child: Text('${(stages[index]['position']).toString()}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                        )),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    width: 5,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                    Container(
-                                      height:1,
-                                      width: 5,
-                                      color: Theme.of(context).backgroundColor,
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      width: 5,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                  height: constraints.maxHeight * 0.3,
-                                  width: constraints.maxWidth * 0.2,
-                                  child: Text('${stages[index]['stage']}',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black54,
-                                          fontSize: 11)))
-                            ],
-                          ),
-                        );
-                      }
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: NumberStepper(
+                            numbers: numbers,
+                            numberStyle: TextStyle(color: Colors.white),
+                            activeStepColor: Theme.of(context).accentColor,
+                            activeStepBorderColor: Theme.of(context).accentColor,
+                            direction: Axis.horizontal,
+                            stepColor: Colors.blue,
+                            stepReachedAnimationEffect: Curves.easeInOut,
+                            lineColor: Colors.blue,
+                            lineDotRadius: 1,
+                            lineLength: constraints.maxWidth * 0.155,
+                            scrollingDisabled: true,
+                            steppingEnabled: true,
+                            stepRadius: constraints.maxHeight*0.14,
+                            enableStepTapping: false,
+                            enableNextPreviousButtons: false,
 
+
+
+                          ),
+                        ),
+                      ],
                     ),
+
                   ),
+                  SizedBox(
+                      height: constraints.maxHeight * 0.3,
+                      width: constraints.maxWidth * 0.9,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount:stages.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.only(right: constraints.maxWidth*0.029),
+                            width: constraints.maxWidth*0.2,
+                            child: Text('${stages[index]['stage']}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black54,
+                                    fontSize: 11)),
+                          );
+                        }
+                      ))
                 ],
               );
             }),
           ),
           Container(
-            height: (((){switch(userUpcomingStage.length){
-              case 1: return MediaQuery.of(context).size.height*0.22;
-              break;
-              case 2:return MediaQuery.of(context).size.height*0.33;
-              break;
-              case 3:return MediaQuery.of(context).size.height*0.45;
-            }}())),
+            height: ((() {
+              switch (userUpcomingStage.length) {
+                case 1:
+                  return MediaQuery.of(context).size.height * 0.22;
+                  break;
+                case 2:
+                  return MediaQuery.of(context).size.height * 0.33;
+                  break;
+                case 3:
+                  return MediaQuery.of(context).size.height * 0.45;
+              }
+            }())),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -175,25 +151,31 @@ class SectionViewTwo extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: (((){switch(userUpcomingStage.length){
-                        case 1: return MediaQuery.of(context).size.height*0.12;
-                         break;
-                        case 2:return MediaQuery.of(context).size.height*0.23;
-                         break;
-                        case 3:return MediaQuery.of(context).size.height*0.35;
-                }}())),
-                  child:ListView.builder(
+                  height: ((() {
+                    switch (userUpcomingStage.length) {
+                      case 1:
+                        return MediaQuery.of(context).size.height * 0.12;
+                        break;
+                      case 2:
+                        return MediaQuery.of(context).size.height * 0.23;
+                        break;
+                      case 3:
+                        return MediaQuery.of(context).size.height * 0.35;
+                    }
+                  }())),
+                  child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
-                  itemCount:userUpcomingStage.length,
-                  itemBuilder: (context,index)=>SizedBox(
-                  width: double.infinity,
-                  child: HeadingCard(
-                    iconPath: userUpcomingStage[index]['icon'],
-                    arrow: true,
-                    stageName: userUpcomingStage[index]['stage'],
+                    itemCount: userUpcomingStage.length,
+                    itemBuilder: (context, index) => SizedBox(
+                      width: double.infinity,
+                      child: HeadingCard(
+                        iconPath: userUpcomingStage[index]['icon'],
+                        arrow: true,
+                        stageName: userUpcomingStage[index]['stage'],
+                      ),
+                    ),
                   ),
-                ),),),
-
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 15, left: 15),
                   child: Text(
@@ -206,14 +188,19 @@ class SectionViewTwo extends StatelessWidget {
             ),
           ),
           Container(
-            height:(((){switch(userFinishedExercise.length){
-              case 1: return MediaQuery.of(context).size.height*0.12;
-              break;
-              case 2:return MediaQuery.of(context).size.height*0.23;
-              break;
-              case 3:return MediaQuery.of(context).size.height*0.35;
-              break;
-            }}())),
+            height: ((() {
+              switch (userFinishedExercise.length) {
+                case 1:
+                  return MediaQuery.of(context).size.height * 0.12;
+                  break;
+                case 2:
+                  return MediaQuery.of(context).size.height * 0.23;
+                  break;
+                case 3:
+                  return MediaQuery.of(context).size.height * 0.35;
+                  break;
+              }
+            }())),
             color: Theme.of(context).backgroundColor,
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
@@ -227,8 +214,5 @@ class SectionViewTwo extends StatelessWidget {
         ],
       )),
     );
-
-
   }
 }
-

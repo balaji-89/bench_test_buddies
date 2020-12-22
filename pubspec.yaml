@@ -41,6 +41,8 @@ dependencies:
   intl:
   flutter_circular_chart: ^0.1.0
   dio:
+  simple_timer: ^1.0.1
+  im_stepper: ^0.1.2+8
   bench_test_service:
     path: ./bench_test_service
 

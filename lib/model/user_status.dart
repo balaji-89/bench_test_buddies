@@ -16,7 +16,7 @@ class UserDetailsAndLevel {
     @required this.userId,
     @required this.userName,
     this.userExerciseId = 1,
-    this.currentSection = Stages.Start_the_excerise,
+    this.currentSection = Stages.Evaluate_the_result,
     this.participatedExercise = const [
       {
         'Exercise_id': 1,

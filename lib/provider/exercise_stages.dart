@@ -51,4 +51,13 @@ class ExerciseStages with ChangeNotifier {
     }
     return foundedData;
   }
+  
+  List<int> get getPositionsOfExerciseStages{
+    List<int> position=[];
+    for(var i=0;i<_stages.length;i++){
+      var value=( _stages[i]["position"]);
+      position.add(int.parse(value));
+    }
+    return position;
+  }
 }

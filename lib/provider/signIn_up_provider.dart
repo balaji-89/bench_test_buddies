@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_service/bench_test_service.dart';
 
@@ -64,17 +65,17 @@ class SignInUp with ChangeNotifier {
 }
 
 
-class SignIn with ChangeNotifier{
+class SignIn with ChangeNotifier {
   String emailErrorText;
   String passwordErrorText;
 
-  bool passwordInvisible=true;
+  bool passwordInvisible = true;
 
-  bool isLoading=false;
+  bool isLoading = false;
 
 
-  void changePasswordVisibility(){
-    passwordInvisible=!passwordInvisible;
+  void changePasswordVisibility() {
+    passwordInvisible = !passwordInvisible;
     notifyListeners();
   }
 
@@ -84,21 +85,22 @@ class SignIn with ChangeNotifier{
     isLoading = true;
     notifyListeners();
     try {
-      LoginResponse logIn = await User().login(LoginRequest(emailAddress,password));
+      LoginResponse logIn = await User().login(
+          LoginRequest(emailAddress, password));
       print(logIn.toJson());
-
     } on ErrorResponse catch (error) {
       isLoading = false;
       notifyListeners();
       var errorMessage = error.message;
       print(errorMessage);
-       if (errorMessage.contains('password') ||
+      if (errorMessage.contains('password') ||
           errorMessage.contains('Invalid Credentials')) {
         passwordErrorText = errorMessage;
         emailErrorText = null;
       }
       else
-      if (errorMessage.contains('email') || (errorMessage.contains('User'))||(errorMessage.contains('Invalid Credentials'))) {
+      if (errorMessage.contains('email') || (errorMessage.contains('User')) ||
+          (errorMessage.contains('Invalid Credentials'))) {
         emailErrorText = errorMessage;
         passwordErrorText = null;
       }
@@ -108,4 +110,22 @@ class SignIn with ChangeNotifier{
     }
   }
 
+  Future<void> sendTheLink(String emailAddress) async {
+     emailErrorText=null;
+    try {
+      isLoading = true;
+      notifyListeners();
+      String response = await User().forgotPassword(emailAddress);
+      isLoading = false;
+      notifyListeners();
+
+    } on ErrorResponse catch (error) {
+      isLoading = false;
+      emailErrorText = error.message;
+      notifyListeners();
+      throw error;
+
+
+    }
   }
+}

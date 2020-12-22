@@ -1,6 +1,10 @@
+import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/attempt_tab/attempt.dart';
+import 'package:bench_test_buddies/screens/app_ui/bookmark_tab/bookmarks.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/section_view2.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app_ui/section_view_tab/section_view.dart';
 
@@ -9,7 +13,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  final appBarNames = ['Exercise Section', 'Attempts', 'Bookmarks'];
   final List<Tab> tabBar = [
     Tab(
       text: 'Section',
@@ -19,25 +27,37 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     ),
     Tab(text: 'Bookmarks')
   ];
+  var value=0;
 
-
-
+  @override
+  void initState() {
+    _tabController = TabController(vsync: this, length: 3);
+    _tabController.addListener(() {
+      setState(() {
+        value=_tabController.index;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<Users>(
+      context,
+    ).userData;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         backgroundColor: Theme.of(context).accentColor,
         appBar: AppBar(
-          leading: IconButton(icon:Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {},
           ),
-          onPressed: (){
-
-          },),
-          title: Text('Exercise Section',
+          title: Text(appBarNames[value],
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -73,10 +93,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           ),
         ),
         body: TabBarView(
+          //controller: tabController,
           children: [
-            SectionView(),
+            userData.currentSection == Stages.Start_the_excerise
+                ? SectionView()
+                : SectionViewTwo(),
             AttemptTab(),
-            SectionViewTwo(),
+            BookMarks(),
           ],
         ),
       ),

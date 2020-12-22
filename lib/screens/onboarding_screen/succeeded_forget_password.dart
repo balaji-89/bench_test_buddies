@@ -2,6 +2,9 @@ import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:flutter/material.dart';
 
 class SucceededPasswordScreen extends StatelessWidget {
+   final String mailAddress;
+   SucceededPasswordScreen(this.mailAddress);
+
   final TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class SucceededPasswordScreen extends StatelessWidget {
                     ),
                     subtitle: new Row(
                       children: [
-                        new Text("K******2@gmail.com"),
+                        new Text(mailAddress),
                       ],
                     ),
                   ),
