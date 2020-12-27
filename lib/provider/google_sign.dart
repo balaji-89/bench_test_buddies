@@ -44,12 +44,11 @@ class GoogleSign with ChangeNotifier {
       UserCredential result = await auth.signInWithCredential(credential);
 
       User user = auth.currentUser;
-      print(user.uid);
-      print(result);
+      // print(user.uid);
+      // print(result);
 
       return Future.value(true);
     }
-
   }
 
 // instead of returning true or false

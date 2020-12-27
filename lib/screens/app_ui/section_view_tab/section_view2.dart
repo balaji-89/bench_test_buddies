@@ -1,6 +1,8 @@
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/editpage.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/uploaded_images.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +22,7 @@ class SectionViewTwo extends StatelessWidget {
         .findByStages(userData.upcomingSection);
     final userFinishedExercise = Provider.of<ExerciseStages>(context)
         .findByStages(userData.completedExercise);
-    final stages=Provider.of<ExerciseStages>(context,listen: false).stages;
+    final stages = Provider.of<ExerciseStages>(context, listen: false).stages;
     final currentExerciseStages = Provider.of<ExerciseStages>(context)
         .findByStage(userData.currentSection);
     final userCurrentExercise = Provider.of<Exercises>(context)
@@ -80,7 +82,8 @@ class SectionViewTwo extends StatelessWidget {
                             numbers: numbers,
                             numberStyle: TextStyle(color: Colors.white),
                             activeStepColor: Theme.of(context).accentColor,
-                            activeStepBorderColor: Theme.of(context).accentColor,
+                            activeStepBorderColor:
+                                Theme.of(context).accentColor,
                             direction: Axis.horizontal,
                             stepColor: Colors.blue,
                             stepReachedAnimationEffect: Curves.easeInOut,
@@ -89,37 +92,33 @@ class SectionViewTwo extends StatelessWidget {
                             lineLength: constraints.maxWidth * 0.155,
                             scrollingDisabled: true,
                             steppingEnabled: true,
-                            stepRadius: constraints.maxHeight*0.14,
+                            stepRadius: constraints.maxHeight * 0.14,
                             enableStepTapping: false,
                             enableNextPreviousButtons: false,
-
-
-
                           ),
                         ),
                       ],
                     ),
-
                   ),
                   SizedBox(
                       height: constraints.maxHeight * 0.3,
                       width: constraints.maxWidth * 0.9,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount:stages.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(right: constraints.maxWidth*0.029),
-                            width: constraints.maxWidth*0.2,
-                            child: Text('${stages[index]['stage']}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black54,
-                                    fontSize: 11)),
-                          );
-                        }
-                      ))
+                          scrollDirection: Axis.horizontal,
+                          itemCount: stages.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(
+                                  right: constraints.maxWidth * 0.029),
+                              width: constraints.maxWidth * 0.2,
+                              child: Text('${stages[index]['stage']}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54,
+                                      fontSize: 11)),
+                            );
+                          }))
                 ],
               );
             }),
@@ -205,9 +204,33 @@ class SectionViewTwo extends StatelessWidget {
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               itemCount: userFinishedExercise.length,
-              itemBuilder: (context, index) => HeadingCard(
-                iconPath: userFinishedExercise[index]['icon'],
-                stageName: userFinishedExercise[index]['stage'],
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {
+                  switch (userFinishedExercise[index]['step']) {
+                    case Stages.Start_the_excerise:
+                      {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Edit()));
+                      }
+                      break;
+                    case Stages.Uploaded_images:
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PractisedImages()));
+                      }
+                      break;
+                    case Stages.Evaluate_the_result:
+                      {}
+                      break;
+                    case Stages.View_the_results:
+                      {}
+                      break;
+                  }
+                },
+                child: HeadingCard(
+                  iconPath: userFinishedExercise[index]['icon'],
+                  stageName: userFinishedExercise[index]['stage'],
+                ),
               ),
             ),
           ),

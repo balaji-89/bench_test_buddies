@@ -1,6 +1,5 @@
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
-import 'package:bench_test_service/bench_test_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +28,6 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           disableButton = false;
         });
-
       }
     });
     super.initState();
@@ -176,12 +174,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                                   emailController.text,
                                                   passwordController.text,
                                                   passwordController.text)
-                                              .then((value) =>
-                                                  Navigator.of(context).pushReplacement(
+                                              .then((value) => Navigator.of(
+                                                      context)
+                                                  .pushReplacement(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               SetupScreen())));
-                                        } on ErrorResponse catch (error) {} catch (error) {
+                                        } catch (error) {
                                           showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
