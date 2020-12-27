@@ -42,6 +42,13 @@ dependencies:
   flutter_circular_chart: ^0.1.0
   dio:
   simple_timer: ^1.0.1
+  image_picker:
+  path:
+  path_provider:
+  multi_image_picker: 4.7.14
+  flutter_time_picker_spinner: ^1.0.6+1
+  f_datetimerangepicker: ^0.1.3
+  flutter_switch: ^0.2.0
   im_stepper: ^0.1.2+8
   bench_test_service:
     path: ./bench_test_service
