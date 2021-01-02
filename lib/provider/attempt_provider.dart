@@ -19,4 +19,8 @@ class AttemptedList with ChangeNotifier{
     return userAttempts.firstWhere((element) => element.attemptId==id);
   }
 
+  void addNewUserAttempt(exerciseId,attemptedDate){
+    userAttempts.add(UserAttempt(userExerciseId: exerciseId, attemptId: userAttempts.length+1,attemptedDate: attemptedDate));
+  }
+
 }

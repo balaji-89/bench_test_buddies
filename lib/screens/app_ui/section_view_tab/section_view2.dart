@@ -1,7 +1,7 @@
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
-import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/editpage.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/exercise_timer_home.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/uploaded_images.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
@@ -210,7 +210,7 @@ class SectionViewTwo extends StatelessWidget {
                     case Stages.Start_the_excerise:
                       {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Edit()));
+                            MaterialPageRoute(builder: (context) => ExerciseTimerHome()));
                       }
                       break;
                     case Stages.Uploaded_images:
