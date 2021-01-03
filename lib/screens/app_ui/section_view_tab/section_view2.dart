@@ -8,6 +8,8 @@ import 'package:bench_test_buddies/widgets/heading_card.dart';
 import 'package:provider/provider.dart';
 import 'package:im_stepper/stepper.dart';
 
+import 'Evaluationscreen/firstquestion.dart';
+
 class SectionViewTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -220,7 +222,10 @@ class SectionViewTwo extends StatelessWidget {
                       }
                       break;
                     case Stages.Evaluate_the_result:
-                      {}
+                      {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Firstque()));
+                      }
                       break;
                     case Stages.View_the_results:
                       {}

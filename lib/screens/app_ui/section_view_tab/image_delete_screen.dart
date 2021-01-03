@@ -97,7 +97,6 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                                     clickFunction(index);
                                   },
                                   child: Stack(
-
                                     children: [
                                       AssetThumb(
                                       asset: widget.selectedImages[index],

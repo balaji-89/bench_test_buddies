@@ -1,119 +1,58 @@
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class UploadedImageView extends StatefulWidget {
   List<Asset> selectedImages;
+  File selectedFile ;
 
-  UploadedImageView({@required this.selectedImages});
+  UploadedImageView({this.selectedImages, this.selectedFile});
 
   @override
   _UploadedImageViewState createState() => _UploadedImageViewState();
 }
 
 class _UploadedImageViewState extends State<UploadedImageView> {
+  List<File> fileObjects=[];
+  Asset asset;
+
+  Future changeAssetObjectToFileObject() async {
+    widget.selectedImages.map((element) async {
+      await FlutterAbsolutePath.getAbsolutePath(element.identifier)
+          .then((value) {
+        fileObjects.add(File(value));
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    fileObjects.add(widget.selectedFile);
+    if (widget.selectedImages.length != 0) {
+      Future.delayed(Duration.zero, () async{
+        await changeAssetObjectToFileObject();
+      });
+
+
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var clickedImage;
-
-    List<Asset> multiImages = List<Asset>();
-
-    Future getCamera() async {
-      var pickedImage;
-      pickedImage = await ImagePicker().getImage(source: ImageSource.camera);
-      setState(() {
-        if (pickedImage != null) {
-          clickedImage = File(
-            pickedImage.path,
-          );
-        } else {}
-      });
-    }
-
-    Future getGalleryImage() async {
-      List<Asset> resultList = List<Asset>();
-      try {
-        resultList = await MultiImagePicker.pickImages(
-          maxImages: 5 - (widget.selectedImages.length),
-          selectedAssets: multiImages,
-          materialOptions: MaterialOptions(
-            actionBarColor: '#0d63db',
-            selectionLimitReachedText: 'You reached maximum selection',
-            statusBarColor: '#0d63db',
-            actionBarTitle: "Select images",
-            selectCircleStrokeColor: '#0d63db',
-            allViewTitle: "All photos",
-          ),
-        ).then((value) {
-          setState(() {
-            value.map((element){
-              widget.selectedImages.add(element);
-            });
-          });
-          return ;
-        });
-      } catch(error) {
-        print(error);
-      }
-      if(!mounted) return;
-      setState(() {
-        resultList.map((element){
-          widget.selectedImages.add(element);
-        });
-
-      });
-    }
-
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
         height: MediaQuery.of(context).size.height * 0.06,
-        child: InkWell(
-          onTap: () {
-            if (widget.selectedImages.length == 5) {
-              showDialog(
-                  barrierColor: Colors.black12,
-                  barrierDismissible: true,
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        elevation: 5,
-                        title: Text('Gallery limit reached'),
-                        content: Text(
-                            'Kindly delete few images and free up the space to upload images'),
-                        actions: [
-                          FlatButton(
-                            child: Text(
-                              'OK',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.7),
-
-                                fontSize: 15,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(7),
-                          ),
-                        ),
-                      ));
-            } else {
-              getGalleryImage();
-            }
-          },
-          child: Text('Upload from Gallery',
-              style: TextStyle(
-                fontSize: 15,
-              )),
-        ),
+        child: Text('Upload from Gallery',
+            style: TextStyle(
+              fontSize: 15,
+            )),
+        value: 0,
       ),
       PopupMenuDivider(
         height: 4,
@@ -124,23 +63,9 @@ class _UploadedImageViewState extends State<UploadedImageView> {
             style: TextStyle(
               fontSize: 15,
             )),
+        value: 1,
       ),
     ];
-
-    _showPopUpMenu() async {
-      await showMenu(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8))),
-        context: context,
-        position: RelativeRect.fromLTRB(
-            MediaQuery.of(context).size.width * 0.8,
-            MediaQuery.of(context).size.height * 0.13,
-            MediaQuery.of(context).size.width * 0.03,
-            0),
-        items: popupMenuItem,
-        elevation: 8,
-      );
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -161,8 +86,14 @@ class _UploadedImageViewState extends State<UploadedImageView> {
           backgroundColor: Colors.white,
           elevation: 1,
           actions: <Widget>[
-            InkWell(
-              onTap: _showPopUpMenu,
+            PopupMenuButton(
+              offset: Offset(0, 100),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+              onSelected: (selectedIndex) {
+                _popUpMenuAction(selectedIndex);
+              },
               child: Container(
                 margin: EdgeInsets.only(
                   right: MediaQuery.of(context).size.width * 0.04,
@@ -177,6 +108,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                   ),
                 ),
               ),
+              itemBuilder: (context) => popupMenuItem,
             ),
           ]),
       body: SizedBox(
@@ -200,17 +132,24 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                         ),
                         scrollDirection: Axis.horizontal,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.selectedImages.length,
+                        itemCount: fileObjects.length,
                         itemBuilder: (context, index) {
                           return index < 2
-                              ? AssetThumb(
-                                  asset: widget.selectedImages[index],
+                              ? Container(
                                   width: (MediaQuery.of(context).size.width *
-                                          0.497)
-                                      .toInt(),
+                                      0.49),
                                   height: (MediaQuery.of(context).size.height *
-                                          0.31)
-                                      .toInt())
+                                      0.31),
+                                  decoration:BoxDecoration(
+
+                                    image:DecorationImage(
+                                        image:FileImage(
+                                          fileObjects[index],
+                                        ),
+                                    ),
+                                  ),
+
+                                )
                               : null;
                         },
                       ),
@@ -228,19 +167,17 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                               ? MediaQuery.of(context).size.width * 0.01
                               : 0,
                         ),
-                        itemCount: widget.selectedImages.length,
+                        itemCount: fileObjects.length,
                         physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           if (index >= 2) {
-                            return AssetThumb(
-                                asset: widget.selectedImages[index],
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.33)
-                                        .toInt(),
-                                height:
-                                    (MediaQuery.of(context).size.height * 0.185)
-                                        .toInt());
+                            return Container(
+                              width: (MediaQuery.of(context).size.width * 0.49),
+                              height:
+                                  (MediaQuery.of(context).size.height * 0.31),
+                              child: Image.file(fileObjects[index]),
+                            );
                           }
                           return SizedBox();
                         },
@@ -267,5 +204,82 @@ class _UploadedImageViewState extends State<UploadedImageView> {
             ],
           )),
     );
+  }
+
+  List<Asset> multiImages = List<Asset>();
+
+  Future getCamera() async {
+    var pickedImage;
+    pickedImage = await ImagePicker().getImage(source: ImageSource.camera);
+    setState(() {
+      if (pickedImage != null) {
+        //widget.selectedFile.add(File(pickedImage.path));
+      } else {}
+    });
+  }
+
+  Future getGalleryImage() async {
+    List<Asset> resultList = List<Asset>();
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 5 - fileObjects.length,
+        selectedAssets: widget.selectedImages,
+        materialOptions: MaterialOptions(
+          actionBarColor: '#0d63db',
+          selectionLimitReachedText: 'You reached maximum selection',
+          statusBarColor: '#0d63db',
+          actionBarTitle: "Select images",
+          selectCircleStrokeColor: '#0d63db',
+          allViewTitle: "All photos",
+        ),
+      );
+    } catch (error) {
+      print(error);
+    }
+    if (!mounted) return;
+    setState(() {
+      widget.selectedImages = resultList;
+    });
+  }
+
+  void _popUpMenuAction(int value) {
+    if (fileObjects.length == 5) {
+      showDialog(
+          barrierColor: Colors.black12,
+          barrierDismissible: true,
+          context: context,
+          builder: (context) => AlertDialog(
+                elevation: 5,
+                title: Text('Gallery limit reached'),
+                content: Text(
+                    'Kindly delete few images and free up the space to upload images'),
+                actions: [
+                  FlatButton(
+                    child: Text(
+                      'OK',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor.withOpacity(0.7),
+                        fontSize: 15,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(7),
+                  ),
+                ),
+              ));
+    } else {
+      if (value == 0) {
+        getGalleryImage();
+      } else {
+        getCamera();
+      }
+    }
   }
 }

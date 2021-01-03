@@ -16,6 +16,7 @@ class PractisedImages extends StatefulWidget {
 class _PractisedImagesState extends State<PractisedImages> {
   var image;
   List<Asset> multiImages = List<Asset>();
+
   Widget button(String label, constraints) {
     return Container(
         height: constraints.maxHeight * 0.07,
@@ -39,21 +40,18 @@ class _PractisedImagesState extends State<PractisedImages> {
   }
 
   Future getCamera() async {
-    var pickedImage;
-    pickedImage = await ImagePicker().getImage(source: ImageSource.camera);
-    setState(() {
-      if (pickedImage != null) {
-        image = File(pickedImage.path);
-      } else {
-        print('Nothing Selected');
-      }
+    await ImagePicker().getImage(source: ImageSource.camera).then((value) {
+      if (value != null)
+        var image=File(value.path);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) =>
+                UploadedImageView(selectedFile: image)));
     });
   }
 
   Future getGalleryImage() async {
-    List<Asset> resultList = List<Asset>();
     try {
-      resultList = await MultiImagePicker.pickImages(
+      await MultiImagePicker.pickImages(
         maxImages: 5,
         selectedAssets: multiImages,
         materialOptions: MaterialOptions(
@@ -64,11 +62,18 @@ class _PractisedImagesState extends State<PractisedImages> {
           selectCircleStrokeColor: '#0d63db',
           allViewTitle: "All photos",
         ),
-      ).then((multiImages) =>multiImages==null?null:Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
+      ).then((multiImages) {
+        if (multiImages == null) {
+          return null;
+        } else {
+          return Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) =>
-                  UploadedImageView(selectedImages: multiImages))));
-    } catch (error) {}
+                  UploadedImageView(selectedImages: multiImages)));
+        }
+      });
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -82,7 +87,8 @@ class _PractisedImagesState extends State<PractisedImages> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder:(context)=>HomePage()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
         title: Text('Practised Images',
