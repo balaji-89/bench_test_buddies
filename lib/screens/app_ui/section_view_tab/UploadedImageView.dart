@@ -8,7 +8,7 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 
 class UploadedImageView extends StatefulWidget {
   List<Asset> selectedImages;
-  File selectedFile ;
+  File selectedFile;
 
   UploadedImageView({this.selectedImages, this.selectedFile});
 
@@ -19,6 +19,7 @@ class UploadedImageView extends StatefulWidget {
 class _UploadedImageViewState extends State<UploadedImageView> {
   List<File> fileObjects=[];
   Asset asset;
+  bool isLoading=false;
 
   Future changeAssetObjectToFileObject() async {
     widget.selectedImages.map((element) async {
@@ -26,15 +27,21 @@ class _UploadedImageViewState extends State<UploadedImageView> {
           .then((value) {
         fileObjects.add(File(value));
       });
+
+    });
+    setState(() {
+      isLoading=false;
     });
   }
 
   @override
   void initState() {
-    fileObjects.add(widget.selectedFile);
+    //fileObjects.add(widget.selectedFile);
     if (widget.selectedImages.length != 0) {
+      isLoading=true;
       Future.delayed(Duration.zero, () async{
         await changeAssetObjectToFileObject();
+        print('added');
       });
 
 
@@ -45,6 +52,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
 
   @override
   Widget build(BuildContext context) {
+    print('build started');
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
         height: MediaQuery.of(context).size.height * 0.06,
@@ -111,7 +119,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
               itemBuilder: (context) => popupMenuItem,
             ),
           ]),
-      body: SizedBox(
+      body: isLoading==true?Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,),):SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(

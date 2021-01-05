@@ -8,7 +8,7 @@ import 'package:bench_test_buddies/widgets/heading_card.dart';
 import 'package:provider/provider.dart';
 import 'package:im_stepper/stepper.dart';
 
-import 'Evaluationscreen/firstquestion.dart';
+import 'Evaluationscreen/evaluation_home.dart';
 
 class SectionViewTwo extends StatelessWidget {
   @override
@@ -224,7 +224,7 @@ class SectionViewTwo extends StatelessWidget {
                     case Stages.Evaluate_the_result:
                       {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Firstque()));
+                            MaterialPageRoute(builder: (context) => EvaluationHome()));
                       }
                       break;
                     case Stages.View_the_results:
