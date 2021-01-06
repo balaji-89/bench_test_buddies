@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:im_stepper/stepper.dart';
 
 import 'Evaluationscreen/evaluation_home.dart';
+import 'Resultscreen/view_result_home.dart';
 
 class SectionViewTwo extends StatelessWidget {
   @override
@@ -167,12 +168,42 @@ class SectionViewTwo extends StatelessWidget {
                   child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: userUpcomingStage.length,
-                    itemBuilder: (context, index) => SizedBox(
-                      width: double.infinity,
-                      child: HeadingCard(
-                        iconPath: userUpcomingStage[index]['icon'],
-                        arrow: true,
-                        stageName: userUpcomingStage[index]['stage'],
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: (){   switch (userUpcomingStage[index]['step']) {
+                        case Stages.Start_the_excerise:
+                          {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => ExerciseTimerHome()));
+                          }
+                          break;
+                        case Stages.Uploaded_images:
+                          {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PractisedImages()));
+                          }
+                          break;
+                        case Stages.Evaluate_the_result:
+                          {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => EvaluationHome()));
+                          }
+
+                          break;
+                        case Stages.View_the_results:
+                          {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => ViewResultHome()));
+                          }
+                          break;
+                      }
+                      },
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: HeadingCard(
+                          iconPath: userUpcomingStage[index]['icon'],
+                          arrow: true,
+                          stageName: userUpcomingStage[index]['stage'],
+                        ),
                       ),
                     ),
                   ),
@@ -226,9 +257,13 @@ class SectionViewTwo extends StatelessWidget {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) => EvaluationHome()));
                       }
+
                       break;
                     case Stages.View_the_results:
-                      {}
+                      {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => ViewResultHome()));
+                      }
                       break;
                   }
                 },

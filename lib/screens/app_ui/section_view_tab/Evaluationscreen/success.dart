@@ -1,9 +1,18 @@
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Resultscreen/view_result_home.dart';
 import "package:flutter/material.dart";
 
 class Success extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+    Future navigateToNextPage() async {
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => ViewResultHome()));
+      });
+    }
+    navigateToNextPage();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -44,7 +53,7 @@ class Success extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom:10.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Text("    15 seconds",
                   style: TextStyle(
                     color: Colors.deepOrangeAccent,
