@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/UploadedImageView.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
 
 import '../home.dart';
 
@@ -15,7 +15,7 @@ class PractisedImages extends StatefulWidget {
 
 class _PractisedImagesState extends State<PractisedImages> {
   var image;
-  List<Asset> multiImages = List<Asset>();
+  bool isLoading=false;
 
   Widget button(String label, constraints) {
     return Container(
@@ -40,37 +40,74 @@ class _PractisedImagesState extends State<PractisedImages> {
   }
 
   Future getCamera() async {
-    await ImagePicker().getImage(source: ImageSource.camera).then((value) {
-      if (value != null)
-        var image=File(value.path);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) =>
-                UploadedImageView(selectedFile: image)));
+    setState(() {
+      isLoading=true;
     });
+    var clickedImage = await ImagePicker().getImage(source: ImageSource.camera);
+    setState(() {
+      isLoading=true;
+    });
+    if (clickedImage != null) {
+      var image = File(clickedImage.path);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => UploadedImageView(selectedImages: [image])));
+    }
   }
 
   Future getGalleryImage() async {
     try {
-      await MultiImagePicker.pickImages(
-        maxImages: 5,
-        selectedAssets: multiImages,
-        materialOptions: MaterialOptions(
-          actionBarColor: '#0d63db',
-          selectionLimitReachedText: 'You reached maximum selection',
-          statusBarColor: '#0d63db',
-          actionBarTitle: "Select images",
-          selectCircleStrokeColor: '#0d63db',
-          allViewTitle: "All photos",
-        ),
-      ).then((multiImages) {
-        if (multiImages == null) {
-          return null;
-        } else {
-          return Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) =>
-                  UploadedImageView(selectedImages: multiImages)));
-        }
-      });
+      FilePickerResult pickedFiles = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        allowedExtensions: [
+          'jpg',
+          'png',
+          'jpeg',
+        ],
+        type: FileType.custom,
+      );
+      if (pickedFiles != null) {
+         if(pickedFiles.count<=5) {
+           List<File> files = pickedFiles.paths.map((path) => File(path))
+               .toList();
+           Navigator.of(context).pushReplacement(MaterialPageRoute(
+               builder: (context) =>
+                   UploadedImageView(
+                     selectedImages: files,
+                   )));
+         }else{
+           showDialog(
+               barrierColor: Colors.black12,
+               barrierDismissible: true,
+               context: context,
+               builder: (context) => AlertDialog(
+                 elevation: 5,
+                 title: Text('Limit exceeded'),
+                 content: Text(
+                     'Your selection should be below 5 files'),
+                 actions: [
+                   FlatButton(
+                     child: Text(
+                       'OK',
+                       textAlign: TextAlign.center,
+                       style: TextStyle(
+                         color: Theme.of(context).primaryColor.withOpacity(0.7),
+                         fontSize: 15,
+                       ),
+                     ),
+                     onPressed: () {
+                       Navigator.of(context).pop();
+                     },
+                   )
+                 ],
+                 shape: RoundedRectangleBorder(
+                   borderRadius: BorderRadius.all(
+                     Radius.circular(7),
+                   ),
+                 ),
+               ));
+
+         }
+      }
     } catch (error) {
       print(error);
     }
@@ -101,7 +138,10 @@ class _PractisedImagesState extends State<PractisedImages> {
         centerTitle: true,
         titleSpacing: 0.3,
       ),
-      body: SizedBox(
+      body: isLoading==true?Center(child:CircularProgressIndicator(
+        backgroundColor: Theme.of(context).primaryColor,
+      
+      )):SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: LayoutBuilder(builder: (context, constraints) {

@@ -2,7 +2,6 @@ import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscr
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/painting.dart';
 
 class FilledNumbers extends StatefulWidget {
@@ -26,7 +25,6 @@ class _FilledNumbersState extends State<FilledNumbers> {
       Container(color: Colors.blue),
       Container(color: Colors.black)
     ];
-    CarouselController buttonCarouselController = CarouselController();
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(

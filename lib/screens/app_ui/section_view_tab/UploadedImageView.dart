@@ -1,61 +1,35 @@
 import 'dart:io';
-
-import 'package:flutter/gestures.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+
+import 'image_delete_screen.dart';
 
 class UploadedImageView extends StatefulWidget {
-  List<Asset> selectedImages;
-  File selectedFile;
+  List<File> selectedImages;
 
-  UploadedImageView({this.selectedImages, this.selectedFile});
+  UploadedImageView({this.selectedImages});
 
   @override
   _UploadedImageViewState createState() => _UploadedImageViewState();
 }
 
 class _UploadedImageViewState extends State<UploadedImageView> {
-  List<File> fileObjects=[];
-  Asset asset;
-  bool isLoading=false;
+  bool isLoading = false;
 
-  Future changeAssetObjectToFileObject() async {
-    widget.selectedImages.map((element) async {
-      await FlutterAbsolutePath.getAbsolutePath(element.identifier)
-          .then((value) {
-        fileObjects.add(File(value));
-      });
-
-    });
-    setState(() {
-      isLoading=false;
-    });
-  }
-
-  @override
-  void initState() {
-    //fileObjects.add(widget.selectedFile);
-    if (widget.selectedImages.length != 0) {
-      isLoading=true;
-      Future.delayed(Duration.zero, () async{
-        await changeAssetObjectToFileObject();
-        print('added');
-      });
-
-
-    }
-
-    super.initState();
-  }
+  void add() {}
 
   @override
   Widget build(BuildContext context) {
-    print('build started');
+    print(widget.selectedImages.length);
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.06,
         child: Text('Upload from Gallery',
             style: TextStyle(
               fontSize: 15,
@@ -66,7 +40,10 @@ class _UploadedImageViewState extends State<UploadedImageView> {
         height: 4,
       ),
       PopupMenuItem(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.06,
         child: Text('Take a photo',
             style: TextStyle(
               fontSize: 15,
@@ -104,7 +81,10 @@ class _UploadedImageViewState extends State<UploadedImageView> {
               },
               child: Container(
                 margin: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * 0.04,
+                  right: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.04,
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -112,79 +92,168 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    color: Theme
+                        .of(context)
+                        .primaryColor
+                        .withOpacity(0.8),
                   ),
                 ),
               ),
               itemBuilder: (context) => popupMenuItem,
             ),
           ]),
-      body: isLoading==true?Center(child: CircularProgressIndicator(backgroundColor: Theme.of(context).primaryColor,),):SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+      body: isLoading == true
+          ? Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
+        ),
+      )
+          : SizedBox(
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                width: MediaQuery.of(context).size.width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: ListView(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.31,
-                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.31,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
                       child: ListView.separated(
                         padding: EdgeInsets.all(0),
-                        separatorBuilder: (context, index) => SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.015,
-                        ),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.015,
+                            ),
                         scrollDirection: Axis.horizontal,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: fileObjects.length,
+                        itemCount: widget.selectedImages.length,
                         itemBuilder: (context, index) {
                           return index < 2
-                              ? Container(
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.49),
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.31),
-                                  decoration:BoxDecoration(
-
-                                    image:DecorationImage(
-                                        image:FileImage(
-                                          fileObjects[index],
-                                        ),
+                              ? GestureDetector(
+                            onLongPress: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (context) =>
+                                    ImageDeletionScreen(
+                                      selectedIndex: index,
+                                      selectedImages:
+                                      widget.selectedImages,
                                     ),
-                                  ),
+                              )).then((value){
+                                setState(() {
+                                  widget.selectedImages=[];
+                                  widget.selectedImages.addAll(value);
 
-                                )
+                                });
+                              });
+                            },
+                            child: Container(
+                              width:
+                              (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width *
+                                  0.49),
+                              height: (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height *
+                                  0.31),
+                              child: Image.file(
+                                widget.selectedImages[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
                               : null;
                         },
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.007,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.007,
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.185,
-                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.185,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
                       child: ListView.separated(
                         padding: EdgeInsets.all(0),
-                        separatorBuilder: (context, index) => SizedBox(
-                          width: index >= 2
-                              ? MediaQuery.of(context).size.width * 0.01
-                              : 0,
-                        ),
-                        itemCount: fileObjects.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(
+                              width: index >= 2
+                                  ? MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.01
+                                  : 0,
+                            ),
+                        itemCount: widget.selectedImages.length,
                         physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           if (index >= 2) {
-                            return Container(
-                              width: (MediaQuery.of(context).size.width * 0.49),
-                              height:
-                                  (MediaQuery.of(context).size.height * 0.31),
-                              child: Image.file(fileObjects[index]),
+                            return GestureDetector(
+                              onLongPress: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      ImageDeletionScreen(
+                                        selectedIndex: index,
+                                        selectedImages: widget.selectedImages,
+                                      ),
+                                ));
+                              },
+                              child: Container(
+                                width: (MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width *
+                                    0.33),
+                                height:
+                                (MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height *
+                                    0.31),
+                                child: Image.file(
+                                    widget.selectedImages[index],
+                                    fit: BoxFit.cover),
+                              ),
                             );
                           }
                           return SizedBox();
@@ -195,10 +264,19 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                 ),
               ),
               Container(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.07,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
                   margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.04),
+                      bottom: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.04),
                   alignment: Alignment.center,
                   child: RaisedButton(
                     textColor: Colors.white,
@@ -214,49 +292,96 @@ class _UploadedImageViewState extends State<UploadedImageView> {
     );
   }
 
-  List<Asset> multiImages = List<Asset>();
-
   Future getCamera() async {
     var pickedImage;
     pickedImage = await ImagePicker().getImage(source: ImageSource.camera);
     setState(() {
       if (pickedImage != null) {
-        //widget.selectedFile.add(File(pickedImage.path));
+        widget.selectedImages.add(File(pickedImage.path));
       } else {}
     });
   }
 
   Future getGalleryImage() async {
-    List<Asset> resultList = List<Asset>();
     try {
-      resultList = await MultiImagePicker.pickImages(
-        maxImages: 5 - fileObjects.length,
-        selectedAssets: widget.selectedImages,
-        materialOptions: MaterialOptions(
-          actionBarColor: '#0d63db',
-          selectionLimitReachedText: 'You reached maximum selection',
-          statusBarColor: '#0d63db',
-          actionBarTitle: "Select images",
-          selectCircleStrokeColor: '#0d63db',
-          allViewTitle: "All photos",
-        ),
+      FilePickerResult pickedFiles = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        allowedExtensions: [
+          'jpg',
+          'png',
+          'jpeg',
+        ],
+        type: FileType.custom,
       );
+      if (pickedFiles != null) {
+        if (pickedFiles.count <= 5 - widget.selectedImages.length) {
+          setState(() {
+            pickedFiles.paths
+                .map((path) => widget.selectedImages.add(File(path)))
+                .toList();
+          });
+        } else {
+          showDialog(
+              barrierColor: Colors.black12,
+              barrierDismissible: true,
+              context: context,
+              builder: (context) =>
+                  AlertDialog(
+                    elevation: 5,
+                    title: Text('Gallery limit reached'),
+                    content: Text('Your selection should be below 5 files'),
+                    actions: [
+                      FlatButton(
+                          child: Text(
+                            'Delete files',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 15,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                      FlatButton(
+                        child: Text(
+                          'OK',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color:
+                            Theme
+                                .of(context)
+                                .primaryColor
+                                .withOpacity(0.7),
+                            fontSize: 15,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(7),
+                      ),
+                    ),
+                  ));
+        }
+      }
     } catch (error) {
       print(error);
     }
-    if (!mounted) return;
-    setState(() {
-      widget.selectedImages = resultList;
-    });
   }
 
   void _popUpMenuAction(int value) {
-    if (fileObjects.length == 5) {
+    if (widget.selectedImages.length == 5) {
       showDialog(
           barrierColor: Colors.black12,
           barrierDismissible: true,
           context: context,
-          builder: (context) => AlertDialog(
+          builder: (context) =>
+              AlertDialog(
                 elevation: 5,
                 title: Text('Gallery limit reached'),
                 content: Text(
@@ -267,7 +392,10 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                       'OK',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Theme.of(context).primaryColor.withOpacity(0.7),
+                        color: Theme
+                            .of(context)
+                            .primaryColor
+                            .withOpacity(0.7),
                         fontSize: 15,
                       ),
                     ),

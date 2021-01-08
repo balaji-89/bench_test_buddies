@@ -1,62 +1,57 @@
-import'package:flutter/material.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+
 class ImageDeletionScreen extends StatefulWidget {
   final selectedImages;
+  final int selectedIndex;
 
-  ImageDeletionScreen({@required this.selectedImages});
+  ImageDeletionScreen(
+      {@required this.selectedImages, @required this.selectedIndex});
+
   @override
   _ImageDeletionScreenState createState() => _ImageDeletionScreenState();
 }
 
 class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
-  final deleteList=[];
-  void addTODeleteList(int indexValue){
-    deleteList.add(indexValue);
-  }
+  List<int> deleteList = [];
 
-  void removeFromDeleteList(indexValue){
-    deleteList.remove(indexValue);
-  }
-
-
-  bool checkingValueInDeleteList(int index){
-    return deleteList.any((element) => element==index);
-  }
-
-  void clickFunction(int index){
-    if(checkingValueInDeleteList(index)){
-        removeFromDeleteList(index);
-    }else{
+  void clickFunction(int index) {
+    if (checkingValueInDeleteList(index)) {
+      removeFromDeleteList(index);
+    } else {
       addTODeleteList(index);
     }
   }
 
-
+  @override
+  void initState() {
+    deleteList.add(widget.selectedIndex);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-
-          onPressed: (){
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text('${deleteList.length} images selected'),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Text('${deleteList.length} images selected'),
           centerTitle: false,
-
           actions: <Widget>[
             InkWell(
-              onTap: (){},
+              onTap: deleteImages,
               child: Container(
                 margin: EdgeInsets.only(
                   right: MediaQuery.of(context).size.width * 0.04,
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'More',
+                  'Delete',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -66,8 +61,7 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
               ),
             ),
           ],
-
-      ),
+        ),
         body: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -93,27 +87,44 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                           itemBuilder: (context, index) {
                             return index < 2
                                 ? InkWell(
-                                  onTap:(){
-                                    clickFunction(index);
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      AssetThumb(
-                                      asset: widget.selectedImages[index],
-                                      width: (MediaQuery.of(context).size.width *
-                                          0.497)
-                                          .toInt(),
-                                      height: (MediaQuery.of(context).size.height *
-                                          0.31)
-                                          .toInt()),
-                                      if(checkingValueInDeleteList(index))
-                                      Positioned(
-                                         
-                                          child: Icon(Icons.check_circle)),
-                                    ],
-
-                                  ),
-                                )
+                                    onTap: () {
+                                      clickFunction(index);
+                                    },
+                                    child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                      return Stack(
+                                        children: [
+                                          Container(
+                                            width: (MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.49),
+                                            height: (MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.31),
+                                            child: Image.file(
+                                              widget.selectedImages[index],
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          if (deleteList.contains(index))
+                                            Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: constraints.maxHeight *
+                                                        0.85,
+                                                    left: 10),
+                                                child: CircleAvatar(
+                                                  radius: 10,
+                                                  backgroundColor: Colors.white,
+                                                  backgroundImage: AssetImage(
+                                                    'assets/on_boarding_images/RectangleSelect.png',
+                                                  ),
+                                                ))
+                                        ],
+                                      );
+                                    }),
+                                  )
                                 : null;
                           },
                         ),
@@ -136,14 +147,44 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             if (index >= 2) {
-                              return AssetThumb(
-                                  asset: widget.selectedImages[index],
-                                  width:
-                                  (MediaQuery.of(context).size.width * 0.33)
-                                      .toInt(),
-                                  height:
-                                  (MediaQuery.of(context).size.height * 0.185)
-                                      .toInt());
+                              return InkWell(
+                                onTap: () {
+                                  clickFunction(index);
+                                },
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                  return Stack(
+                                    children: [
+                                      Container(
+                                        width:
+                                            (MediaQuery.of(context).size.width *
+                                                0.33),
+                                        height: (MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.31),
+                                        child: Image.file(
+                                            widget.selectedImages[index],
+                                            fit: BoxFit.cover),
+                                      ),
+                                      if (deleteList.contains(index))
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                              top: constraints.maxHeight * 0.7,
+                                              left:
+                                                  constraints.maxHeight * 0.05,
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: Colors.white,
+                                              backgroundImage: AssetImage(
+                                                'assets/on_boarding_images/RectangleSelect.png',
+                                              ),
+                                            ))
+                                    ],
+                                  );
+                                }),
+                              );
                             }
                             return SizedBox();
                           },
@@ -168,7 +209,32 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                       onPressed: () async {},
                     ))
               ],
-            ))
-    );
+            )));
+  }
+
+  void addTODeleteList(int indexValue) {
+    setState(() {
+      deleteList.add(indexValue);
+    });
+  }
+
+  void removeFromDeleteList(indexValue) {
+    setState(() {
+      deleteList.remove(indexValue);
+    });
+  }
+
+  bool checkingValueInDeleteList(int index) {
+    return deleteList.any((element) => element == index);
+  }
+
+  void deleteImages() {
+    var filteredImages=[];
+    deleteList.map((element) {
+      File particularImage = widget.selectedImages[element];
+      filteredImages.addAll(widget.selectedImages.remove(particularImage));
+    });
+    print('length ${filteredImages.length}');
+    Navigator.of(context).pop(filteredImages);
   }
 }
