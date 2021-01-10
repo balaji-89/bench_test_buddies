@@ -1,4 +1,6 @@
-class GetUserResponse {
+import 'package:bench_test_service/bench_test_service.dart';
+
+class GetUserResponse extends SuccessResponse{
   String _name;
   String _email;
   DateTime _createdAt;
@@ -28,4 +30,21 @@ class GetUserResponse {
     map["created_at"] = _createdAt;
     return map;
   }
+
+  @override
+  String toString() {
+    return 'GetUserResponse{_name: $_name, _email: $_email, _createdAt: $_createdAt}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GetUserResponse &&
+          runtimeType == other.runtimeType &&
+          _name == other._name &&
+          _email == other._email &&
+          _createdAt == other._createdAt;
+
+  @override
+  int get hashCode => _name.hashCode ^ _email.hashCode ^ _createdAt.hashCode;
 }

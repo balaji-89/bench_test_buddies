@@ -1,154 +1,141 @@
-class SignupQuestionResponse {
-  String _message;
-  Data _data;
+import 'package:bench_test_service/bench_test_service.dart';
 
-  String get message => _message;
+class SignupQuestionResponse extends SuccessResponse {
+  List<_Message> _message;
 
-  Data get data => _data;
+  List<_Message> get message => _message;
 
-  SignupQuestionResponse({String message, Data data}) {
+  SignupQuestionResponse({List<_Message> message}) {
     _message = message;
-    _data = data;
   }
 
   SignupQuestionResponse.fromJson(dynamic json) {
-    _message = json["message"];
-    _data = json["data"] != null ? Data.fromJson(json["data"]) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["message"] = _message;
-    if (_data != null) {
-      map["data"] = _data.toJson();
-    }
-    return map;
-  }
-}
-
-class Data {
-  One _one;
-  Two _two;
-
-  One get one => _one;
-
-  Two get two => _two;
-
-  Data({One one, Two two}) {
-    _one = one;
-    _two = two;
-  }
-
-  Data.fromJson(dynamic json) {
-    _one = json["1"] != null ? One.fromJson(json["1"]) : null;
-    _two = json["2"] != null ? Two.fromJson(json["2"]) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    if (_one != null) {
-      map["1"] = _one.toJson();
-    }
-    if (_two != null) {
-      map["2"] = _two.toJson();
-    }
-    return map;
-  }
-}
-
-class Two {
-  List<ExpertiseLevel> _expertiseLevel;
-
-  List<ExpertiseLevel> get expertiseLevel => _expertiseLevel;
-
-  Two({List<ExpertiseLevel> expertiseLevel}) {
-    _expertiseLevel = expertiseLevel;
-  }
-
-  Two.fromJson(dynamic json) {
-    if (json["Enter your Expertise level in bench preparation"] != null) {
-      _expertiseLevel = [];
-      json["Enter your Expertise level in bench preparation"].forEach((v) {
-        _expertiseLevel.add(ExpertiseLevel.fromJson(v));
+    if (json["message"] != null) {
+      _message = [];
+      json["message"].forEach((v) {
+        _message.add(_Message.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    if (_expertiseLevel != null) {
-      map["Enter your Expertise level in bench preparation"] =
-          _expertiseLevel.map((v) => v.toJson()).toList();
+    if (_message != null) {
+      map["message"] = _message.map((v) => v.toJson()).toList();
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return 'SignupQuestionResponse{_message: $_message}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SignupQuestionResponse &&
+          runtimeType == other.runtimeType &&
+          _message == other._message;
+
+  @override
+  int get hashCode => _message.hashCode;
 }
 
-class ExpertiseLevel {
-  String _one;
+class _Message {
+  int _id;
+  String _question;
+  List<_Answers> _answers;
 
-  String get one => _one;
+  int get id => _id;
 
-  ExpertiseLevel({String one}) {
-    _one = one;
+  String get question => _question;
+
+  List<_Answers> get answers => _answers;
+
+  _Message({int id, String question, List<_Answers> answers}) {
+    _id = id;
+    _question = question;
+    _answers = answers;
   }
 
-  ExpertiseLevel.fromJson(dynamic json) {
-    _one = json["1"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["1"] = _one;
-    return map;
-  }
-}
-
-class One {
-  List<ProfessionalBench> _professionalBench;
-
-  List<ProfessionalBench> get professionalBench => _professionalBench;
-
-  One({List<ProfessionalBench> professionalBench}) {
-    _professionalBench = professionalBench;
-  }
-
-  One.fromJson(dynamic json) {
-    if (json["Have you attended the professional bench test course?"] != null) {
-      _professionalBench = [];
-      json["Have you attended the professional bench test course?"]
-          .forEach((v) {
-        _professionalBench.add(ProfessionalBench.fromJson(v));
+  _Message.fromJson(dynamic json) {
+    _id = json["id"];
+    _question = json["question"];
+    if (json["answers"] != null) {
+      _answers = [];
+      json["answers"].forEach((v) {
+        _answers.add(_Answers.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    if (_professionalBench != null) {
-      map["Have you attended the professional bench test course?"] =
-          _professionalBench.map((v) => v.toJson()).toList();
+    map["id"] = _id;
+    map["question"] = _question;
+    if (_answers != null) {
+      map["answers"] = _answers.map((v) => v.toJson()).toList();
     }
     return map;
   }
-}
 
-class ProfessionalBench {
-  String _one;
-
-  String get one => _one;
-
-  ProfessionalBench({String one}) {
-    _one = one;
+  @override
+  String toString() {
+    return '_Message{_id: $_id, _question: $_question, _answers: $_answers}';
   }
 
-  ProfessionalBench.fromJson(dynamic json) {
-    _one = json["1"];
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Message &&
+          runtimeType == other.runtimeType &&
+          _id == other._id &&
+          _question == other._question &&
+          _answers == other._answers;
+
+  @override
+  int get hashCode => _id.hashCode ^ _question.hashCode ^ _answers.hashCode;
+}
+
+class _Answers {
+  int _id;
+  String _answer;
+
+  int get id => _id;
+
+  String get answer => _answer;
+
+  _Answers({int id, String answer}) {
+    _id = id;
+    _answer = answer;
+  }
+
+  _Answers.fromJson(dynamic json) {
+    _id = json["id"];
+    _answer = json["answer"];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["1"] = _one;
+    map["id"] = _id;
+    map["answer"] = _answer;
     return map;
   }
+
+  @override
+  String toString() {
+    return '_Answers{_id: $_id, _answer: $_answer}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Answers &&
+          runtimeType == other.runtimeType &&
+          _id == other._id &&
+          _answer == other._answer;
+
+  @override
+  int get hashCode => _id.hashCode ^ _answer.hashCode;
 }

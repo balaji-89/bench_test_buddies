@@ -1,6 +1,6 @@
 import 'response_status.dart';
 
-class RegisterResponse extends SuccessResponse{
+class RegisterResponse extends SuccessResponse {
   String message;
   _Data data;
 
@@ -19,6 +19,22 @@ class RegisterResponse extends SuccessResponse{
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return 'RegisterResponse{message: $message, data: $data}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RegisterResponse &&
+          runtimeType == other.runtimeType &&
+          message == other.message &&
+          data == other.data;
+
+  @override
+  int get hashCode => message.hashCode ^ data.hashCode;
 }
 
 class _Data {
@@ -40,6 +56,22 @@ class _Data {
     map["token"] = token;
     return map;
   }
+
+  @override
+  String toString() {
+    return '_Data{user: $user, token: $token}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Data &&
+          runtimeType == other.runtimeType &&
+          user == other.user &&
+          token == other.token;
+
+  @override
+  int get hashCode => user.hashCode ^ token.hashCode;
 }
 
 class _User {
@@ -68,4 +100,28 @@ class _User {
     map["id"] = id;
     return map;
   }
+
+  @override
+  String toString() {
+    return '_User{name: $name, email: $email, updatedAt: $updatedAt, createdAt: $createdAt, id: $id}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _User &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          email == other.email &&
+          updatedAt == other.updatedAt &&
+          createdAt == other.createdAt &&
+          id == other.id;
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      email.hashCode ^
+      updatedAt.hashCode ^
+      createdAt.hashCode ^
+      id.hashCode;
 }

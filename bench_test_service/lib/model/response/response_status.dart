@@ -14,4 +14,8 @@ class ErrorResponse extends Error {
   }
 }
 
-abstract class SuccessResponse {}
+class SuccessResponse {
+  final message;
+
+  SuccessResponse({this.message});
+}

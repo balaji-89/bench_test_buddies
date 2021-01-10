@@ -15,10 +15,11 @@ export 'model/response/response_status.dart';
  * * Update Country 👍
  * * Update User 👍
  * * Get User 👍
+ * * Country List 👍
+ * * User Sign up ques 👍
+ * * Sign up Answers 👍
  * ! ? Reset Password // not working
- * ! ? Country List // Empty data
- * ! * Sign up Answers
- * ? User Sign up ques
+
  *
  * ? All Exercise
  * ? New Attempt

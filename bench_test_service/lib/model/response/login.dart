@@ -1,4 +1,6 @@
-class LoginResponse {
+import 'package:bench_test_service/bench_test_service.dart';
+
+class LoginResponse extends SuccessResponse {
   String message;
   _Data data;
 
@@ -17,6 +19,22 @@ class LoginResponse {
     }
     return map;
   }
+
+  @override
+  String toString() {
+    return 'LoginResponse{message: $message, data: $data}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LoginResponse &&
+          runtimeType == other.runtimeType &&
+          message == other.message &&
+          data == other.data;
+
+  @override
+  int get hashCode => message.hashCode ^ data.hashCode;
 }
 
 class _Data {
@@ -38,6 +56,22 @@ class _Data {
     map["token"] = token;
     return map;
   }
+
+  @override
+  String toString() {
+    return '_Data{user: $user, token: $token}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Data &&
+          runtimeType == other.runtimeType &&
+          user == other.user &&
+          token == other.token;
+
+  @override
+  int get hashCode => user.hashCode ^ token.hashCode;
 }
 
 class _User {
@@ -123,4 +157,54 @@ class _User {
     map["phone"] = phone;
     return map;
   }
+
+  @override
+  String toString() {
+    return '_User{id: $id, name: $name, email: $email, emailVerifiedAt: $emailVerifiedAt, createdAt: $createdAt, updatedAt: $updatedAt, isAdmin: $isAdmin, country: $country, education: $education, status: $status, deletedAt: $deletedAt, title: $title, description: $description, img: $img, googleId: $googleId, avatar: $avatar, countryCode: $countryCode, phone: $phone}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _User &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          email == other.email &&
+          emailVerifiedAt == other.emailVerifiedAt &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt &&
+          isAdmin == other.isAdmin &&
+          country == other.country &&
+          education == other.education &&
+          status == other.status &&
+          deletedAt == other.deletedAt &&
+          title == other.title &&
+          description == other.description &&
+          img == other.img &&
+          googleId == other.googleId &&
+          avatar == other.avatar &&
+          countryCode == other.countryCode &&
+          phone == other.phone;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      email.hashCode ^
+      emailVerifiedAt.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode ^
+      isAdmin.hashCode ^
+      country.hashCode ^
+      education.hashCode ^
+      status.hashCode ^
+      deletedAt.hashCode ^
+      title.hashCode ^
+      description.hashCode ^
+      img.hashCode ^
+      googleId.hashCode ^
+      avatar.hashCode ^
+      countryCode.hashCode ^
+      phone.hashCode;
 }

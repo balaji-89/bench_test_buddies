@@ -1,4 +1,6 @@
+import 'package:bench_test_service/model/response/countries.dart';
 import 'package:bench_test_service/model/response/get_user_response.dart';
+import 'package:bench_test_service/model/response/signup_question_response.dart';
 import 'package:dio/dio.dart';
 
 import '../model/request/login.dart';
@@ -80,6 +82,47 @@ class User {
             "Authorization": "Bearer $token",
           }));
       return GetUserResponse.fromJson(response.data['data'][0]);
+    } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
+  getCountries(String token) async {
+    try {
+      Response response = await dio.get('/countries',
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          }));
+      return CountryResponse.fromJson(response.data);
+    } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
+  getQuestions(String token) async {
+    try {
+      Response response = await dio.get('/signup-questions',
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          }));
+      return SignupQuestionResponse.fromJson(response.data);
+    } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
+  postAnswers(List<int> answers, String token) async {
+    if (answers.length == 0) throw "answers must not be empty";
+    try {
+      Response response = await dio.post('/signup-answers',
+          data: {"answers": answers},
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token"
+          }));
+      return response.data['message'];
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
     }
