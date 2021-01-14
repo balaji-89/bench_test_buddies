@@ -95,6 +95,7 @@ class User {
             "Authorization": "Bearer $token"
           }));
       return CountryResponse.fromJson(response.data);
+
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
     }

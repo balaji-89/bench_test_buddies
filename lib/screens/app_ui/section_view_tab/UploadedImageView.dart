@@ -26,10 +26,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
     print(widget.selectedImages.length);
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.06,
+        height: MediaQuery.of(context).size.height * 0.06,
         child: Text('Upload from Gallery',
             style: TextStyle(
               fontSize: 15,
@@ -40,10 +37,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
         height: 4,
       ),
       PopupMenuItem(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.06,
+        height: MediaQuery.of(context).size.height * 0.06,
         child: Text('Take a photo',
             style: TextStyle(
               fontSize: 15,
@@ -81,10 +75,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
               },
               child: Container(
                 margin: EdgeInsets.only(
-                  right: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.04,
+                  right: MediaQuery.of(context).size.width * 0.04,
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -92,10 +83,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Theme
-                        .of(context)
-                        .primaryColor
-                        .withOpacity(0.8),
+                    color: Theme.of(context).primaryColor.withOpacity(0.8),
                   ),
                 ),
               ),
@@ -104,191 +92,134 @@ class _UploadedImageViewState extends State<UploadedImageView> {
           ]),
       body: isLoading == true
           ? Center(
-        child: CircularProgressIndicator(
-          backgroundColor: Theme
-              .of(context)
-              .primaryColor,
-        ),
-      )
+              child: CircularProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
+            )
           : SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.5,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.31,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      child: ListView.separated(
-                        padding: EdgeInsets.all(0),
-                        separatorBuilder: (context, index) =>
-                            SizedBox(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.015,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.31,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.separated(
+                            padding: EdgeInsets.all(0),
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.015,
                             ),
-                        scrollDirection: Axis.horizontal,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.selectedImages.length,
-                        itemBuilder: (context, index) {
-                          return index < 2
-                              ? GestureDetector(
-                            onLongPress: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ImageDeletionScreen(
-                                      selectedIndex: index,
-                                      selectedImages:
-                                      widget.selectedImages,
-                                    ),
-                              )).then((value){
-                                setState(() {
-                                  widget.selectedImages=[];
-                                  widget.selectedImages.addAll(value);
-
-                                });
-                              });
+                            scrollDirection: Axis.horizontal,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: widget.selectedImages.length,
+                            itemBuilder: (context, index) {
+                              return index < 2
+                                  ? GestureDetector(
+                                      onLongPress: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              ImageDeletionScreen(
+                                            selectedIndex: index,
+                                            selectedImages:
+                                                widget.selectedImages,
+                                          ),
+                                        ))
+                                            .then((value) {
+                                          setState(() {
+                                            widget.selectedImages = [];
+                                            widget.selectedImages.addAll(value);
+                                          });
+                                        });
+                                      },
+                                      child: Container(
+                                        width:
+                                            (MediaQuery.of(context).size.width *
+                                                0.49),
+                                        height: (MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.31),
+                                        child: Image.file(
+                                          widget.selectedImages[index],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  : null;
                             },
-                            child: Container(
-                              width:
-                              (MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width *
-                                  0.49),
-                              height: (MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height *
-                                  0.31),
-                              child: Image.file(
-                                widget.selectedImages[index],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
-                              : null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.007,
-                    ),
-                    SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.185,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      child: ListView.separated(
-                        padding: EdgeInsets.all(0),
-                        separatorBuilder: (context, index) =>
-                            SizedBox(
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.007,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.185,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.separated(
+                            padding: EdgeInsets.all(0),
+                            separatorBuilder: (context, index) => SizedBox(
                               width: index >= 2
-                                  ? MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.01
+                                  ? MediaQuery.of(context).size.width * 0.01
                                   : 0,
                             ),
-                        itemCount: widget.selectedImages.length,
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          if (index >= 2) {
-                            return GestureDetector(
-                              onLongPress: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      ImageDeletionScreen(
+                            itemCount: widget.selectedImages.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              if (index >= 2) {
+                                return GestureDetector(
+                                  onLongPress: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => ImageDeletionScreen(
                                         selectedIndex: index,
                                         selectedImages: widget.selectedImages,
                                       ),
-                                ));
-                              },
-                              child: Container(
-                                width: (MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width *
-                                    0.33),
-                                height:
-                                (MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height *
-                                    0.31),
-                                child: Image.file(
-                                    widget.selectedImages[index],
-                                    fit: BoxFit.cover),
-                              ),
-                            );
-                          }
-                          return SizedBox();
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.07,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.8,
-                  margin: EdgeInsets.only(
-                      bottom: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.04),
-                  alignment: Alignment.center,
-                  child: RaisedButton(
-                    textColor: Colors.white,
-                    color: Color(0xFF4667EE),
-                    child: Text(
-                      'Continue to Evaluate the results',
-                      style: TextStyle(fontSize: 14),
+                                    ));
+                                  },
+                                  child: Container(
+                                    width: (MediaQuery.of(context).size.width *
+                                        0.33),
+                                    height:
+                                        (MediaQuery.of(context).size.height *
+                                            0.31),
+                                    child: Image.file(
+                                        widget.selectedImages[index],
+                                        fit: BoxFit.cover),
+                                  ),
+                                );
+                              }
+                              return SizedBox();
+                            },
+                          ),
+                        )
+                      ],
                     ),
-                    onPressed: () async {},
-                  ))
-            ],
-          )),
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.04),
+                      alignment: Alignment.center,
+                      child: RaisedButton(
+                        textColor: Colors.white,
+                        color: Color(0xFF4667EE),
+                        child: Text(
+                          'Continue to Evaluate the results',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        onPressed: () async {},
+                      ))
+                ],
+              )),
     );
   }
 
@@ -325,8 +256,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
               barrierColor: Colors.black12,
               barrierDismissible: true,
               context: context,
-              builder: (context) =>
-                  AlertDialog(
+              builder: (context) => AlertDialog(
                     elevation: 5,
                     title: Text('Gallery limit reached'),
                     content: Text('Your selection should be below 5 files'),
@@ -349,10 +279,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color:
-                            Theme
-                                .of(context)
-                                .primaryColor
-                                .withOpacity(0.7),
+                                Theme.of(context).primaryColor.withOpacity(0.7),
                             fontSize: 15,
                           ),
                         ),
@@ -380,8 +307,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
           barrierColor: Colors.black12,
           barrierDismissible: true,
           context: context,
-          builder: (context) =>
-              AlertDialog(
+          builder: (context) => AlertDialog(
                 elevation: 5,
                 title: Text('Gallery limit reached'),
                 content: Text(
@@ -392,10 +318,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                       'OK',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .primaryColor
-                            .withOpacity(0.7),
+                        color: Theme.of(context).primaryColor.withOpacity(0.7),
                         fontSize: 15,
                       ),
                     ),

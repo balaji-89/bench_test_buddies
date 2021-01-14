@@ -1,25 +1,29 @@
-import 'package:carousel_pro/carousel_pro.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscreen/value_screen.dart';
+import 'package:better_player/better_player.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/painting.dart';
 
-import 'video_question.dart';
-
-class EvaluationHome extends StatefulWidget {
-  final String question;
-
-  EvaluationHome({this.question});
-
+class VideoScreen extends StatefulWidget {
   @override
-  _EvaluationHomeState createState() => _EvaluationHomeState();
+  _VideoScreenState createState() => _VideoScreenState();
 }
 
-class _EvaluationHomeState extends State<EvaluationHome> {
+class _VideoScreenState extends State<VideoScreen> {
+  String videoUrl = 'https://youtu.be/BVzVtDEhgfg';
   Color cool = Colors.grey;
+  BetterPlayerController _betterPlayerController;
+  @override
+  void initState() {
+    super.initState();
+    BetterPlayerDataSource betterPlayerDataSource =
+        BetterPlayerDataSource(BetterPlayerDataSourceType.network, videoUrl);
+    _betterPlayerController = BetterPlayerController(
+        BetterPlayerConfiguration(),
+        betterPlayerDataSource: betterPlayerDataSource);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final heights = MediaQuery.of(context).size;
     final carouselImage = [
       Container(
         color: Colors.green,
@@ -56,7 +60,7 @@ class _EvaluationHomeState extends State<EvaluationHome> {
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontSize: 15,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.grey.withOpacity(0.7),
                 ),
               ))
         ],
@@ -79,22 +83,17 @@ class _EvaluationHomeState extends State<EvaluationHome> {
               ),
             ),
             SizedBox(
-              height: constraints.maxHeight * 0.46,
+              height: constraints.maxHeight * 0.4,
               width: constraints.maxWidth,
-              child: Carousel(
-                images: carouselImage,
-                dotColor: Theme.of(context).accentColor,
-                dotBgColor: Theme.of(context).backgroundColor,
-                dotIncreasedColor: Theme.of(context).primaryColor,
-                dotVerticalPadding: 0,
-                dotPosition: DotPosition.bottomCenter,
-                animationDuration: Duration(seconds: 1),
-                animationCurve: Curves.bounceOut,
-                showIndicator: true,
-                autoplay: false,
-                dotIncreaseSize: 1.1,
-                dotSpacing: 20,
-                dotHorizontalPadding: 15,
+              child: BetterPlayer.network(
+                videoUrl,
+                betterPlayerConfiguration: BetterPlayerConfiguration(
+                  aspectRatio: 16 / 9,
+                  autoPlay: true,
+                  allowedScreenSleep: false,
+                  autoDispose: true,
+                  fullScreenByDefault: false,
+                ),
               ),
             ),
             Container(
@@ -129,9 +128,7 @@ class _EvaluationHomeState extends State<EvaluationHome> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                widget.question == null
-                    ? 'Does your outline form follow this example ?'
-                    : widget.question,
+                'Distance of dovetail from crest of the adjacent marginal ridge',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 16,
@@ -139,55 +136,26 @@ class _EvaluationHomeState extends State<EvaluationHome> {
                 ),
               ),
             ),
-            SizedBox(
-              height: constraints.maxHeight * 0.04,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: constraints.maxHeight * 0.055,
-                  width: constraints.maxWidth * 0.45,
-                  child: OutlineButton(
-                    borderSide: BorderSide(
-                      style: BorderStyle.solid,
-                      color: Colors.grey,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => widget.question != null
-                              ? VideoScreen()
-                              : EvaluationHome(
-                                  question:
-                                      'Adjacent tooth damage soft tissue damage burn marks on the tooth?')));
-                    },
-                    child: Text(
-                      "Yes",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+            Container(
+                margin: EdgeInsets.only(
+                  top: constraints.maxHeight * 0.03,
                 ),
-                Container(
-                  height: constraints.maxHeight * 0.055,
-                  width: constraints.maxWidth * 0.45,
-                  child: OutlineButton(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      style: BorderStyle.solid,
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "No",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                height: constraints.maxHeight * 0.065,
+                width: constraints.maxWidth - 30,
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: RaisedButton(
+                  textColor: Colors.white,
+                  color: Theme.of(context).primaryColor,
+                  child: Text('Enter the value'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ValueScreen(),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                    );
+                  },
+                )),
+            Spacer(),
             Container(
               margin: EdgeInsets.only(
                 top: constraints.maxHeight * 0.095,
@@ -199,7 +167,8 @@ class _EvaluationHomeState extends State<EvaluationHome> {
                 height: 1,
               ),
             ),
-            SizedBox(
+            Container(
+              margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.03),
               width: constraints.maxWidth,
               height: constraints.maxHeight * 0.05,
               child: ListView.builder(
