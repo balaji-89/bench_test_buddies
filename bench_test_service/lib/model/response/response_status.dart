@@ -12,6 +12,21 @@ class ErrorResponse extends Error {
     map["message"] = message;
     return map;
   }
+
+  @override
+  String toString() {
+    return 'ErrorResponse{message: $message}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ErrorResponse &&
+          runtimeType == other.runtimeType &&
+          message == other.message;
+
+  @override
+  int get hashCode => message.hashCode;
 }
 
 class SuccessResponse {
