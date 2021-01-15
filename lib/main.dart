@@ -4,6 +4,7 @@ import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
+import 'package:bench_test_service/service/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,8 @@ import './provider/google_sign.dart';
 import 'on_boarding_setup/set_up.dart';
 import 'screens/onboarding_screen/get_started_screen.dart';
 
-void main() {
+void main() async{
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => Users(),

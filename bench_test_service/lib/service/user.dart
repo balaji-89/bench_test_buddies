@@ -104,7 +104,7 @@ class User {
   getQuestions(String token) async {
     try {
       Response response = await dio.get('/signup-questions',
-          options: Options(headers: {
+          options: Options(headers:{
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           }));

@@ -173,7 +173,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                   userController.text,
                                                   emailController.text,
                                                   passwordController.text,
-                                                  passwordController.text)
+                                                  passwordController.text,
+                                                  context)
                                               .then((value) => Navigator.of(
                                                       context)
                                                   .pushReplacement(

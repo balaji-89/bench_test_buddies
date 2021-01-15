@@ -14,9 +14,11 @@ class SetupScreen extends StatefulWidget {
 
 class _SetupScreenState extends State<SetupScreen> {
   int setupIndex = 4;
-  List<Map<String,dynamic>> question1list =[...CountryProvider().getOnlyAnswers(1)];
+  int answerSelected;
 
-  List<Map<String,dynamic>> question2list = [...CountryProvider().getOnlyAnswers(2)];
+  bool answerSelection = false;
+  bool isLoading = false;
+
   _getChildren(int pos, mediaQuery) {
     switch (pos) {
       case 1:
@@ -90,21 +92,18 @@ class _SetupScreenState extends State<SetupScreen> {
               )),
             ),
             child: Row(
-
               children: [
                 SizedBox(
-                  width: constraints.maxWidth*0.06,
+                  width: constraints.maxWidth * 0.06,
                 ),
-                if (countryInstance.selectedCountry.isNotEmpty)
-                  Text(countryInstance.selectedCountry["name"],style:TextStyle(
-                    fontWeight:FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 15
-
-
-                  )),
+                if (countryInstance.selectedCountry != null)
+                  Text(countryInstance.selectedCountry.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 15)),
                 Spacer(),
-                if (countryInstance.selectedCountry.isNotEmpty)
+                if (countryInstance.selectedCountry != null)
                   SizedBox(
                     height: constraints.maxHeight * 0.03,
                     width: 20,
@@ -122,21 +121,24 @@ class _SetupScreenState extends State<SetupScreen> {
                 height: 50,
                 width: MediaQuery.of(context).size.width,
                 child: RaisedButton(
-                  textColor:
-                      countryInstance.selectedCountry.isNotEmpty ? Colors.white : Colors.black,
-                  color: countryInstance.selectedCountry.isNotEmpty
+                  textColor: countryInstance.selectedCountry != null
+                      ? Colors.white
+                      : Colors.black,
+                  color: countryInstance.selectedCountry != null
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).accentColor,
                   child: Text(
                     'Next',
                     style: TextStyle(fontSize: 16),
                   ),
-                  onPressed: () {
-                    if (countryInstance.selectedCountry.isNotEmpty)
-
-                    setState(() {
-                      setupIndex = 1;
-                    });
+                  onPressed: () async {
+                    if (countryInstance.selectedCountry != null) {
+                      await Provider.of<CountryProvider>(context, listen: false)
+                          .passingUserCountry();
+                      setState(() {
+                        setupIndex = 1;
+                      });
+                    }
                   },
                 )),
           );
@@ -146,6 +148,9 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 
   Widget _buildsetupQuestion1(Size mediaQuery) {
+    List<dynamic> question1list =
+        Provider.of<CountryProvider>(context, listen: false).getOnlyAnswers(2);
+
     return LayoutBuilder(
         builder: (context, constraints) => ListView(children: <Widget>[
               Container(
@@ -183,7 +188,8 @@ class _SetupScreenState extends State<SetupScreen> {
                   title: SizedBox(
                     width: constraints.maxWidth * 0.65,
                     child: Text(
-                      Provider.of<CountryProvider>(context,listen: false).getOnlyQuestion(1),
+                      Provider.of<CountryProvider>(context, listen: false)
+                          .getOnlyQuestion(2),
                       style: TextStyle(
                         fontFamily: 'SF Pro Text',
                         fontSize: 17,
@@ -208,33 +214,42 @@ class _SetupScreenState extends State<SetupScreen> {
                       return Consumer<CountryProvider>(
                           builder: (context, instance, child) {
                         return new ListTile(
-                          leading: InkWell(
-                            onTap: () {
-                              instance.questionSetup2Changer(index);
-                            },
-                            child: Container(
-                              height: constraints.maxHeight * 0.04,
-                              width: constraints.maxWidth * 0.065,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(3)),
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1.3,
-                                    style: BorderStyle.solid),
-                              ),
-                              child: instance.setUp2Check == index
-                                  ? Container(
-                                      height: constraints.maxHeight * 0.018,
-                                      width: constraints.maxWidth * 0.03,
-                                      color: Theme.of(context).primaryColor,
-                                    )
-                                  : null,
-                            ),
-                          ),
-                          trailing: instance.sentToBackend == index
+                          leading: answerSelection == false
+                              ? InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      answerSelection = true;
+                                      answerSelected = question1list[index].id;
+                                    });
+                                    instance.addingAnswersToUpload(
+                                        index, question1list[index].id);
+                                  },
+                                  child: Container(
+                                    height: constraints.maxHeight * 0.04,
+                                    width: constraints.maxWidth * 0.065,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(3)),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 1.3,
+                                          style: BorderStyle.solid),
+                                    ),
+                                    child: instance.setUp2Check == index
+                                        ? Container(
+                                            height:
+                                                constraints.maxHeight * 0.018,
+                                            width: constraints.maxWidth * 0.03,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          )
+                                        : null,
+                                  ),
+                                )
+                              : null,
+                          trailing: answerSelected == question1list[index].id
                               ? SizedBox(
                                   height: constraints.maxHeight * 0.03,
                                   width: 20,
@@ -242,7 +257,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                       "assets/on_boarding_images/2.0x/completionSuccess.png"),
                                 )
                               : null,
-                          title: Text(question1list[index]["answer"],
+                          title: Text(question1list[index].answer,
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontFamily: 'SF Pro Text',
@@ -271,154 +286,188 @@ class _SetupScreenState extends State<SetupScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                   ),
                   child: RaisedButton(
-                    textColor: Colors.white,
-                    color: Color(0xFF4667EE),
-                    child: Text(
-                      'Next',
-                      style: TextStyle(
-                        fontSize: 16,
+                      textColor: Colors.white,
+                      color: Color(0xFF4667EE),
+                      child: Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        setupIndex = 2;
-                      });
-                    },
-                  )),
+                      onPressed: () async {
+                        if (answerSelection == true) {
+                          setState(() {
+                            setupIndex = 2;
+                          });
+                          answerSelected = null;
+                          answerSelection = false;
+                        }
+                      })),
             ]));
   }
 
   Widget _buildsetupQuestion2(Size mediaQuery) {
     return LayoutBuilder(
-      builder: (context, constraints) => ListView(children: <Widget>[
-        Container(
-          height: constraints.maxHeight * 0.008,
-          width: constraints.maxWidth * 0.9,
-          alignment: Alignment.center,
-          margin:
-              EdgeInsets.only(top: 18, bottom: constraints.maxHeight * 0.07),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-          child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: 3,
-              itemBuilder: (context, index) => Container(
-                    height: mediaQuery.height * 0.03,
-                    width: mediaQuery.width * 0.3,
-                    margin: EdgeInsets.only(right: 5, left: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: index == 0 || index == 1
-                          ? Colors.green
-                          : Theme.of(context).accentColor,
-                    ),
-                  )),
-        ),
-        Container(
-          margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 26,
-              backgroundImage:
-                  AssetImage("assets/on_boarding_images/setup3.png"),
-            ),
-            title: Text(
-              Provider.of<CountryProvider>(context,listen: false).getOnlyQuestion(2),
-              style: TextStyle(
-                fontFamily: 'SF Pro Text',
-                fontSize: 17,
-                color: const Color(0xff232323),
-                fontWeight: FontWeight.w500,
-                height: 1.3333333333333333,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ),
-        Consumer<CountryProvider>(builder: (context, instance, child) {
-          return Container(
-              height: constraints.maxHeight * 0.3,
-              child: new ListView.separated(
-                itemCount: question2list.length,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: constraints.maxHeight * 0.07,
-                    child: ListTile(
-                      leading: InkWell(
-                        onTap: () {
-                          instance.questionSetup3Changer(index);
-                        },
-                        child: Container(
-                          height: constraints.maxHeight * 0.04,
-                          width: constraints.maxWidth * 0.065,
-                          alignment: Alignment.center,
+      builder: (context, constraints) => isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(children: <Widget>[
+              Container(
+                height: constraints.maxHeight * 0.008,
+                width: constraints.maxWidth * 0.9,
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(
+                    top: 18, bottom: constraints.maxHeight * 0.07),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) => Container(
+                          height: mediaQuery.height * 0.03,
+                          width: mediaQuery.width * 0.3,
+                          margin: EdgeInsets.only(right: 5, left: 5),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                            color: Colors.white,
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.3,
-                                style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(20),
+                            color: index == 0 || index == 1
+                                ? Colors.green
+                                : Theme.of(context).accentColor,
                           ),
-                          child: instance.setUp3Check == index
-                              ? Container(
-                                  height: constraints.maxHeight * 0.018,
-                                  width: constraints.maxWidth * 0.03,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              : null,
-                        ),
-                      ),
-                      trailing: instance.sentToBackend2 == index
-                          ? SizedBox(
-                              height: constraints.maxHeight * 0.03,
-                              width: 20,
-                              child: Image.asset(
-                                  "assets/on_boarding_images/2.0x/completionSuccess.png"),
-                            )
-                          : null,
-                      title: Text(question2list[index]["answer"],
-                          style: TextStyle(
-                            fontFamily: 'SF Pro Text',
-                            fontSize: 14,
-                            color: const Color(0xff232323),
-                            fontWeight: FontWeight.normal,
-                            height: 1.3333333333333333,
-                          )),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
+                        )),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 26,
+                    backgroundImage:
+                        AssetImage("assets/on_boarding_images/setup3.png"),
                   ),
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 0.7,
+                  title: Text(
+                    Provider.of<CountryProvider>(context, listen: false)
+                        .getOnlyQuestion(1),
+                    style: TextStyle(
+                      fontFamily: 'SF Pro Text',
+                      fontSize: 17,
+                      color: const Color(0xff232323),
+                      fontWeight: FontWeight.w500,
+                      height: 1.3333333333333333,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
                 ),
-              ));
-        }),
-        Container(
-            height: constraints.maxHeight * 0.08,
-            margin: EdgeInsets.symmetric(
-              horizontal: constraints.maxWidth * 0.05,
-            ),
-            child: RaisedButton(
-              textColor: Colors.white,
-              color: Color(0xFF4667EE),
-              child: Text('Next',
-                  style: TextStyle(
-                    fontSize: 17,
+              ),
+              Consumer<CountryProvider>(builder: (context, instance, child) {
+                List<dynamic> question2list =
+                    Provider.of<CountryProvider>(context, listen: false)
+                        .getOnlyAnswers(1);
+                return Container(
+                    height: constraints.maxHeight * 0.3,
+                    child: new ListView.separated(
+                      itemCount: question2list.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: constraints.maxHeight * 0.07,
+                          child: ListTile(
+                            leading: answerSelection == true
+                                ? null
+                                : InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        answerSelection = true;
+                                        answerSelected =
+                                            question2list[index].id;
+                                      });
+                                      instance.addingAnswersToUpload(
+                                          index, question2list[index].id);
+                                    },
+                                    child: Container(
+                                      height: constraints.maxHeight * 0.04,
+                                      width: constraints.maxWidth * 0.065,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(3)),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            width: 1.3,
+                                            style: BorderStyle.solid),
+                                      ),
+                                      child: instance.setUp3Check == index
+                                          ? Container(
+                                              height:
+                                                  constraints.maxHeight * 0.018,
+                                              width:
+                                                  constraints.maxWidth * 0.03,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            )
+                                          : null,
+                                    ),
+                                  ),
+                            trailing: answerSelected == question2list[index].id
+                                ? SizedBox(
+                                    height: constraints.maxHeight * 0.03,
+                                    width: 20,
+                                    child: Image.asset(
+                                        "assets/on_boarding_images/2.0x/completionSuccess.png"),
+                                  )
+                                : null,
+                            title: Text(question2list[index].answer,
+                                style: TextStyle(
+                                  fontFamily: 'SF Pro Text',
+                                  fontSize: 14,
+                                  color: const Color(0xff232323),
+                                  fontWeight: FontWeight.normal,
+                                  height: 1.3333333333333333,
+                                )),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0.7,
+                        ),
+                      ),
+                    ));
+              }),
+              Container(
+                  height: constraints.maxHeight * 0.08,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: constraints.maxWidth * 0.05,
+                  ),
+                  child: RaisedButton(
+                    textColor: Colors.white,
+                    color: Color(0xFF4667EE),
+                    child: Text('Next',
+                        style: TextStyle(
+                          fontSize: 17,
+                        )),
+                    onPressed: () async {
+                      if (answerSelection == true)
+                        setState(() {
+                          isLoading = true;
+                        });
+                      await Provider.of<CountryProvider>(context, listen: false)
+                          .updateSetupQuestion()
+                          .then((value) {
+                        setState(() {
+                          isLoading = false;
+                          setupIndex = 3;
+                        });
+                      });
+                    },
                   )),
-              onPressed: () {
-                setState(() {
-                  setupIndex = 3;
-                });
-              },
-            )),
-      ]),
+            ]),
     );
   }
 

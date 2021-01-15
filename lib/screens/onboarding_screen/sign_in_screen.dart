@@ -168,7 +168,7 @@ class _SignInPageState extends State<SignInPage> {
                                           await Provider.of<SignIn>(context,
                                                   listen: false)
                                               .signIn(emailController.text,
-                                                  passwordController.text)
+                                                  passwordController.text,context)
                                               .then((value) => Navigator.of(
                                                       context)
                                                   .pushReplacement(

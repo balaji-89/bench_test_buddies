@@ -42,23 +42,26 @@ class SearchScreen extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    var countryNames=Provider.of<CountryProvider>(context,listen: false).getCountryNames;
+    query.substring(0).toUpperCase();
+    var countryNames =
+        Provider.of<CountryProvider>(context, listen: false).getCountryNames;
     final List country = query.isEmpty
         ? countryNames
-        : countryNames.where((element) => element.startsWith(query))
-            .toList();
+        : countryNames.where((element) => element.startsWith(query)).toList();
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(
               color: Colors.grey[600],
               indent: MediaQuery.of(context).size.width * 0.04,
               endIndent: MediaQuery.of(context).size.width * 0.04,
             ),
+        padding: EdgeInsets.only(top:10),
         itemCount: country.length,
         itemBuilder: (context, index) => SizedBox(
               height: MediaQuery.of(context).size.height * 0.055,
               child: InkWell(
-                onTap:(){
-                  Provider.of<CountryProvider>(context,listen:false).initializeSelectedCountry(country[index]);
+                onTap: () {
+                  Provider.of<CountryProvider>(context, listen: false)
+                      .initializeSelectedCountry(country[index]);
                   close(context, null);
                 },
                 child: ListTile(
