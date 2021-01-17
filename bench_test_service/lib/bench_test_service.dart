@@ -24,14 +24,14 @@ export 'model/response/response_status.dart';
  * * All Exercise 👍
  * ! ? New Attempt // not working
  * * Get Exercise info 👍
- * * Store Attempt
+ * * Store Attempt 👍
  * ! ? Get Time Summary // what is attempt id
  * ! ? Store Exercise Images // mm
- * * Get Exercise Eval
- * * Store Eval and Result
+ * * Get Exercise Eval 👍
+ * * Store Eval and Result 👍
  * ! ?  Get all Question // not working
- * * Store Book mark
- * * View Solution
+ * * Store Book mark 👍
+ * * View Solution 👍
  * ! ? View Solution for Ques // 
  * * Get Attempts
  *
