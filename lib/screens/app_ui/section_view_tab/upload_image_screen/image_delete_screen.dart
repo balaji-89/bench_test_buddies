@@ -179,6 +179,7 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                                               backgroundColor: Colors.white,
                                               backgroundImage: AssetImage(
                                                 'assets/on_boarding_images/RectangleSelect.png',
+
                                               ),
                                             ))
                                     ],
