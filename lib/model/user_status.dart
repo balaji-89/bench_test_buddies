@@ -3,8 +3,6 @@ import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserDetailsAndLevel {
-  final String userName;
-  final int userId;
   int userExerciseId;
   List<Map> participatedExercise;
   Stages currentSection;
@@ -12,15 +10,14 @@ class UserDetailsAndLevel {
   List upcomingSection;
   List inProgressSection;
 
+
   UserDetailsAndLevel({
-    @required this.userId,
-    @required this.userName,
     this.userExerciseId = 1,
-    this.currentSection = Stages.Evaluate_the_result,
+    this.currentSection = Stages.Start_the_exercise,
     this.participatedExercise = const [
       {
         'Exercise_id': 1,
-        'stage_finished': Stages.Start_the_excerise,
+        'stage_finished': Stages.Start_the_exercise,
         'attempts':0,
       }
     ],
@@ -29,14 +26,11 @@ class UserDetailsAndLevel {
       Stages.Evaluate_the_result,
       Stages.View_the_results,
     ],
-
+    this.completedExercise,
     this.upcomingSection = const [
-      Stages.View_the_results,
-    ],
-    this.completedExercise=const[
-      Stages.Start_the_excerise,
       Stages.Uploaded_images,
       Stages.Evaluate_the_result,
+      Stages.View_the_results,
     ],
 
   });

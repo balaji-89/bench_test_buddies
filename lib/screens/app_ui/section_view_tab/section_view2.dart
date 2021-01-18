@@ -2,7 +2,7 @@ import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/exercise_timer_home.dart';
-import 'package:bench_test_buddies/screens/app_ui/section_view_tab/uploaded_images.dart';
+import 'file:///C:/Users/LENOVO/AndroidStudioProjects/bench_test_buddies/lib/screens/app_ui/section_view_tab/upload_image_screen/uploaded_images.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class SectionViewTwo extends StatelessWidget {
     ).userData;
 
     final userUpcomingStage = Provider.of<ExerciseStages>(context)
-        .findByStages(userData.upcomingSection);
+        .findByStages(userData.inProgressSection);
     final userFinishedExercise = Provider.of<ExerciseStages>(context)
         .findByStages(userData.completedExercise);
     final stages = Provider.of<ExerciseStages>(context, listen: false).stages;
@@ -169,39 +169,44 @@ class SectionViewTwo extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: userUpcomingStage.length,
                     itemBuilder: (context, index) => InkWell(
-                      onTap: (){   switch (userUpcomingStage[index]['step']) {
-                        case Stages.Start_the_excerise:
-                          {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => ExerciseTimerHome()));
-                          }
-                          break;
-                        case Stages.Uploaded_images:
-                          {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => PractisedImages()));
-                          }
-                          break;
-                        case Stages.Evaluate_the_result:
-                          {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => EvaluationHome()));
-                          }
+                      onTap: () {
+                        switch (userUpcomingStage[index]['step']) {
+                          case Stages.Start_the_exercise:
+                            {
+                              if (index == 0)
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ExerciseTimerHome()));
+                            }
+                            break;
+                          case Stages.Uploaded_images:
+                            {
+                              if (index == 0)
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => PractisedImages()));
+                            }
+                            break;
+                          case Stages.Evaluate_the_result:
+                            {
+                              if (index == 0)
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => EvaluationHome()));
+                            }
 
-                          break;
-                        case Stages.View_the_results:
-                          {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => ViewResultHome()));
-                          }
-                          break;
-                      }
+                            break;
+                          case Stages.View_the_results:
+                            {
+                              if (index == 0)
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ViewResultHome()));
+                            }
+                            break;
+                        }
                       },
                       child: SizedBox(
                         width: double.infinity,
                         child: HeadingCard(
                           iconPath: userUpcomingStage[index]['icon'],
-                          arrow: true,
+                          arrow: index == 0 ? true : false,
                           stageName: userUpcomingStage[index]['stage'],
                         ),
                       ),
@@ -239,33 +244,33 @@ class SectionViewTwo extends StatelessWidget {
               itemCount: userFinishedExercise.length,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
-                  switch (userFinishedExercise[index]['step']) {
-                    case Stages.Start_the_excerise:
-                      {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ExerciseTimerHome()));
-                      }
-                      break;
-                    case Stages.Uploaded_images:
-                      {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PractisedImages()));
-                      }
-                      break;
-                    case Stages.Evaluate_the_result:
-                      {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => EvaluationHome()));
-                      }
-
-                      break;
-                    case Stages.View_the_results:
-                      {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ViewResultHome()));
-                      }
-                      break;
-                  }
+                  // switch (userFinishedExercise[index]['step']) {
+                  //   case Stages.Start_the_exercise:
+                  //     {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: (context) => ExerciseTimerHome()));
+                  //     }
+                  //     break;
+                  //   case Stages.Uploaded_images:
+                  //     {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: (context) => PractisedImages()));
+                  //     }
+                  //     break;
+                  //   case Stages.Evaluate_the_result:
+                  //     {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: (context) => EvaluationHome()));
+                  //     }
+                  //
+                  //     break;
+                  //   case Stages.View_the_results:
+                  //     {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: (context) => ViewResultHome()));
+                  //     }
+                  //     break;
+                  // }
                 },
                 child: HeadingCard(
                   iconPath: userFinishedExercise[index]['icon'],

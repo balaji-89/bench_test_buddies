@@ -2,7 +2,6 @@ import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Resultscreen/
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../bar.dart';
 
 class ViewSolution extends StatefulWidget {
   @override
@@ -47,7 +46,7 @@ class _ViewSolutionState extends State<ViewSolution>
             labelColor: Colors.black,
             labelPadding: const EdgeInsets.all(15),
             dragStartBehavior: DragStartBehavior.start,
-            indicatorColor: Bar().purp,
+            indicatorColor: Theme.of(context).primaryColor,
             onTap: (index) {
               // Should not used it as it only called when tab options are clicked,
               // not when user swapped

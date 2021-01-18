@@ -10,16 +10,17 @@ class UserLogData with ChangeNotifier {
   int userId;
 
   Future assigningData(
-      Map<dynamic, dynamic> jsonData, BuildContext context) async {
+      Map<dynamic, dynamic> jsonData, BuildContext context,String req) async {
     userId = jsonData["user"]["id"];
     userName = jsonData["user"]["name"];
     userMail = jsonData["user"]["email"];
     token = jsonData["token"];
-
+    if(req=="signUp"){
     Provider.of<CountryProvider>(context, listen: false)
         .initializeUserToken(token);
     await Provider.of<CountryProvider>(context, listen: false)
         .initialiseCountry();
-    await Provider.of<CountryProvider>(context,listen:false).getQuestionsSet();
+    await Provider.of<CountryProvider>(context, listen: false)
+        .getQuestionsSet();}
   }
 }

@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/users_level.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscreen/evaluation_home.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import 'image_delete_screen.dart';
 
@@ -19,10 +23,13 @@ class UploadedImageView extends StatefulWidget {
 class _UploadedImageViewState extends State<UploadedImageView> {
   bool isLoading = false;
 
-  void add() {}
-
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<Users>(context, listen: true).userData;
+    final currentExerciseStages =
+        Provider.of<ExerciseStages>(context, listen: false)
+            .findByStage(userData.currentSection);
+
     print(widget.selectedImages.length);
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
@@ -216,7 +223,13 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                           'Continue to Evaluate the results',
                           style: TextStyle(fontSize: 14),
                         ),
-                        onPressed: () async {},
+                        onPressed: () {
+                          Provider.of<Users>(context, listen: false)
+                              .changeUserStage(currentExerciseStages['step']);
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => EvaluationHome(),
+                          ));
+                        },
                       ))
                 ],
               )),

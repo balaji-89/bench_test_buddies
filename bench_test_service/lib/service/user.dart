@@ -128,4 +128,19 @@ class User {
       throw ErrorResponse.fromJson(err.response.data);
     }
   }
-}
+
+  getAllAnswers(String token)async{
+     try{
+       Response response= await dio.get('/exercise/all',options: Options(
+         headers: {
+           "Accept":"application/json",
+           "Authorization":"Bearer $token"
+         },
+       ));
+       return CountryResponse.fromJson(response.data);
+     }on DioError catch(exception){
+        throw ErrorResponse.fromJson(exception.response.data);
+     }
+  }
+  }
+

@@ -56,7 +56,7 @@ class _EvaluationHomeState extends State<EvaluationHome> {
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontSize: 15,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).accentColor,
                 ),
               ))
         ],
@@ -154,7 +154,7 @@ class _EvaluationHomeState extends State<EvaluationHome> {
                       color: Colors.grey,
                     ),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => widget.question != null
                               ? VideoScreen()
                               : EvaluationHome(

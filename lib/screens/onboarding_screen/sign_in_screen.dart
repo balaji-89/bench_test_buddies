@@ -1,4 +1,7 @@
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
+import 'package:bench_test_buddies/screens/app_ui/home.dart';
 import 'package:bench_test_service/model/response/response_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -167,14 +170,23 @@ class _SignInPageState extends State<SignInPage> {
                                         try {
                                           await Provider.of<SignIn>(context,
                                                   listen: false)
-                                              .signIn(emailController.text,
-                                                  passwordController.text,context)
-                                              .then((value) => Navigator.of(
-                                                      context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SetupScreen())));
+                                              .signIn(
+                                                  emailController.text,
+                                                  passwordController.text,
+                                                  context)
+
+
+                                              .then((value) async {
+                                            await Provider.of<Exercises>(
+                                                    context,
+                                                    listen: false)
+                                                .getAllExercise(value["token"]);
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            HomePage()));
+                                          });
                                         } on ErrorResponse catch (error) {} catch (error) {
                                           showDialog(
                                               context: context,

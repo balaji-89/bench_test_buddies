@@ -1,8 +1,11 @@
+import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscreen/success.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/painting.dart';
+import 'package:provider/provider.dart';
 
 class FilledNumbers extends StatefulWidget {
   final String question;
@@ -18,6 +21,10 @@ class _FilledNumbersState extends State<FilledNumbers> {
 
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<Users>(context, listen: true).userData;
+    final currentExerciseStages =
+    Provider.of<ExerciseStages>(context, listen: false)
+        .findByStage(userData.currentSection);
     final carouselImage = [
       Container(
         color: Colors.green,
@@ -49,8 +56,11 @@ class _FilledNumbersState extends State<FilledNumbers> {
         actions: [
           FlatButton(
               onPressed: () {
+                Provider.of<Users>(context,listen:false)
+                    .changeUserStage(currentExerciseStages['step']);
+                Navigator.of(context).pop();
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Success()));
+                    .pushReplacement(MaterialPageRoute(builder: (context) => Success()));
               },
               child: Text(
                 'Submit',

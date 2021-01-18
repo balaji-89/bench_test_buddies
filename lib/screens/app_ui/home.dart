@@ -1,4 +1,6 @@
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/attempt_tab/attempt.dart';
 import 'package:bench_test_buddies/screens/app_ui/bookmark_tab/bookmarks.dart';
@@ -27,14 +29,14 @@ class _HomePageState extends State<HomePage>
     ),
     Tab(text: 'Bookmarks')
   ];
-  var value=0;
+  var value = 0;
 
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3);
     _tabController.addListener(() {
       setState(() {
-        value=_tabController.index;
+        value = _tabController.index;
       });
     });
     super.initState();
@@ -42,6 +44,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final userToken = Provider.of<UserLogData>(context, listen: false).token;
     final userData = Provider.of<Users>(
       context,
     ).userData;
@@ -95,7 +98,7 @@ class _HomePageState extends State<HomePage>
         body: TabBarView(
           //controller: tabController,
           children: [
-            userData.currentSection == Stages.Start_the_excerise
+            userData.currentSection == Stages.Start_the_exercise
                 ? SectionView()
                 : SectionViewTwo(),
             AttemptTab(),

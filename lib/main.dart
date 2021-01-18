@@ -1,22 +1,27 @@
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:bench_test_buddies/provider/attempt_provider.dart';
 import 'package:bench_test_buddies/provider/country_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
-import 'package:bench_test_service/service/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './provider/google_sign.dart';
-import 'on_boarding_setup/set_up.dart';
+import 'provider/user_data_token.dart';
 import 'screens/onboarding_screen/get_started_screen.dart';
 
-void main() async{
-
+void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
+      create: (context) => UserLogData(),
+    ),
+    ChangeNotifierProvider(
       create: (context) => Users(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => AttemptOfficial(),
     ),
     ChangeNotifierProvider(
       create: (context) => GoogleSign(),
@@ -67,39 +72,5 @@ class MyApp extends StatelessWidget {
         child: GetStartedScreen(),
       ),
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
   }
 }

@@ -41,6 +41,7 @@ dependencies:
   dio:
   simple_timer: ^1.0.1
   file_picker:
+  http: 0.12.2
 
   image_picker:
   flutter_absolute_path: ^1.0.6

@@ -1,8 +1,12 @@
 import 'dart:ui';
 
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/task_finished_time_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_timer/simple_timer.dart';
 import 'package:intl/intl.dart';
 
@@ -20,9 +24,10 @@ class CircleTimerScreen extends StatefulWidget {
 
 class _CircleTimerScreenState extends State<CircleTimerScreen>
     with SingleTickerProviderStateMixin {
-  final startedTime = DateTime.now();
+  final DateTime startedTime = DateTime.now();
   DateTime finishedTime;
-  DateTime extendedTime = DateTime(2021, 1, 1, 0, 20, 0);
+  DateTime extendedTime;
+
   DateTime totalTime;
 
   Duration initialTime;
@@ -39,7 +44,13 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
     });
   }
 
-  void changeEndsOnTime() {
+  String dateTimeToString(DateTime time) {
+    String changedFormat = DateFormat('HH:mm:ss').format(time);
+    print(changedFormat);
+    return changedFormat;
+  }
+
+   void changeEndsOnTime() {
     setState(() {
       endsOnTime = DateTime.now().add(initialTime);
     });
@@ -57,7 +68,6 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
     endsOnTime = DateTime.now().add(initialTime);
     formattedDate = DateFormat().add_jm().format(endsOnTime);
     super.initState();
-
   }
 
   Color backgroundColor = Color(0xFF4667EE);
@@ -65,6 +75,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
 
   void resumeFunction() {
     _timerController.start();
+    changeEndsOnTime();
     setState(() {
       backgroundColor = Theme.of(context).primaryColor;
       pause = false;
@@ -82,15 +93,45 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
 
   void onTimeOver() {
     finishedTime = DateTime.now();
-    totalTime = widget.timeSelected.add(Duration(
-      hours: extendedTime.hour,
-      minutes: extendedTime.minute,
-      seconds: extendedTime.second,
+    totalTime = finishedTime.subtract(Duration(
+      hours: startedTime.hour,
+      minutes: startedTime.minute,
+      seconds: startedTime.second,
     ));
+    int compare = Duration(
+            hours: totalTime.hour,
+            minutes: totalTime.minute,
+            seconds: totalTime.second)
+        .compareTo(Duration(
+      hours: widget.timeSelected.hour,
+      minutes: widget.timeSelected.minute,
+      seconds: widget.timeSelected.second,
+    ));
+    if (compare == 1) {
+      extendedTime = totalTime.subtract(Duration(
+          hours: widget.timeSelected.hour,
+          minutes: widget.timeSelected.minute,
+          seconds: widget.timeSelected.second));
+    } else {
+      extendedTime = DateTime(
+        2021,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final String userToken =
+        Provider.of<UserLogData>(context, listen: false).token;
+    final exercise = Provider.of<Exercises>(context, listen: false)
+        .findExerciseByName(widget.exerciseName);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -101,7 +142,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            returnDialog();
           },
         ),
         centerTitle: true,
@@ -116,7 +157,8 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
         actions: [
           FlatButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Settings()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Settings()));
               },
               child: Text(
                 'Settings',
@@ -235,10 +277,32 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                       ),
                       Center(
                         child: GestureDetector(
-                          onTap:(){
+                          onTap: () {
                             onTimeOver();
-                            returnDialog();
-                          } ,
+                            Provider.of<AttemptOfficial>(context, listen: false)
+                                .addNewAttempt(userToken,
+                                    exerciseId: exercise.id,
+                                    initialTimeSet:
+                                        dateTimeToString(widget.timeSelected),
+                                    actualTimeTaken:
+                                        dateTimeToString(totalTime),
+                                    startTime: dateTimeToString(startedTime),
+                                    endTime: dateTimeToString(finishedTime),
+                                    extraTimeTaken:
+                                        dateTimeToString(extendedTime),
+                                    completedSection: 1);
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TaskFinishedTimerScreen(
+                                          exerciseName: widget.exerciseName,
+                                          initialTimeSet: widget.timeSelected,
+                                          totalTimeTaken: totalTime,
+                                          extendedBy: extendedTime,
+                                          startedTime: startedTime,
+                                          endedTime: finishedTime,
+                                        )));
+                          },
                           child: CircleAvatar(
                             radius: constraints.maxHeight * 0.065,
                             backgroundColor: Theme.of(context).primaryColor,
@@ -290,16 +354,10 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                       style: TextStyle(color: Colors.black, fontSize: 13)),
                 ),
                 FlatButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>TaskFinishedTimerScreen(
-                      exerciseName:widget.exerciseName,
-                      initialTimeSet: widget.timeSelected,
-                      totalTimeTaken: totalTime,
-                      extendedBy: extendedTime,
-                      startedTime:startedTime ,
-                      endedTime: finishedTime,
-                    )));
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                   child: Text('Yes',
                       style: TextStyle(color: Colors.green, fontSize: 13)),

@@ -105,7 +105,7 @@ class _ValueScreenState extends State<ValueScreen> {
                 child: InkWell(
                   onTap: () {
                     if (onTap == true)
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => Degree()));
                   },
                   child: Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum Stages {
-  Start_the_excerise,
+  Start_the_exercise,
   Uploaded_images,
   Evaluate_the_result,
   View_the_results,
@@ -9,9 +9,10 @@ enum Stages {
 
 class ExerciseStages with ChangeNotifier {
   List<Map> _stages = [
+
     {
       'position':'1',
-      'step': Stages.Start_the_excerise,
+      'step': Stages.Start_the_exercise,
       'stage': 'Start the excerise',
       'icon': 'assets/Home_page_images/spaceship.png',
     },

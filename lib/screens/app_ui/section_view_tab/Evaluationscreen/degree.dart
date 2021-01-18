@@ -104,7 +104,7 @@ class _DegreeState extends State<Degree> {
                 child: InkWell(
                   onTap: () {
                     if(onTap==true)
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => FilledNumbers()));
                   },
                   child: Container(

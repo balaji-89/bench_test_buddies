@@ -56,6 +56,7 @@ class Exercise {
           }));
       return response.data['message'];
     } on DioError catch (err) {
+
       throw ErrorResponse.fromJson(err.response.data);
     }
   }

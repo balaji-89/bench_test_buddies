@@ -18,7 +18,7 @@ class UserAttempt {
 
   UserAttempt(
       {@required this.userExerciseId,
-      @required this.attemptId,
+       this.attemptId,
       this.attempt = 0,
       this.attemptedDate,
       this.totalTimeTaken,

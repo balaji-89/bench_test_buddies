@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:bench_test_buddies/screens/app_ui/section_view_tab/UploadedImageView.dart';
+import 'file:///C:/Users/LENOVO/AndroidStudioProjects/bench_test_buddies/lib/screens/app_ui/section_view_tab/upload_image_screen/UploadedImageView.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import '../home.dart';
+import '../../home.dart';
 
 class PractisedImages extends StatefulWidget {
   @override

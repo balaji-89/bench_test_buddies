@@ -1,9 +1,13 @@
+import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/users_level.dart';
+import 'package:bench_test_buddies/screens/app_ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import '../uploaded_images.dart';
+import '../upload_image_screen/uploaded_images.dart';
 
-class TaskFinishedTimerScreen extends StatelessWidget {
+class TaskFinishedTimerScreen extends StatefulWidget {
   final String exerciseName;
   final DateTime totalTimeTaken;
   final DateTime initialTimeSet;
@@ -20,13 +24,23 @@ class TaskFinishedTimerScreen extends StatelessWidget {
       @required this.endedTime});
 
   @override
+  _TaskFinishedTimerScreenState createState() => _TaskFinishedTimerScreenState();
+}
+
+class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
+  @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<Users>(context, listen: true).userData;
+    final currentExerciseStages =
+        Provider.of<ExerciseStages>(context, listen: false)
+            .findByStage(userData.currentSection);
+
     final attemptTiming = {
-      'Total time Taken': totalTimeTaken,
-      'Initial time Taken': initialTimeSet,
-      'Time Extended by': extendedBy,
-      'Time started at': startedTime,
-      'Time Ends at': endedTime,
+      'Total time Taken': widget.totalTimeTaken,
+      'Initial time Taken': widget.initialTimeSet,
+      'Time Extended by': widget.extendedBy,
+      'Time started at': widget.startedTime,
+      'Time Ends at': widget.endedTime,
     };
     final attemptKey = attemptTiming.keys.toList();
     final attemptValue = attemptTiming.values.toList();
@@ -53,7 +67,7 @@ class TaskFinishedTimerScreen extends StatelessWidget {
             color: Theme.of(context).accentColor,
             alignment: Alignment.center,
             child: Text(
-              '$exerciseName',
+              '${widget.exerciseName}',
               style: TextStyle(
                 fontSize: 17,
                 color: Colors.black,
@@ -62,7 +76,7 @@ class TaskFinishedTimerScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex:2,
+            flex: 2,
             child: ListView.separated(
               physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.all(0),
@@ -95,7 +109,7 @@ class TaskFinishedTimerScreen extends StatelessWidget {
                                     : '${DateFormat.H().format(attemptValue[index])}h  '),
                             TextSpan(
                                 text:
-                                    '${DateFormat.M().format(attemptValue[index])}m'),
+                                    '${DateFormat.m().format(attemptValue[index])}m'),
                           ],
                           style: TextStyle(
                             fontSize: 19,
@@ -128,15 +142,20 @@ class TaskFinishedTimerScreen extends StatelessWidget {
           ),
           Container(
               height: MediaQuery.of(context).size.height * 0.065,
-              width: MediaQuery.of(context).size.width*0.7,
+              width: MediaQuery.of(context).size.width * 0.7,
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              margin: EdgeInsets.only(bottom:12),
+              margin: EdgeInsets.only(bottom: 12),
               child: RaisedButton(
                   textColor: Colors.white,
                   color: Theme.of(context).primaryColor,
                   child: Text('Continue to upload the images'),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>PractisedImages()));
+                    Provider.of<Users>(context,listen:false)
+                        .changeUserStage(currentExerciseStages['step']);
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PractisedImages()));
                   })),
         ],
       ),

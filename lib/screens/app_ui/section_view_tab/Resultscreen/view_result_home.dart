@@ -1,7 +1,6 @@
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Resultscreen/result_score_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../bar.dart';
 import 'view_solution.dart';
 
 class ViewResultHome extends StatelessWidget {
@@ -33,12 +32,13 @@ class ViewResultHome extends StatelessWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            //Navigator.pop(context);
+            Navigator.of(context).pop();
           },
           icon: Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
+
         ),
       ),
       body: DefaultTabController(

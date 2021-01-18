@@ -27,7 +27,7 @@ class SignInUp with ChangeNotifier {
       RegisterResponse registerResponse = await User().register(
           RegisterRequest(userName, emailAddress, password, password));
       var dartMapResponse = registerResponse.toJson();
-      await UserLogData().assigningData(dartMapResponse["data"],context);
+      await UserLogData().assigningData(dartMapResponse["data"],context,"signUp");
       isLoading = false;
       notifyListeners();
     } on ErrorResponse catch (error) {
@@ -70,7 +70,7 @@ class SignIn with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signIn(emailAddress, password,context) async {
+  Future<dynamic> signIn(emailAddress, password,context) async {
     emailErrorText = null;
     passwordErrorText = null;
     isLoading = true;
@@ -78,9 +78,9 @@ class SignIn with ChangeNotifier {
     try {
       LoginResponse logIn =
           await User().login(LoginRequest(emailAddress, password));
-      var dartObject = logIn.toJson();
-       await
-       UserLogData().assigningData(dartObject["data"],context);
+      var dartMapResponse = logIn.toJson();
+      await UserLogData().assigningData(dartMapResponse["data"],context,"signIn");
+      return dartMapResponse["data"];
     } on ErrorResponse catch (error) {
       isLoading = false;
       notifyListeners();
@@ -98,7 +98,6 @@ class SignIn with ChangeNotifier {
       }
 
       notifyListeners();
-      throw error;
     }
   }
 
