@@ -33,7 +33,7 @@ dependencies:
   firebase_auth: ^0.18.4
   better_player:
   google_sign_in: ^4.5.6
-
+  pin_code_text_field: 1.7.1
   carousel_pro: 1.0.0
   intro_views_flutter: ^2.8.2
   intl:
@@ -50,7 +50,7 @@ dependencies:
 
 
   flutter_time_picker_spinner: ^1.0.6+1
-  im_stepper: ^0.1.2+8
+  im_stepper: ^0.1.2+9
   bench_test_service:
 
     path: ./bench_test_service

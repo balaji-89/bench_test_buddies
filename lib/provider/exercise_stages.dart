@@ -5,6 +5,7 @@ enum Stages {
   Uploaded_images,
   Evaluate_the_result,
   View_the_results,
+  Completed_stage
 }
 
 class ExerciseStages with ChangeNotifier {
@@ -34,11 +35,18 @@ class ExerciseStages with ChangeNotifier {
       'stage': 'View the results',
       'icon': 'assets/Home_page_images/ezgif.com-gif-maker.png'
     },
+    {
+      'position':'5',
+      'step': Stages.Completed_stage,
+      'stage': 'Completed Stage',
+      'icon': 'assets/Home_page_images/ezgif.com-gif-maker.png'
+    }
   ];
 
   List<Map> get stages{
     return [..._stages];
   }
+
 
   Map findByStage(data) {
     return stages.firstWhere((element) => element['step'] == data);
@@ -59,6 +67,7 @@ class ExerciseStages with ChangeNotifier {
       var value=( _stages[i]["position"]);
       position.add(int.parse(value));
     }
+    position.remove(5);//because it is added for removing of acknowledgement stage 'Completed_section'
     return position;
   }
 }

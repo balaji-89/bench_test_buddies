@@ -46,11 +46,10 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
 
   String dateTimeToString(DateTime time) {
     String changedFormat = DateFormat('HH:mm:ss').format(time);
-    print(changedFormat);
     return changedFormat;
   }
 
-   void changeEndsOnTime() {
+  void changeEndsOnTime() {
     setState(() {
       endsOnTime = DateTime.now().add(initialTime);
     });
@@ -279,18 +278,6 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                         child: GestureDetector(
                           onTap: () {
                             onTimeOver();
-                            Provider.of<AttemptOfficial>(context, listen: false)
-                                .addNewAttempt(userToken,
-                                    exerciseId: exercise.id,
-                                    initialTimeSet:
-                                        dateTimeToString(widget.timeSelected),
-                                    actualTimeTaken:
-                                        dateTimeToString(totalTime),
-                                    startTime: dateTimeToString(startedTime),
-                                    endTime: dateTimeToString(finishedTime),
-                                    extraTimeTaken:
-                                        dateTimeToString(extendedTime),
-                                    completedSection: 1);
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) =>

@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:bench_test_buddies/provider/country_provider.dart';
-import 'package:bench_test_buddies/screens/app_ui/home.dart';
+import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
 import 'package:bench_test_buddies/screens/onboarding_screen/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -531,8 +531,8 @@ class _SetupScreenState extends State<SetupScreen> {
                       style: TextStyle(fontSize: 14),
                     ),
                     onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => HomeExerciseList()));
                     },
                   )),
             ]));

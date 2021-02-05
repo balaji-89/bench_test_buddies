@@ -10,7 +10,7 @@ import 'settings.dart';
 class ExerciseTimerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<Users>(context).userData;
+    final userData = Provider.of<UserLevel>(context).userData;
     final userCurrentExercise = Provider.of<Exercises>(context)
         .findExerciseById(userData.userExerciseId);
     final mediaQuery = MediaQuery.of(context).size;

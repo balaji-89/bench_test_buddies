@@ -1,5 +1,7 @@
+import 'package:bench_test_buddies/provider/view_result_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class ViewSolutions extends StatefulWidget {
@@ -8,12 +10,12 @@ class ViewSolutions extends StatefulWidget {
 }
 
 class _ViewSolutionsState extends State<ViewSolutions> {
-  List<String>   total=["2", "8", "11", "12", "14", "16","1", "3", "4", "5", "6", "7", "9", "10", "13", "15"];
+  List<String>   total;
   bool checkedValue = false;
-  List<String> incorrect = ["2", "8", "11", "12", "14", "16"];
-  List<String> correct = ["1", "3", "4", "5", "6", "7", "9", "10", "13", "15"];
+  List<String> incorrect;
+  List<String> correct;
   final Map<String, bool> checkBoxItems = {
-    'All': false,
+    'All': true,
     'Correct': false,
     'Incorrect': false,
     'Book':false,
@@ -23,6 +25,9 @@ class _ViewSolutionsState extends State<ViewSolutions> {
 
   @override
   void initState() {
+    total=Provider.of<ViewResultProvider>(context,listen:false).all;
+    correct= Provider.of<ViewResultProvider>(context,listen:false).correct;
+    incorrect=Provider.of<ViewResultProvider>(context,listen:false).inCorrect;
 
      checkBoxKeys = checkBoxItems.keys.toList();
     super.initState();
@@ -62,7 +67,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
           children: [
             Checkbox(
                 checkColor: Colors.white,
-                activeColor: Colors.blue,
+                activeColor: Theme.of(context).primaryColor,
                 value: checkBoxItems[checkBoxKeys[index]],
                 onChanged: (bool changed) {
                   checkedIndex=index;

@@ -1,14 +1,14 @@
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
-import 'package:bench_test_buddies/provider/user_data_token.dart';
-import 'package:bench_test_buddies/screens/app_ui/home.dart';
+import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
 import 'package:bench_test_service/model/response/response_status.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../onboarding_screen/forget_password.dart';
 import '../onboarding_screen/sign_up_screen.dart';
-import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
+
 
 class SignInPage extends StatefulWidget {
   @override
@@ -185,26 +185,29 @@ class _SignInPageState extends State<SignInPage> {
                                                 .pushReplacement(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            HomePage()));
+                                                            HomeExerciseList()));
                                           });
-                                        } on ErrorResponse catch (error) {} catch (error) {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                    title: Text('Error'),
-                                                    content: Text(
-                                                        'Check your internet connection'),
-                                                    actions: [
-                                                      FlatButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: Text('OK'))
-                                                    ],
-                                                  ));
-                                        }
+                                         } on ErrorResponse catch (error) {
+                                          print(error);
+                                        } 
+                                          catch (error) {
+                                          // showDialog(
+                                          //     context: context,
+                                          //     builder: (context) => AlertDialog(
+                                          //           title: Text('Error'),
+                                          //           content: Text(
+                                          //               'Check your internet connection'),
+                                          //           actions: [
+                                          //             FlatButton(
+                                          //                 onPressed: () {
+                                          //                   Navigator.of(
+                                          //                           context)
+                                          //                       .pop();
+                                          //                 },
+                                          //                 child: Text('OK'))
+                                          //           ],
+                                          //         ));
+                                       }
                                       },
                               )),
                         ],

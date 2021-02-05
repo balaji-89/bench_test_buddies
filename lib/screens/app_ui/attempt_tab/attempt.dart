@@ -6,17 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AttemptTab extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
     final double mediaQueryHeight = MediaQuery.of(context).size.height;
     final double mediaQueryWidth = MediaQuery.of(context).size.width;
 
-    final userData = Provider.of<Users>(context, listen: false).userData;
+    final userData = Provider.of<UserLevel>(context, listen: false).userData;
 
     final userCurrentExercise = Provider.of<Exercises>(context, listen: false)
         .findExerciseById(userData.userExerciseId);
 
     final exerciseAttempt=Provider.of<AttemptedList>(context).getUserAttempt(userData.userExerciseId);
+    print(exerciseAttempt.length);
 
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,

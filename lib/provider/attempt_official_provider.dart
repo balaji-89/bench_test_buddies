@@ -16,7 +16,12 @@ class AttemptOfficial with ChangeNotifier {
       timeExtended: "00.05.00",
     )
   ];
-
+  int currentExerciseId;
+  String currentStartedTime;
+  String currentEndedTime;
+  String currentInitialTime;
+  String currentTotalTimeTaken;
+  String currentExtendedTime;
   List<Attempt> getUserAttempt(int exerciseId) {
     return _userAttempts
         .where((element) => element.userExerciseId == exerciseId)
@@ -27,31 +32,41 @@ class AttemptOfficial with ChangeNotifier {
     return _userAttempts.firstWhere((element) => element.userExerciseId == id);
   }
 
-  void addNewAttempt(token,
+  void currentDataInitialize(
       {@required int exerciseId,
-      int completedSection,
       String startTime,
       String endTime,
       String initialTimeSet,
       String actualTimeTaken,
-      String extraTimeTaken}) async {
+      String extraTimeTaken,
+      String token}) {
+    currentExerciseId = exerciseId;
+    currentStartedTime = startTime;
+    currentEndedTime = endTime;
+    currentInitialTime = initialTimeSet;
+    currentTotalTimeTaken = actualTimeTaken;
+    currentExtendedTime = extraTimeTaken;
+
+  }
+
+  Future addNewAttempt(String token,int lastCompletedSection) async {
     _userAttempts.add(Attempt(
-      userExerciseId: exerciseId,
-      lastCompletedSection: completedSection,
-      initialTimeSet: initialTimeSet,
-      totalTimeTaken: actualTimeTaken,
-      timeStarted: startTime,
-      timeEndsAt: endTime,
-      timeExtended: extraTimeTaken,
+      userExerciseId: currentExerciseId,
+      lastCompletedSection: lastCompletedSection,
+      initialTimeSet: currentInitialTime,
+      totalTimeTaken: currentTotalTimeTaken,
+      timeStarted: currentStartedTime,
+      timeEndsAt: currentEndedTime,
+      timeExtended: currentExtendedTime,
     ));
     try {
-      var response = await Exercise().storeAttempt(
-          StoreAttemptRequest(exerciseId, completedSection, startTime, endTime,
-              initialTimeSet, actualTimeTaken, extraTimeTaken),
+      var response=await Exercise().storeAttempt(
+          StoreAttemptRequest(currentExerciseId, lastCompletedSection, currentStartedTime, currentEndedTime,
+              currentInitialTime, currentTotalTimeTaken, currentExtendedTime),
           token);
       print(response);
     } catch (error) {
-      print(error.message);
+      throw error;
     }
   }
 
@@ -63,6 +78,7 @@ class AttemptOfficial with ChangeNotifier {
       String initialTimeSet,
       String actualTimeTaken,
       String extraTimeTaken}) async {
+    print(_userAttempts.length);
     Attempt existedAttempt = getAttemptByExerciseId(exerciseId);
     Attempt updatedAttempt = Attempt(
       userExerciseId: exerciseId,
@@ -81,6 +97,7 @@ class AttemptOfficial with ChangeNotifier {
           extraTimeTaken == null ? existedAttempt.timeExtended : extraTimeTaken,
     );
     _userAttempts.add(updatedAttempt);
+    print(_userAttempts.length);
     try {
       var response = await Exercise().storeAttempt(
           StoreAttemptRequest(exerciseId, lastCompletedSection, startTime,

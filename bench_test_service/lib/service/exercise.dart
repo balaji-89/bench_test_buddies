@@ -33,6 +33,7 @@ class Exercise {
 
   Future<ResponseExerciseInfo> getExerciseInfo(
       int exerciseId, String token) async {
+
     try {
       Response response = await dio.get('/exercise/data/$exerciseId',
           options: Options(headers: {
@@ -118,7 +119,7 @@ class Exercise {
     }
   }
 
-  Future<AttemptsResponse> getAttempts(int exerciseId, String token) async {
+  Future<AttemptsResponse> getAttempts(int exerciseId,String token) async {
     try {
       Response response = await dio.get('/attempts/get/all/$exerciseId',
           options: Options(headers: {

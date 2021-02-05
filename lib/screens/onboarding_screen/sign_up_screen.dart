@@ -1,9 +1,9 @@
-import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../onboarding_screen/sign_in_screen.dart';
+import 'verification_email_screen.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -170,34 +170,48 @@ class _SignUpPageState extends State<SignUpPage> {
                                           await Provider.of<SignInUp>(context,
                                                   listen: false)
                                               .signUp(
-                                                  userController.text,
-                                                  emailController.text,
-                                                  passwordController.text,
-                                                  passwordController.text,
-                                                  context)
+                                                userController.text,
+                                                emailController.text,
+                                                passwordController.text,
+                                                passwordController.text,
+                                              )
                                               .then((value) => Navigator.of(
                                                       context)
                                                   .pushReplacement(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              SetupScreen())));
+                                                              EmailVerification(
+                                                                emailController
+                                                                    .text,
+                                                              ))));
                                         } catch (error) {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                    title: Text('Error'),
-                                                    content: Text(
-                                                        'Check your internet connection'),
-                                                    actions: [
-                                                      FlatButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: Text('OK'))
-                                                    ],
-                                                  ));
+                                          if (error ==
+                                              "Email already in Use.") {
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EmailVerification(
+                                                              emailController
+                                                                  .text,
+                                                            )));
+                                          }
+                                          // showDialog(
+                                          //     context: context,
+                                          //     builder: (context) => AlertDialog(
+                                          //           title: Text('Error'),
+                                          //           content: Text(
+                                          //               'Check your internet connection'),
+                                          //           actions: [
+                                          //             FlatButton(
+                                          //                 onPressed: () {
+                                          //                   Navigator.of(
+                                          //                           context)
+                                          //                       .pop();
+                                          //                 },
+                                          //                 child: Text('OK'))
+                                          //           ],
+                                          //         ));
                                         }
                                       },
                               )),

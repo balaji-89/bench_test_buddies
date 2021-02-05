@@ -5,6 +5,7 @@ import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
+import 'package:bench_test_buddies/provider/view_result_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ void main() async {
       create: (context) => UserLogData(),
     ),
     ChangeNotifierProvider(
-      create: (context) => Users(),
+      create: (context) => UserLevel(),
     ),
     ChangeNotifierProvider(
       create: (context) => AttemptOfficial(),
@@ -43,6 +44,9 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (context) => Exercises(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => ViewResultProvider(),
     ),
   ], child: MyApp()));
 }

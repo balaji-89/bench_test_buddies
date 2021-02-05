@@ -1,3 +1,5 @@
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/home.dart';
@@ -28,13 +30,25 @@ class TaskFinishedTimerScreen extends StatefulWidget {
 }
 
 class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
+
+  void timeInitializer(context){
+    Provider.of<AttemptOfficial>(context,listen: false).currentDataInitialize(
+      exerciseId: Provider.of<Exercises>(context,listen: false).selectedExercise.id,
+      startTime: DateFormat('HH:mm:ss').format(widget.startedTime),
+      endTime:  DateFormat('HH:mm:ss').format(widget.endedTime),
+      extraTimeTaken:  DateFormat('HH:mm:ss').format(widget.extendedBy),
+      actualTimeTaken:  DateFormat('HH:mm:ss').format(widget.totalTimeTaken),
+      initialTimeSet:  DateFormat('HH:mm:ss').format(widget.initialTimeSet),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<Users>(context, listen: true).userData;
+    final userData = Provider.of<UserLevel>(context, listen: true).userData;
     final currentExerciseStages =
         Provider.of<ExerciseStages>(context, listen: false)
             .findByStage(userData.currentSection);
-
+    timeInitializer(context);
     final attemptTiming = {
       'Total time Taken': widget.totalTimeTaken,
       'Initial time Taken': widget.initialTimeSet,
@@ -150,7 +164,7 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                   color: Theme.of(context).primaryColor,
                   child: Text('Continue to upload the images'),
                   onPressed: () {
-                    Provider.of<Users>(context,listen:false)
+                    Provider.of<UserLevel>(context,listen:false)
                         .changeUserStage(currentExerciseStages['step']);
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();

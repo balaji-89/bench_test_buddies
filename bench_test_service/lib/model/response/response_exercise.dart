@@ -50,31 +50,35 @@ class ResponseExercise {
 class ExerciseData {
   int _id;
   String _name;
+  String _description;
 
   int get id => _id;
-
+  String get description => _description;
   String get name => _name;
 
-  ExerciseData({int id, String name}) {
+  ExerciseData({int id, String name,String description}) {
     _id = id;
     _name = name;
+    _description=description;
   }
 
   ExerciseData.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
+    _description=json["description"];
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["id"] = _id;
     map["name"] = _name;
+    map["description"]=_description;
     return map;
   }
 
   @override
   String toString() {
-    return 'ExerciseData{_id: $_id, _name: $_name}';
+    return 'ExerciseData{_id: $_id, _name: $_name,_description:$description}';
   }
 
   @override
@@ -83,8 +87,9 @@ class ExerciseData {
       other is ExerciseData &&
           runtimeType == other.runtimeType &&
           _id == other._id &&
-          _name == other._name;
+          _name == other._name &&
+         _description == other._description;
 
   @override
-  int get hashCode => _id.hashCode ^ _name.hashCode;
+  int get hashCode => _id.hashCode ^ _name.hashCode^ _description.hashCode;
 }

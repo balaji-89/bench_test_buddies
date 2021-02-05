@@ -8,7 +8,7 @@ class UserDetailsAndLevel {
   Stages currentSection;
   List completedExercise;
   List upcomingSection;
-  List inProgressSection;
+  Stages inProgressSection;
 
 
   UserDetailsAndLevel({
@@ -21,12 +21,12 @@ class UserDetailsAndLevel {
         'attempts':0,
       }
     ],
-    this.inProgressSection=const[
-      Stages.Uploaded_images,
-      Stages.Evaluate_the_result,
-      Stages.View_the_results,
+    this.inProgressSection=Stages.Uploaded_images,
+    this.completedExercise=const[
+       Stages.Uploaded_images,
+       Stages.Evaluate_the_result,
+       Stages.View_the_results,
     ],
-    this.completedExercise,
     this.upcomingSection = const [
       Stages.Uploaded_images,
       Stages.Evaluate_the_result,

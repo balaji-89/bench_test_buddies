@@ -21,7 +21,7 @@ class _FilledNumbersState extends State<FilledNumbers> {
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<Users>(context, listen: true).userData;
+    final userData = Provider.of<UserLevel>(context, listen: true).userData;
     final currentExerciseStages =
     Provider.of<ExerciseStages>(context, listen: false)
         .findByStage(userData.currentSection);
@@ -56,7 +56,7 @@ class _FilledNumbersState extends State<FilledNumbers> {
         actions: [
           FlatButton(
               onPressed: () {
-                Provider.of<Users>(context,listen:false)
+                Provider.of<UserLevel>(context,listen:false)
                     .changeUserStage(currentExerciseStages['step']);
                 Navigator.of(context).pop();
                 Navigator.of(context)

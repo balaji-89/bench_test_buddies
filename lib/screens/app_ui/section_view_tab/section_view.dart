@@ -13,11 +13,11 @@ class SectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
-    final userData = Provider.of<Users>(context, listen: true).userData;
+    final userData = Provider.of<UserLevel>(context, listen: true).userData;
 
     final userUpcomingStage =
         Provider.of<ExerciseStages>(context, listen: false)
-            .findByStages(userData.inProgressSection);
+            .findByStages(userData.upcomingSection);
     final currentExerciseStages =
         Provider.of<ExerciseStages>(context, listen: false)
             .findByStage(userData.currentSection);

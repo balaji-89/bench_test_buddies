@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:bench_test_buddies/provider/user_data_token.dart';
 
 import 'package:flutter/material.dart';
 import 'package:bench_test_service/bench_test_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class SignInUp with ChangeNotifier {
   String userErrorText;
@@ -11,13 +15,13 @@ class SignInUp with ChangeNotifier {
   bool passwordInvisible = true;
 
   bool isLoading = false;
-
+  var logInResponse;
   void changePasswordVisibility() {
     passwordInvisible = !passwordInvisible;
     notifyListeners();
   }
 
-  Future<void> signUp(userName, emailAddress, password, confirmPassword,context) async {
+  Future<void> signUp(userName, emailAddress, password, confirmPassword) async {
     userErrorText = null;
     emailErrorText = null;
     passwordErrorText = null;
@@ -26,8 +30,8 @@ class SignInUp with ChangeNotifier {
     try {
       RegisterResponse registerResponse = await User().register(
           RegisterRequest(userName, emailAddress, password, password));
-      var dartMapResponse = registerResponse.toJson();
-      await UserLogData().assigningData(dartMapResponse["data"],context,"signUp");
+       logInResponse = registerResponse.data;
+
       isLoading = false;
       notifyListeners();
     } on ErrorResponse catch (error) {
@@ -44,7 +48,12 @@ class SignInUp with ChangeNotifier {
         passwordErrorText = errorMessage;
         userErrorText = null;
         emailErrorText = null;
-      } else if (errorMessage.contains('email') ||
+      } else if(errorMessage =='Email already in Use.'){
+        emailErrorText = null;
+        userErrorText = null;
+        passwordErrorText = null;
+      }
+      else if (errorMessage.contains('email') ||
           (errorMessage.contains('Email'))) {
         emailErrorText = errorMessage;
         userErrorText = null;
@@ -52,10 +61,38 @@ class SignInUp with ChangeNotifier {
       }
 
       notifyListeners();
-      throw error;
+      throw errorMessage;
     }
   }
+  Future<void> emailVerification(String email,int code,context)async{
+    try{
+      http.Response response=await http.post('http://innercircle.caapidsimplified.com/api/email/verify',body: {
+        'email':email,
+        'code':code,
+      });
+            await Provider.of<UserLogData>(context,listen:false).assigningData(logInResponse,context,"signUp");
+      String dartObject= jsonDecode(response.body);
+      print(dartObject);
+    }catch(error){
+      var json=jsonDecode(error.body);
+      throw json["message"];
+    }
+
+  }
+   Future resendCodeForVerification(String mail)async{
+      try{
+        http.Response response=await http.post('http://innercircle.caapidsimplified.com/api/email/resend',body: {
+          'email':mail,
+        });
+        jsonDecode(response.body);
+        print(response.body);
+      }catch(error){
+        var json=jsonDecode(error.body);
+        throw json["message"];
+      }
+  }
 }
+
 
 class SignIn with ChangeNotifier {
   String emailErrorText;
@@ -79,7 +116,7 @@ class SignIn with ChangeNotifier {
       LoginResponse logIn =
           await User().login(LoginRequest(emailAddress, password));
       var dartMapResponse = logIn.toJson();
-      await UserLogData().assigningData(dartMapResponse["data"],context,"signIn");
+      await Provider.of<UserLogData>(context,listen:false).assigningData(dartMapResponse["data"],context,"signIn");
       return dartMapResponse["data"];
     } on ErrorResponse catch (error) {
       isLoading = false;
@@ -100,6 +137,7 @@ class SignIn with ChangeNotifier {
       notifyListeners();
     }
   }
+
 
   Future<void> sendTheLink(String emailAddress) async {
     emailErrorText = null;

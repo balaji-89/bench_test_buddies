@@ -23,6 +23,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).unfocus();
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
     final String faceBookImage = 'assets/on_boarding_images/Facebook_Icon.png';

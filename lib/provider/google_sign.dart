@@ -42,11 +42,9 @@ class GoogleSign with ChangeNotifier {
           accessToken: googleSignInAuthentication.accessToken);
 
       UserCredential result = await auth.signInWithCredential(credential);
-
+      print(result);
       User user = auth.currentUser;
-      // print(user.uid);
-      // print(result);
-
+       print(user);
       return Future.value(true);
     }
   }
@@ -59,7 +57,7 @@ class GoogleSign with ChangeNotifier {
       UserCredential result =
           await auth.signInWithEmailAndPassword(email: email, password: email);
       User user = result.user;
-      // return Future.value(true);
+      print(user);
       return Future.value(user);
     } catch (e) {
       // simply passing error code as a message

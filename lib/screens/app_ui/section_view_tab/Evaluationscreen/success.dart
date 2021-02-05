@@ -11,6 +11,7 @@ class Success extends StatelessWidget {
             MaterialPageRoute(builder: (context) => ViewResultHome()));
       });
     }
+
     navigateToNextPage();
 
     return SafeArea(
