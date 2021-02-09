@@ -1,6 +1,7 @@
 import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:bench_test_buddies/provider/attempt_provider.dart';
 import 'package:bench_test_buddies/provider/country_provider.dart';
+import 'package:bench_test_buddies/provider/evaluation_questions_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
@@ -44,6 +45,9 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (context) => Exercises(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => EvaluationsQuestionsProvider(),
     ),
     ChangeNotifierProvider(
       create: (context) => ViewResultProvider(),

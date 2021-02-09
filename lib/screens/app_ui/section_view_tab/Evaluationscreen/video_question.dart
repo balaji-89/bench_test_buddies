@@ -1,36 +1,41 @@
+import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/users_level.dart';
+import 'package:bench_test_buddies/provider/evaluation_questions_provider.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscreen/success.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscreen/value_screen.dart';
 import 'package:better_player/better_player.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/painting.dart';
+import 'package:provider/provider.dart';
 
-class VideoScreen extends StatefulWidget {
+class VideoQuestion extends StatefulWidget {
   @override
-  _VideoScreenState createState() => _VideoScreenState();
+  _VideoQuestionState createState() => _VideoQuestionState();
 }
 
-class _VideoScreenState extends State<VideoScreen> {
-  String videoUrl = 'https://youtu.be/BVzVtDEhgfg';
-  Color cool = Colors.grey;
+class _VideoQuestionState extends State<VideoQuestion> {
   BetterPlayerController _betterPlayerController;
-  @override
-  void initState() {
-    super.initState();
-    BetterPlayerDataSource betterPlayerDataSource =
-        BetterPlayerDataSource(BetterPlayerDataSourceType.network, videoUrl);
-    _betterPlayerController = BetterPlayerController(
-        BetterPlayerConfiguration(),
-        betterPlayerDataSource: betterPlayerDataSource);
-  }
+
+  // void initializeVideo(String videoUrl) {
+  //   BetterPlayerDataSource betterPlayerDataSource =
+  //       BetterPlayerDataSource(BetterPlayerDataSourceType.network, videoUrl);
+  //   _betterPlayerController = BetterPlayerController(
+  //       BetterPlayerConfiguration(),
+  //       betterPlayerDataSource: betterPlayerDataSource);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final carouselImage = [
-      Container(
-        color: Colors.green,
-      ),
-      Container(color: Colors.blue),
-      Container(color: Colors.black)
-    ];
+    Question currentQuestionSet=Provider.of<EvaluationsQuestionsProvider>(context,listen:false).getQuestion();
+    var evaluationQuestionPath=Provider.of<EvaluationsQuestionsProvider>(context,listen: false);
+    //initializeVideo(currentQuestionSet.video);
+    final userData = Provider.of<UserLevel>(context, listen: true).userData;
+    final currentExerciseStages =
+    Provider.of<ExerciseStages>(context, listen: false)
+        .findByStage(userData.currentSection);
+    bool isLastQuestion =
+        Provider.of<EvaluationsQuestionsProvider>(context).isLastQuestion;
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -54,13 +59,23 @@ class _VideoScreenState extends State<VideoScreen> {
         titleSpacing: 0.3,
         actions: [
           FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                if (isLastQuestion) {
+                  Provider.of<UserLevel>(context, listen: false)
+                      .changeUserStage(currentExerciseStages['step']);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Success()));
+                }
+              },
               child: Text(
                 'Submit',
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontSize: 15,
-                  color: Colors.grey.withOpacity(0.7),
+                  color: isLastQuestion
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).accentColor,
                 ),
               ))
         ],
@@ -73,7 +88,7 @@ class _VideoScreenState extends State<VideoScreen> {
               height: constraints.maxHeight * 0.1,
               width: constraints.maxWidth,
               child: Center(
-                child: Text('Criteria: Outline from shape',
+                child: Text('Criteria:${currentQuestionSet.title}',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -86,7 +101,7 @@ class _VideoScreenState extends State<VideoScreen> {
               height: constraints.maxHeight * 0.4,
               width: constraints.maxWidth,
               child: BetterPlayer.network(
-                videoUrl,
+                currentQuestionSet.video,
                 betterPlayerConfiguration: BetterPlayerConfiguration(
                   aspectRatio: 16 / 9,
                   autoPlay: true,
@@ -106,7 +121,7 @@ class _VideoScreenState extends State<VideoScreen> {
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: "Q.1 /",
+                        text: "Q.${evaluationQuestionPath.currentQuestionIndex+1} /",
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -114,7 +129,7 @@ class _VideoScreenState extends State<VideoScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: "09",
+                        text:  "${evaluationQuestionPath.questions.length}",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -128,7 +143,7 @@ class _VideoScreenState extends State<VideoScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                'Distance of dovetail from crest of the adjacent marginal ridge',
+                '${currentQuestionSet.question}',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 16,
@@ -246,3 +261,4 @@ class _VideoScreenState extends State<VideoScreen> {
     },
   ];
 }
+

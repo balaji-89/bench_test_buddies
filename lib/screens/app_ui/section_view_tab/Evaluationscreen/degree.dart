@@ -1,6 +1,9 @@
+import 'package:bench_test_buddies/provider/evaluation_questions_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'fillednumbers.dart';
+import 'package:provider/provider.dart';
+import 'evaluation_home.dart';
+
 
 class Degree extends StatefulWidget {
   @override
@@ -104,8 +107,10 @@ class _DegreeState extends State<Degree> {
                 child: InkWell(
                   onTap: () {
                     if(onTap==true)
+                      Provider.of<EvaluationsQuestionsProvider>(context,listen:false).incrementQuestionIndex();
+                      Navigator.of(context).pop();
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => FilledNumbers()));
+                            builder: (context) => EvaluationHome()));
                   },
                   child: Container(
                     width: heights.width * 0.95,
