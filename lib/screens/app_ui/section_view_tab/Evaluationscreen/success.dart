@@ -1,14 +1,31 @@
+import 'package:bench_test_buddies/model/attempt_official_model.dart';
+import 'package:bench_test_buddies/provider/evaluation_questions_provider.dart';
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Resultscreen/view_result_home.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
 class Success extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
     Future navigateToNextPage() async {
-      Future.delayed(Duration(seconds: 3), () {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ViewResultHome()));
+      int exerciseId =
+          Provider.of<Exercises>(context, listen: false).selectedExercise.id;
+      String token = Provider.of(context, listen: false).userToken;
+      Future.delayed(Duration(seconds: 1), () async {
+        try {
+          ScoreCardModel response =
+              await Provider.of<EvaluationsQuestionsProvider>(context)
+                  .storeAndGetEvaluationData(
+                      exerciseId: exerciseId, evaluationId: 2, token: token);
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => ViewResultHome(
+                    scoreCardModel: response,
+                  )));
+        } catch (error) {
+          print(error);
+        }
       });
     }
 

@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AttemptCard extends StatelessWidget {
-  final int attemptNumber;
   final int attemptedId;
   final Map scoreCard;
-  final DateTime attemptedDate;
+  final String attemptedDate;
 
   AttemptCard(
       {@required this.attemptedId,
-      @required this.attemptNumber,
        this.scoreCard,
        this.attemptedDate});
 
@@ -21,7 +19,7 @@ class AttemptCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final changedDateFormat = attemptedDate == null
         ? null
-        : DateFormat('dd-MM-yyyy').format(attemptedDate);
+        : attemptedDate;
     return Container(
       height: MediaQuery.of(context).size.height * 0.09,
       width: MediaQuery.of(context).size.width * 0.93,
@@ -55,7 +53,7 @@ class AttemptCard extends StatelessWidget {
                   child: Image.asset('assets/attempt_images/target.png',
                       fit: BoxFit.contain),
                 ),
-                title: Text('Attempt: ${attemptNumber.toString()}',
+                title: Text('Attempt: ${attemptedId.toString()}',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
@@ -95,7 +93,6 @@ class AttemptCard extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AttemptedDetails(
-                              attemptNumber: attemptNumber,
                               attemptId: attemptedId,
                             )));
                   },

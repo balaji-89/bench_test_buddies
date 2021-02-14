@@ -9,12 +9,11 @@ class UserLogData with ChangeNotifier {
   String token;
   int userId;
 
-  Future assigningData(
-      Map<dynamic, dynamic> jsonData, BuildContext context,String req) async {
-    userId = jsonData["user"]["id"];
-    userName = jsonData["user"]["name"];
-    userMail = jsonData["user"]["email"];
-    token = jsonData["token"];
+  Future assigningData(jsonData, BuildContext context,String req) async {
+    userId = jsonData.user.id;
+    userName = jsonData.user.name;
+    userMail = jsonData.user.email;
+    token = jsonData.token;
     if(req=="signUp"){
     Provider.of<CountryProvider>(context, listen: false)
         .initializeUserToken(token);

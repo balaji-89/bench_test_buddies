@@ -1,5 +1,5 @@
-import 'package:bench_test_buddies/model/attempt_model.dart';
-import 'package:bench_test_buddies/provider/attempt_provider.dart';
+import 'package:bench_test_buddies/model/attempt_official_model.dart';
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +9,25 @@ class ExerciseTimer extends StatelessWidget {
 
   ExerciseTimer({@required this.attemptId});
 
+
+  DateTime getTimeFromString(String apiTime){
+    int formattedHour;
+    int formattedMinutes;
+    int formattedSeconds;
+    List<String> splitTime=apiTime.split(":");
+    print(splitTime);
+    formattedHour=int.parse(splitTime[0]);
+    formattedMinutes=int.parse(splitTime[1]);
+    formattedSeconds=int.parse(splitTime[2]);
+    DateTime dateTime=DateTime(2021,1,1, formattedHour,formattedMinutes,formattedSeconds,0,0);
+   return dateTime;
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    final UserAttempt attempt =
-        Provider.of<AttemptedList>(context).findById(attemptId);
+    final Attempt attempt =
+        Provider.of<AttemptOfficial>(context,listen:false).currentAttemptTimeStamps;
     final attemptTiming = {
       'Total time Taken': attempt.totalTimeTaken,
       'Initial time Taken': attempt.initialTimeSet,
@@ -52,7 +67,7 @@ class ExerciseTimer extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.13,
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
-          padding: EdgeInsets.only(left:14,top:16,bottom: 16),
+          padding: EdgeInsets.only(left: 14, top: 16, bottom: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,10 +88,10 @@ class ExerciseTimer extends StatelessWidget {
                       TextSpan(
                           text: index == 2
                               ? ''
-                              : '${DateFormat.H().format(attemptValue[index])}h  '),
+                              : '${DateFormat.H().format(getTimeFromString(attemptValue[index]),
+                                )}h  '),
                       TextSpan(
-                          text:
-                              '${DateFormat.M().format(attemptValue[index])}m'),
+                          text: '${DateFormat.m().format(getTimeFromString(attemptValue[index]))}m'),
                     ],
                     style: TextStyle(
                       fontSize: 19,
@@ -87,7 +102,7 @@ class ExerciseTimer extends StatelessWidget {
                 ),
               if (index > 2)
                 Text(
-                  '${DateFormat().add_jm().format(attemptValue[index])}',
+                  '${DateFormat().add_jm().format(getTimeFromString(attemptValue[index]))}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,

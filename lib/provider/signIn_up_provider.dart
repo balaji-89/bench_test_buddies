@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bench_test_buddies/provider/user_data_token.dart';
+import 'package:bench_test_service/service/exercise.dart';
 
 import 'package:flutter/material.dart';
 import 'package:bench_test_service/bench_test_service.dart';
@@ -15,13 +16,14 @@ class SignInUp with ChangeNotifier {
   bool passwordInvisible = true;
 
   bool isLoading = false;
+  bool emailVerified=false;
   var logInResponse;
   void changePasswordVisibility() {
     passwordInvisible = !passwordInvisible;
     notifyListeners();
   }
 
-  Future<void> signUp(userName, emailAddress, password, confirmPassword) async {
+  Future<void> signUp(userName, emailAddress, password, confirmPassword,context) async {
     userErrorText = null;
     emailErrorText = null;
     passwordErrorText = null;
@@ -31,7 +33,7 @@ class SignInUp with ChangeNotifier {
       RegisterResponse registerResponse = await User().register(
           RegisterRequest(userName, emailAddress, password, password));
        logInResponse = registerResponse.data;
-
+      await Provider.of<UserLogData>(context,listen:false).assigningData(logInResponse,context,"signUp");
       isLoading = false;
       notifyListeners();
     } on ErrorResponse catch (error) {
@@ -64,15 +66,13 @@ class SignInUp with ChangeNotifier {
       throw errorMessage;
     }
   }
-  Future<void> emailVerification(String email,int code,context)async{
+  Future<void> emailVerification(String email,int code)async{
     try{
-      http.Response response=await http.post('http://innercircle.caapidsimplified.com/api/email/verify',body: {
-        'email':email,
-        'code':code,
-      });
-            await Provider.of<UserLogData>(context,listen:false).assigningData(logInResponse,context,"signUp");
-      String dartObject= jsonDecode(response.body);
-      print(dartObject);
+     String message=await Exercise().emailVerification(email, code);
+     emailVerified=true;
+     notifyListeners();
+     print(message);
+
     }catch(error){
       var json=jsonDecode(error.body);
       throw json["message"];
@@ -81,14 +81,11 @@ class SignInUp with ChangeNotifier {
   }
    Future resendCodeForVerification(String mail)async{
       try{
-        http.Response response=await http.post('http://innercircle.caapidsimplified.com/api/email/resend',body: {
-          'email':mail,
-        });
-        jsonDecode(response.body);
-        print(response.body);
-      }catch(error){
-        var json=jsonDecode(error.body);
-        throw json["message"];
+         String  message=await Exercise().resendEmailVerification(mail);
+         print(message);
+        }
+      catch(error){
+        throw jsonDecode(error);
       }
   }
 }
@@ -115,9 +112,9 @@ class SignIn with ChangeNotifier {
     try {
       LoginResponse logIn =
           await User().login(LoginRequest(emailAddress, password));
-      var dartMapResponse = logIn.toJson();
-      await Provider.of<UserLogData>(context,listen:false).assigningData(dartMapResponse["data"],context,"signIn");
-      return dartMapResponse["data"];
+      var userData = logIn.data;
+      await Provider.of<UserLogData>(context,listen:false).assigningData(userData,context,"signIn");
+      return userData;
     } on ErrorResponse catch (error) {
       isLoading = false;
       notifyListeners();

@@ -106,11 +106,12 @@ class _DegreeState extends State<Degree> {
               child: Center(
                 child: InkWell(
                   onTap: () {
-                    if(onTap==true)
+                    if(onTap==true){
+                      Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(double.parse(controller.text));
                       Provider.of<EvaluationsQuestionsProvider>(context,listen:false).incrementQuestionIndex();
                       Navigator.of(context).pop();
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => EvaluationHome()));
+                            builder: (context) => EvaluationHome()));}
                   },
                   child: Container(
                     width: heights.width * 0.95,

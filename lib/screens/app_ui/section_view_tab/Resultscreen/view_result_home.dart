@@ -1,3 +1,4 @@
+import 'package:bench_test_buddies/model/attempt_official_model.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
@@ -9,6 +10,10 @@ import 'package:provider/provider.dart';
 import 'view_solution.dart';
 
 class ViewResultHome extends StatefulWidget {
+  final scoreCardModel;
+
+  ViewResultHome({@required this.scoreCardModel});
+
   @override
   _ViewResultHomeState createState() => _ViewResultHomeState();
 }
@@ -85,7 +90,7 @@ class _ViewResultHomeState extends State<ViewResultHome> {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        ResultsScoreCard(attemptId: 1),
+                        ResultsScoreCard(userResults: widget.scoreCardModel,),
                         ViewSolutions(),
                       ],
                     ),

@@ -42,9 +42,9 @@ class GoogleSign with ChangeNotifier {
           accessToken: googleSignInAuthentication.accessToken);
 
       UserCredential result = await auth.signInWithCredential(credential);
-      print(result);
+      print('result $result');
+      print('creditials $credential');
       User user = auth.currentUser;
-       print(user);
       return Future.value(true);
     }
   }

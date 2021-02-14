@@ -5,6 +5,7 @@ import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscr
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'evaluation_home.dart';
 
 class ImageQuestion extends StatefulWidget {
@@ -13,19 +14,27 @@ class ImageQuestion extends StatefulWidget {
 }
 
 class _ImageQuestionState extends State<ImageQuestion> {
+  int userSelectedAnswer;
+  bool buttonColor=false;
+
   @override
   Widget build(BuildContext context) {
+    print('executed');
     final userData = Provider.of<UserLevel>(context, listen: true).userData;
     final currentExerciseStages =
         Provider.of<ExerciseStages>(context, listen: false)
             .findByStage(userData.currentSection);
     bool isLastQuestion =
         Provider.of<EvaluationsQuestionsProvider>(context).isLastQuestion;
-    Question currentQuestionSet=Provider.of<EvaluationsQuestionsProvider>(context,listen:false).getQuestion();
-    var evaluationQuestionPath=Provider.of<EvaluationsQuestionsProvider>(context,listen: false);
+
+    Question currentQuestionSet =
+        Provider.of<EvaluationsQuestionsProvider>(context, listen: false)
+            .getQuestion();
+    var evaluationQuestionPath =
+        Provider.of<EvaluationsQuestionsProvider>(context, listen: false);
     final carouselImage = [
       Container(
-        child:Text('${currentQuestionSet.image}') ,
+        child: Text('${currentQuestionSet.image}'),
       ),
       Container(color: Colors.blue),
       Container(color: Colors.black)
@@ -120,7 +129,8 @@ class _ImageQuestionState extends State<ImageQuestion> {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: "Q.${evaluationQuestionPath.currentQuestionIndex+1} /",
+                          text:
+                              "Q.${evaluationQuestionPath.currentQuestionIndex + 1} /",
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -160,21 +170,29 @@ class _ImageQuestionState extends State<ImageQuestion> {
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
                     child: OutlineButton(
+                      color: buttonColor==true?Theme.of(context).primaryColor:Colors.white,
                       borderSide: BorderSide(
                         style: BorderStyle.solid,
                         color: Colors.grey,
                       ),
                       onPressed: () {
-                        if(!isLastQuestion){
-                        Provider.of<EvaluationsQuestionsProvider>(context,
-                                listen: false)
-                            .incrementQuestionIndex();
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => EvaluationHome()));}
+                        setState(() {
+                          buttonColor=true;
+                        });
+                        Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(1);
+                        if (!isLastQuestion) {
+                          Provider.of<EvaluationsQuestionsProvider>(context,
+                                  listen: false)
+                              .incrementQuestionIndex();
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => EvaluationHome()));
+                        }
                       },
                       child: Text(
                         "Yes",
                         style: TextStyle(
+                          color: buttonColor==true?Colors.white:Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -184,14 +202,29 @@ class _ImageQuestionState extends State<ImageQuestion> {
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
                     child: OutlineButton(
+                      color: buttonColor==true?Theme.of(context).primaryColor:Colors.white,
                       borderSide: BorderSide(
                         color: Colors.grey,
                         style: BorderStyle.solid,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          buttonColor=true;
+                        });
+                        Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(0);
+                        if (!isLastQuestion) {
+                          Provider.of<EvaluationsQuestionsProvider>(context,
+                                  listen: false)
+                              .incrementQuestionIndex();
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => EvaluationHome()));
+                        }
+                      },
                       child: Text(
                         "No",
                         style: TextStyle(
+                          color: buttonColor==true?Colors.white:Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

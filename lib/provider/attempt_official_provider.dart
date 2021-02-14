@@ -6,22 +6,19 @@ import 'package:flutter/material.dart';
 
 class AttemptOfficial with ChangeNotifier {
   List<Attempt> _userAttempts = [
-    Attempt(
-      userExerciseId: 1,
-      lastCompletedSection: 2,
-      initialTimeSet: "00.45.00",
-      totalTimeTaken: "00.50.00",
-      timeStarted: "02.00.00",
-      timeEndsAt: "02.50.00",
-      timeExtended: "00.05.00",
-    )
   ];
+
+  ScoreCardModel attemptScoreCard;
+
   int currentExerciseId;
   String currentStartedTime;
   String currentEndedTime;
   String currentInitialTime;
   String currentTotalTimeTaken;
   String currentExtendedTime;
+  Attempt currentAttemptTimeStamps;
+
+
   List<Attempt> getUserAttempt(int exerciseId) {
     return _userAttempts
         .where((element) => element.userExerciseId == exerciseId)
@@ -69,43 +66,85 @@ class AttemptOfficial with ChangeNotifier {
       throw error;
     }
   }
-
-  void updateStoredAttempt(token,
-      {@required int exerciseId,
-      int lastCompletedSection,
-      String startTime,
-      String endTime,
-      String initialTimeSet,
-      String actualTimeTaken,
-      String extraTimeTaken}) async {
-    print(_userAttempts.length);
-    Attempt existedAttempt = getAttemptByExerciseId(exerciseId);
-    Attempt updatedAttempt = Attempt(
-      userExerciseId: exerciseId,
-      lastCompletedSection: lastCompletedSection == null
-          ? existedAttempt.lastCompletedSection
-          : lastCompletedSection,
-      initialTimeSet: initialTimeSet == null
-          ? existedAttempt.initialTimeSet
-          : initialTimeSet,
-      totalTimeTaken: actualTimeTaken == null
-          ? existedAttempt.totalTimeTaken
-          : actualTimeTaken,
-      timeStarted: startTime == null ? existedAttempt.timeStarted : startTime,
-      timeEndsAt: endTime == null ? existedAttempt.timeEndsAt : endTime,
-      timeExtended:
-          extraTimeTaken == null ? existedAttempt.timeExtended : extraTimeTaken,
-    );
-    _userAttempts.add(updatedAttempt);
-    print(_userAttempts.length);
+  Future initializeUserAttempt(String token, int exerciseId) async {
     try {
-      var response = await Exercise().storeAttempt(
-          StoreAttemptRequest(exerciseId, lastCompletedSection, startTime,
-              endTime, initialTimeSet, actualTimeTaken, extraTimeTaken),
-          token);
-      print(response);
+      var response = await Exercise().getAttempts(exerciseId, token);
+      response.data.map((e) {
+        _userAttempts.add(Attempt(
+          attemptId: e.id,
+          userExerciseId: e.apiExerciseId,
+        ));
+      }).toList();
     } catch (error) {
       print(error.message);
     }
   }
+  Attempt findById(int attemptId) {
+    return _userAttempts.firstWhere((element) => element.attemptId == attemptId);
+  }
+
+   ScoreCardModel getScoreCard(int attemptId){
+      return ScoreCardModel(attemptId:attemptId,actualScore:5,expectedScore: 7,maxScore: 10, );
+   }
+
+   Future  getAttemptTimeSet(int attemptId,String token)async{
+    var response;
+    try{
+        response=(await Exercise().getAttemptTimeSummary(attemptId, token))[0];
+
+
+    }catch(error){
+      print(error);
+    }
+
+      currentAttemptTimeStamps= Attempt(
+        attemptId: response['id'],
+        userExerciseId:response['api_exercise_id'],
+        timeStarted: response['start_time'],
+        timeEndsAt: response['end_time'],
+        initialTimeSet: response['initial_time_set'],
+        totalTimeTaken: response['actual_time_taken'],
+        timeExtended: response['extra_time_taken'],
+        lastCompletedSection: response['last_completed_section']
+    );
+   }
+
+  // void updateStoredAttempt(token,
+  //     {@required int exerciseId,
+  //     int lastCompletedSection,
+  //     String startTime,
+  //     String endTime,
+  //     String initialTimeSet,
+  //     String actualTimeTaken,
+  //     String extraTimeTaken}) async {
+  //   print(_userAttempts.length);
+  //   Attempt existedAttempt = getAttemptByExerciseId(exerciseId);
+  //   Attempt updatedAttempt = Attempt(
+  //     userExerciseId: exerciseId,
+  //     lastCompletedSection: lastCompletedSection == null
+  //         ? existedAttempt.lastCompletedSection
+  //         : lastCompletedSection,
+  //     initialTimeSet: initialTimeSet == null
+  //         ? existedAttempt.initialTimeSet
+  //         : initialTimeSet,
+  //     totalTimeTaken: actualTimeTaken == null
+  //         ? existedAttempt.totalTimeTaken
+  //         : actualTimeTaken,
+  //     timeStarted: startTime == null ? existedAttempt.timeStarted : startTime,
+  //     timeEndsAt: endTime == null ? existedAttempt.timeEndsAt : endTime,
+  //     timeExtended:
+  //         extraTimeTaken == null ? existedAttempt.timeExtended : extraTimeTaken,
+  //   );
+  //   _userAttempts.add(updatedAttempt);
+  //   print(_userAttempts.length);
+  //   try {
+  //     var response = await Exercise().storeAttempt(
+  //         StoreAttemptRequest(exerciseId, lastCompletedSection, startTime,
+  //             endTime, initialTimeSet, actualTimeTaken, extraTimeTaken),
+  //         token);
+  //     print(response);
+  //   } catch (error) {
+  //     print(error.message);
+  //   }
+  // }
 }

@@ -58,12 +58,12 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                   SizedBox(
                     height: constraints.maxHeight * 0.16,
                     width: constraints.maxWidth * 0.88,
-                    child: buildSocialLogInButon(googleImage, 'Google'),
+                    child: buildSocialLogInButton(googleImage, 'Google'),
                   ),
                   SizedBox(
                     height: constraints.maxHeight * 0.16,
                     width: constraints.maxWidth * 0.88,
-                    child: buildSocialLogInButon(faceBookImage, 'Facebook'),
+                    child: buildSocialLogInButton(faceBookImage, 'Facebook'),
                   ),
                   SizedBox(
                     height: constraints.maxHeight * 0.13,
@@ -123,7 +123,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
     );
   }
 
-  Widget buildSocialLogInButon(
+  Widget buildSocialLogInButton(
     String image,
     String buttonName,
   ) {

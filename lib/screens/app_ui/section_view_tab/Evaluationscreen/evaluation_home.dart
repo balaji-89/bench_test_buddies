@@ -6,7 +6,6 @@ import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
 import 'image_question.dart';
-import 'success.dart';
 import 'video_question.dart';
 
 class EvaluationHome extends StatefulWidget {
@@ -22,20 +21,23 @@ class _EvaluationHomeState extends State<EvaluationHome> {
    
    bool questionOver=false;
     Future<void> initialize(BuildContext context)async{
-         questions=await Provider.of<EvaluationsQuestionsProvider>(context,listen: false).getExerciseQuestion(currentExerciseId,userToken);
+      try{
+        questions=await Provider.of<EvaluationsQuestionsProvider>(context,listen: false).getExerciseQuestion(currentExerciseId,userToken);
+      }catch(error){
+        print(error);
+      }
+
 
            }
 
 
    Widget getQuestionScreen(){
-        print('mnjns $questionSelectingIndex');
         if (questions[questionSelectingIndex].image != null) {
           return ImageQuestion();
         }
-        else if (questions[questionSelectingIndex].video != null)
-          return VideoQuestion();
         else
-          return Success();
+          return VideoQuestion();
+
    }
 
 

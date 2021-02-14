@@ -67,7 +67,7 @@ class EvaluationData {
 
   int get answerType => _answerType;
 
-  EvaluationData(int questionId, double answer, int answerType) {
+  EvaluationData(int questionId, double answerDouble, int answerType) {
     _questionId = questionId;
     _answer = answer;
     _answerType = answerType;

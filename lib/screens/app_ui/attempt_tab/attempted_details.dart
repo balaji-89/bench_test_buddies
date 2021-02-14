@@ -1,18 +1,35 @@
 import 'dart:ui';
 
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/screens/app_ui/attempt_tab/exercise_timer.dart';
 import 'package:bench_test_buddies/screens/app_ui/attempt_tab/score_card.dart';
 import 'package:bench_test_buddies/screens/app_ui/attempt_tab/view_results.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AttemptedDetails extends StatelessWidget {
-  final int attemptNumber;
+class AttemptedDetails extends StatefulWidget {
   final int attemptId;
+  AttemptedDetails({ @required this.attemptId });
 
-  AttemptedDetails({@required this.attemptNumber, @required this.attemptId });
+  @override
+  _AttemptedDetailsState createState() => _AttemptedDetailsState();
+}
+
+class _AttemptedDetailsState extends State<AttemptedDetails> {
+  bool isLoading=true;
+
+  void initializeAttemptDetails(BuildContext context,String token)async{
+     await Provider.of<AttemptOfficial>(context,listen: false).getAttemptTimeSet(widget.attemptId, token);
+     setState(() {
+       isLoading=false;
+     });
+  }
 
   @override
   Widget build(BuildContext context) {
+    String userToken=Provider.of<UserLogData>(context,listen: false).token;
+    initializeAttemptDetails(context, userToken);
     final List<Map> attemptCharacteristics = [
       {
         'name': 'Score Card',
@@ -42,7 +59,7 @@ class AttemptedDetails extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text('Attempt ${attemptNumber.toString()}',
+        title: Text('Attempt ${widget.attemptId.toString()}',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -53,7 +70,9 @@ class AttemptedDetails extends StatelessWidget {
         titleSpacing: 0.3,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SizedBox(
+      body: isLoading==true?Center(child: CircularProgressIndicator(
+        backgroundColor: Theme.of(context).primaryColor,
+      ),):SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(
@@ -98,11 +117,11 @@ class AttemptedDetails extends StatelessWidget {
                   Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
               onPressed: () {
                 switch(attemptCharacteristics[index]['name']){
-                  case 'Score Card':Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ScoreCard(attemptId: attemptId,)));
+                  case 'Score Card':Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ScoreCard(attemptId: widget.attemptId,)));
                   break;
-                  case 'Exercise Time':Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ExerciseTimer(attemptId: attemptId,)));
+                  case 'Exercise Time':Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ExerciseTimer(attemptId: widget.attemptId,)));
                   break;
-                  case 'View Results':Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewResults(attemptId: attemptId,)));
+                  case 'View Results':Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewResults(attemptId: widget.attemptId,)));
                 }
               },
             ),),

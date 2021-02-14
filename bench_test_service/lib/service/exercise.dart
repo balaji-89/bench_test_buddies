@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bench_test_service/model/request/store_attempt_request.dart';
 import 'package:bench_test_service/model/request/store_evaluation_request.dart';
 import 'package:bench_test_service/model/response/attempts_response.dart';
@@ -7,11 +9,16 @@ import 'package:bench_test_service/model/response/response_exercise_info.dart';
 import 'package:bench_test_service/model/response/response_status.dart';
 import 'package:bench_test_service/model/response/solution_response.dart';
 import 'package:bench_test_service/model/response/store_evaluation_response.dart';
+
+
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import 'base_service.dart';
 
 class Exercise {
+  String baseUrl='https://innercircle.caapidsimplified.com/api';
+
   Dio dio;
 
   Exercise() {
@@ -29,6 +36,35 @@ class Exercise {
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
     }
+  }
+
+  Future<String> emailVerification(String email,int code)async{
+    try{ http.Response response=await http.post('$baseUrl/email/verify',body: {
+      'email':email,
+      'code':code,
+    });
+    Map map=jsonDecode(response.body);
+    return map["message"];
+
+    }catch(error){
+      var map=jsonDecode(error);
+      throw map;
+    }
+
+
+  }
+
+  Future<String> resendEmailVerification(String email)async{
+    try{
+      http.Response response=await http.post('$baseUrl/email/resend',body: {
+        'email':email,
+      });
+      Map map=jsonDecode(response.body);
+      return map["message"];
+    }catch(error){
+      throw error;
+    }
+
   }
 
   Future<ResponseExerciseInfo> getExerciseInfo(
@@ -74,6 +110,20 @@ class Exercise {
     } on DioError catch (err) {
       throw ErrorResponse(err.message);
     }
+  }
+
+   Future<List> getAttemptTimeSummary(int attemptId,String token)async{
+    try{
+      http.Response response=await http.get('$baseUrl/exercise/time-summary/$attemptId',headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      });
+      var responseData=jsonDecode(response.body);
+      return responseData["data"];
+    }catch(error){
+      throw error;
+    }
+
   }
 
   Future<StoreEvaluationResponse> storeEvaluation(

@@ -1,4 +1,5 @@
-import 'package:bench_test_buddies/provider/attempt_provider.dart';
+import 'package:bench_test_buddies/model/attempt_official_model.dart';
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import'package:bench_test_buddies/widgets/attempt_card.dart';
@@ -18,8 +19,7 @@ class AttemptTab extends StatelessWidget {
     final userCurrentExercise = Provider.of<Exercises>(context, listen: false)
         .findExerciseById(userData.userExerciseId);
 
-    final exerciseAttempt=Provider.of<AttemptedList>(context).getUserAttempt(userData.userExerciseId);
-    print(exerciseAttempt.length);
+    final List<Attempt> exerciseAttempt=Provider.of<AttemptOfficial>(context).getUserAttempt(userData.userExerciseId);
 
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,
@@ -82,10 +82,9 @@ class AttemptTab extends StatelessWidget {
               color: Colors.white,
               padding: EdgeInsets.only(top:mediaQueryHeight*0.012),
               child: ListView.builder(itemCount:exerciseAttempt.length,itemBuilder:(context,index)=>AttemptCard(
-                 attemptNumber: index+1,
                  attemptedId:exerciseAttempt[index].attemptId ,
-                 attemptedDate: exerciseAttempt[index].attemptedDate,
-                scoreCard: exerciseAttempt[index].userScoreCard,
+                 attemptedDate: exerciseAttempt[index].attemptedOn,
+                 scoreCard: null,
               ) ),
 
             ),

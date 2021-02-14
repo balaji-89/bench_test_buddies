@@ -1,4 +1,4 @@
-import 'package:bench_test_buddies/provider/attempt_provider.dart';
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:provider/provider.dart';
@@ -10,10 +10,11 @@ class ScoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final receivedAttempt =
-        Provider.of<AttemptedList>(context, listen: false).findById(attemptId);
-    final userScore = receivedAttempt.userScoreCard;
-    final bestScore = receivedAttempt.bestScore;
+    final scoreCard =
+        Provider.of<AttemptOfficial>(context, listen: false).getScoreCard(attemptId);
+    final userScore = scoreCard.actualScore;
+    final bestScore = scoreCard.expectedScore;
+    final totalScore=scoreCard.maxScore;
 
     final pieLabel = [userScore, bestScore];
     final List<List<CircularStackEntry>> pieData = [
@@ -21,10 +22,10 @@ class ScoreCard extends StatelessWidget {
         CircularStackEntry(
           <CircularSegmentEntry>[
             CircularSegmentEntry(
-                userScore['userScore'].toDouble(), Colors.green,
+                userScore.toDouble(), Colors.green,
                 rankKey: 'S1'),
             CircularSegmentEntry(
-              (userScore['totalScore'] - userScore['userScore']).toDouble(),
+              (totalScore- userScore).toDouble(),
               Colors.deepOrangeAccent,
               rankKey: 'S1',
             ),
@@ -34,10 +35,10 @@ class ScoreCard extends StatelessWidget {
       <CircularStackEntry>[
         CircularStackEntry(
           <CircularSegmentEntry>[
-            CircularSegmentEntry(bestScore['bestScore'].toDouble(), Colors.blue,
+            CircularSegmentEntry(bestScore.toDouble(), Colors.blue,
                 rankKey: 'S2'),
             CircularSegmentEntry(
-              (bestScore['totalScore'] - bestScore['bestScore']).toDouble(),
+              (totalScore - bestScore).toDouble(),
               Colors.red,
               rankKey: 'S2',
             ),
@@ -95,8 +96,8 @@ class ScoreCard extends StatelessWidget {
                         children: [
                           AnimatedCircularChart(
                             holeLabel: index == 0
-                                ? '${pieLabel[index]['userScore']}/${pieLabel[index]['totalScore']}'
-                                : '${pieLabel[index]['bestScore']}/${pieLabel[index]['totalScore']}',
+                                ? '$userScore/$totalScore'
+                                : '$bestScore/$totalScore',
                             holeRadius: 45.0,
                             size: chartSize,
                             initialChartData: pieData[index],
@@ -137,7 +138,7 @@ class ScoreCard extends StatelessWidget {
                             radius: 4,
                             backgroundColor: Colors.green,
                           ),
-                          Text('${userScore['userScore'].toString()} Correct')
+                          Text('${userScore.toString()} Correct')
                         ],
                       ),
                     ),
@@ -152,7 +153,7 @@ class ScoreCard extends StatelessWidget {
                             backgroundColor: Colors.red,
                           ),
                           Text(
-                              '${(userScore['totalScore'] - userScore['userScore']).toString()} Wrong')
+                              '${(totalScore- userScore).toString()} Wrong')
                         ],
                       ),
                     ),

@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage>
       token = Provider.of<UserLogData>(context, listen: false).token;
       userSelected =
           Provider.of<Exercises>(context, listen: false).selectedExercise;
-      await Provider.of<AttemptedList>(context, listen: false)
+      await Provider.of<AttemptOfficial>(context, listen: false)
           .initializeUserAttempt(token, userSelected.id);
       dataLoaded = true;
     }
