@@ -40,7 +40,11 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
               Navigator.of(context).pop();
             },
           ),
-          title: Text('${deleteList.length} images selected'),
+          title: Text('${deleteList.length} images selected',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              )),
           centerTitle: false,
           actions: <Widget>[
             InkWell(
@@ -179,7 +183,6 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                                               backgroundColor: Colors.white,
                                               backgroundImage: AssetImage(
                                                 'assets/on_boarding_images/RectangleSelect.png',
-
                                               ),
                                             ))
                                     ],
@@ -230,12 +233,17 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
   }
 
   void deleteImages() {
-    var filteredImages=[];
+    List<File> containsDeletableFile = [];
+    List<File> filteredImages = [];
     deleteList.map((element) {
       File particularImage = widget.selectedImages[element];
-      filteredImages.addAll(widget.selectedImages.remove(particularImage));
-    });
-    print('length ${filteredImages.length}');
+      containsDeletableFile.add(particularImage);
+    }).toList();
+    (widget.selectedImages).map((element) {
+      if (!containsDeletableFile.contains(element)) {
+        filteredImages.add(element);
+      }
+    }).toList();
     Navigator.of(context).pop(filteredImages);
   }
 }
