@@ -1,19 +1,17 @@
 class StoreEvaluationRequest {
   List<EvaluationData> _evaluationData;
   int _attemptId;
-  int _evaluationId;
 
   List<EvaluationData> get evaluationData => _evaluationData;
 
   int get attemptId => _attemptId;
 
-  int get evaluationId => _evaluationId;
 
   StoreEvaluationRequest(
-      List<EvaluationData> evaluationData, int attemptId, int evaluationId) {
+      List<EvaluationData> evaluationData, int attemptId) {
     _evaluationData = evaluationData;
     _attemptId = attemptId;
-    _evaluationId = evaluationId;
+
   }
 
   StoreEvaluationRequest.fromJson(dynamic json) {
@@ -24,7 +22,7 @@ class StoreEvaluationRequest {
       });
     }
     _attemptId = json["attempt_id"];
-    _evaluationId = json["evaluation_id"];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -33,13 +31,12 @@ class StoreEvaluationRequest {
       map["evaluation_data"] = _evaluationData.map((v) => v.toJson()).toList();
     }
     map["attempt_id"] = _attemptId;
-    map["evaluation_id"] = _evaluationId;
     return map;
   }
 
   @override
   String toString() {
-    return 'StoreEvaluationRequest{_evaluationData: $_evaluationData, _attemptId: $_attemptId, _evaluationId: $_evaluationId}';
+    return 'StoreEvaluationRequest{_evaluationData: $_evaluationData, _attemptId: $_attemptId, }';
   }
 
   @override
@@ -48,17 +45,16 @@ class StoreEvaluationRequest {
       other is StoreEvaluationRequest &&
           runtimeType == other.runtimeType &&
           _evaluationData == other._evaluationData &&
-          _attemptId == other._attemptId &&
-          _evaluationId == other._evaluationId;
+          _attemptId == other._attemptId ;
 
   @override
   int get hashCode =>
-      _evaluationData.hashCode ^ _attemptId.hashCode ^ _evaluationId.hashCode;
+      _evaluationData.hashCode ^ _attemptId.hashCode .hashCode;
 }
 
 class EvaluationData {
   int _questionId;
-  double _answer;
+  dynamic _answer;
   int _answerType;
 
   int get questionId => _questionId;
@@ -67,7 +63,7 @@ class EvaluationData {
 
   int get answerType => _answerType;
 
-  EvaluationData(int questionId, double answerDouble, int answerType) {
+  EvaluationData(int questionId, dynamic answer, int answerType) {
     _questionId = questionId;
     _answer = answer;
     _answerType = answerType;

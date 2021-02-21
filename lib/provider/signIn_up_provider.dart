@@ -5,7 +5,6 @@ import 'package:bench_test_service/service/exercise.dart';
 
 import 'package:flutter/material.dart';
 import 'package:bench_test_service/bench_test_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class SignInUp with ChangeNotifier {
@@ -51,7 +50,7 @@ class SignInUp with ChangeNotifier {
         userErrorText = null;
         emailErrorText = null;
       } else if(errorMessage =='Email already in Use.'){
-        emailErrorText = null;
+        emailErrorText = errorMessage;
         userErrorText = null;
         passwordErrorText = null;
       }
@@ -66,16 +65,19 @@ class SignInUp with ChangeNotifier {
       throw errorMessage;
     }
   }
-  Future<void> emailVerification(String email,int code)async{
+  Future<String> emailVerification(String email,int code)async{
     try{
      String message=await Exercise().emailVerification(email, code);
      emailVerified=true;
-     notifyListeners();
      print(message);
+     notifyListeners();
+     return message;
+
+
 
     }catch(error){
-      var json=jsonDecode(error.body);
-      throw json["message"];
+      print(error);
+      throw error;
     }
 
   }

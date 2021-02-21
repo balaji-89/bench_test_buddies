@@ -2,13 +2,11 @@ import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
 import 'package:bench_test_service/model/response/response_status.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../onboarding_screen/forget_password.dart';
 import '../onboarding_screen/sign_up_screen.dart';
-
 
 class SignInPage extends StatefulWidget {
   @override
@@ -166,7 +164,6 @@ class _SignInPageState extends State<SignInPage> {
                                     ? null
                                     : () async {
                                         FocusScope.of(context).unfocus();
-
                                         try {
                                           await Provider.of<SignIn>(context,
                                                   listen: false)
@@ -174,23 +171,21 @@ class _SignInPageState extends State<SignInPage> {
                                                   emailController.text,
                                                   passwordController.text,
                                                   context)
-
-
                                               .then((value) async {
                                             await Provider.of<Exercises>(
                                                     context,
                                                     listen: false)
-                                                .getAllExercise(value["token"]);
+                                                .getAllExercise(value.token);
                                             Navigator.of(context)
                                                 .pushReplacement(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             HomeExerciseList()));
                                           });
-                                         } on ErrorResponse catch (error) {
+                                        } on ErrorResponse catch (error) {
                                           print(error);
-                                        } 
-                                          catch (error) {
+                                        } catch (error) {
+                                          print(error);
                                           // showDialog(
                                           //     context: context,
                                           //     builder: (context) => AlertDialog(
@@ -207,7 +202,7 @@ class _SignInPageState extends State<SignInPage> {
                                           //                 child: Text('OK'))
                                           //           ],
                                           //         ));
-                                       }
+                                        }
                                       },
                               )),
                         ],

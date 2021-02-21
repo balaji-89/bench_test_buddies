@@ -39,16 +39,20 @@ class Exercise {
   }
 
   Future<String> emailVerification(String email,int code)async{
-    try{ http.Response response=await http.post('$baseUrl/email/verify',body: {
+    print('$email  $code');
+    try{
+      http.Response response=await http.post('$baseUrl/email/verify',body: {
       'email':email,
-      'code':code,
+      'code':code.toString(),
     });
     Map map=jsonDecode(response.body);
+    print('success $map');
     return map["message"];
 
     }catch(error){
+      print('error $error');
       var map=jsonDecode(error);
-      throw map;
+      throw map["message"];
     }
 
 
@@ -126,6 +130,22 @@ class Exercise {
 
   }
 
+  Future getEvaluationResultByAttempt(int attemptId,String token)async{
+       try{
+      http.Response response =await http.get("$baseUrl/evaluation/result/${attemptId.toString()}",headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      var convertedData=jsonDecode(response.body);
+      print(convertedData["data"]);
+      return convertedData["data"];
+    }catch(error){
+      print('here $error');
+      throw error;
+    }
+
+  }
+
   Future<StoreEvaluationResponse> storeEvaluation(
       StoreEvaluationRequest evaluationRequest, String token) async {
     try {
@@ -140,6 +160,8 @@ class Exercise {
       throw ErrorResponse(err.message);
     }
   }
+
+
 
   Future<String> saveBookmark(int evaluationId, String token) async {
     try {
@@ -168,6 +190,41 @@ class Exercise {
       throw ErrorResponse(err.message);
     }
   }
+
+  Future createAttempt(int exerciseId,String token)async{
+    try{
+      http.Response response =await http.post('$baseUrl/attempt/create',body: {
+      "exercise_id":exerciseId.toString()
+      },headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      });
+      dynamic convertedData=jsonDecode(response.body);
+      return convertedData["data"];
+    }catch(error){
+      throw error;
+    }
+
+  }
+
+  Future getSolutionForAQuestion(String token,int evaluationId)async{
+    try{
+      http.Response response =await http.get('$baseUrl/evaluation/solution/${evaluationId.toString()}',headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      });
+      var convertedData=jsonDecode(response.body);
+      return convertedData["data"];
+
+    }catch(error){
+      print('error in exercise');
+      throw (jsonDecode(error))["message"];
+
+    }
+
+  }
+
+
 
   Future<AttemptsResponse> getAttempts(int exerciseId,String token) async {
     try {

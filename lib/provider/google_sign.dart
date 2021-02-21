@@ -51,7 +51,7 @@ class GoogleSign with ChangeNotifier {
 
 // instead of returning true or false
 // returning user to directly access UserID
-  Future<User> signin(
+  Future<User> signIn(
       String email, String password, BuildContext context) async {
     try {
       UserCredential result =

@@ -1,4 +1,3 @@
-import 'package:bench_test_buddies/model/attempt_official_model.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
@@ -17,6 +16,7 @@ class ViewResultHome extends StatefulWidget {
   @override
   _ViewResultHomeState createState() => _ViewResultHomeState();
 }
+
 
 class _ViewResultHomeState extends State<ViewResultHome> {
 
@@ -61,7 +61,7 @@ class _ViewResultHomeState extends State<ViewResultHome> {
         ),
       ),
       body: FutureBuilder(
-          future: Provider.of<ViewResultProvider>(context, listen: true)
+          future: Provider.of<ViewResultProvider>(context, listen: false)
               .initializeData(userToken),
           builder: (context, snapshot) {
             if(snapshot.connectionState==ConnectionState.waiting){
@@ -70,6 +70,12 @@ class _ViewResultHomeState extends State<ViewResultHome> {
                   backgroundColor: Theme.of(context).primaryColor,
                 ),
               );
+            }
+            if(snapshot.hasError){
+               return AlertDialog(content: Text('Something went wrong'),actions: [TextButton(onPressed: (){
+                 Navigator.of(context).pop();
+                 Navigator.of(context).pop();
+               }, child: Text('Ok'))],);
             }
             return DefaultTabController(
               initialIndex: 0,

@@ -30,7 +30,6 @@ class _UploadedImageViewState extends State<UploadedImageView> {
         Provider.of<ExerciseStages>(context, listen: false)
             .findByStage(userData.currentSection);
 
-    print(widget.selectedImages.length);
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
         height: MediaQuery.of(context).size.height * 0.06,

@@ -15,11 +15,11 @@ class ImageQuestion extends StatefulWidget {
 
 class _ImageQuestionState extends State<ImageQuestion> {
   int userSelectedAnswer;
-  bool buttonColor=false;
+  bool yesButtonColor=false;
+  bool noButtonColor=false;
 
   @override
   Widget build(BuildContext context) {
-    print('executed');
     final userData = Provider.of<UserLevel>(context, listen: true).userData;
     final currentExerciseStages =
         Provider.of<ExerciseStages>(context, listen: false)
@@ -169,15 +169,17 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   Container(
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
+                    color:yesButtonColor==true?Theme.of(context).primaryColor:Colors.white,
                     child: OutlineButton(
-                      color: buttonColor==true?Theme.of(context).primaryColor:Colors.white,
+                      color: yesButtonColor==true?Theme.of(context).primaryColor:Colors.white,
+
                       borderSide: BorderSide(
                         style: BorderStyle.solid,
                         color: Colors.grey,
                       ),
                       onPressed: () {
                         setState(() {
-                          buttonColor=true;
+                          yesButtonColor=true;
                         });
                         Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(1);
                         if (!isLastQuestion) {
@@ -192,7 +194,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
                       child: Text(
                         "Yes",
                         style: TextStyle(
-                          color: buttonColor==true?Colors.white:Colors.black,
+                          color: yesButtonColor==true?Colors.white:Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -201,15 +203,16 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   Container(
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
+                    color:noButtonColor==true?Theme.of(context).primaryColor:Colors.white,
                     child: OutlineButton(
-                      color: buttonColor==true?Theme.of(context).primaryColor:Colors.white,
+                      color: noButtonColor==true?Theme.of(context).primaryColor:Colors.white,
                       borderSide: BorderSide(
                         color: Colors.grey,
                         style: BorderStyle.solid,
                       ),
                       onPressed: () {
                         setState(() {
-                          buttonColor=true;
+                          noButtonColor=true;
                         });
                         Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(0);
                         if (!isLastQuestion) {
@@ -224,7 +227,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
                       child: Text(
                         "No",
                         style: TextStyle(
-                          color: buttonColor==true?Colors.white:Colors.black,
+                          color: noButtonColor==true?Colors.white:Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

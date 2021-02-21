@@ -52,7 +52,9 @@ void main() async {
     ChangeNotifierProvider(
       create: (context) => ViewResultProvider(),
     ),
-  ], child: MyApp()));
+  ],
+
+      child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -52,9 +52,6 @@ class EvaluationsQuestionsProvider with ChangeNotifier {
       isLastQuestion = true;
       notifyListeners();
     }
-
-    print(currentQuestionIndex);
-    print(questions.length);
   }
 
   Question getQuestion() {
@@ -64,6 +61,7 @@ class EvaluationsQuestionsProvider with ChangeNotifier {
   Future<List<Question>> getExerciseQuestion(int id, String token) async {
     if (questions.isEmpty || questions == null) {
       try {
+        //TODO:must change the hard coded exercise ID to id
         var questionResponse = await Exercise().getExerciseEvaluation(2, token);
         questionResponse.data.map((singleData) {
           questions.add(Question(
@@ -85,8 +83,6 @@ class EvaluationsQuestionsProvider with ChangeNotifier {
         throw error;
       }
     }
-    print('provider $questions');
-
     return questions;
   }
 
@@ -95,6 +91,7 @@ class EvaluationsQuestionsProvider with ChangeNotifier {
     int questionId = currentQuestion.questionId;
     int answerType = currentQuestion.answerType;
     if (answerType == 1) {
+      //if the answer is boolean it will be stored in answerBoolean else answerDouble
       userAnswers.add(Question(
         questionId: questionId,
         answerType: answerType,
@@ -104,32 +101,33 @@ class EvaluationsQuestionsProvider with ChangeNotifier {
       userAnswers.add(Question(
         questionId: questionId,
         answerType: answerType,
-        answerDouble: answer,
+        answerDouble: answer, //as it is received as double as a parameter
       ));
     }
+
   }
 
   Future<ScoreCardModel> storeAndGetEvaluationData(
-      {String token, int exerciseId, int evaluationId}) async {
-    List<EvaluationData> data;
+      {int attemptId, String token}) async {
+    List<EvaluationData> data=[];
     ScoreCardModel responseResult;
     userAnswers.map((answers) {
       if (answers.answerType == 1) {
-        double answer = answers.answerBoolean.toDouble();
-        data.add(
-            EvaluationData(answers.questionId, answer, answers.answerType));
+        data.add(EvaluationData(
+            answers.questionId, answers.answerBoolean, answers.answerType));
       } else {
         data.add(EvaluationData(
             answers.questionId, answers.answerDouble, answers.answerType));
       }
-    });
+    }).toList();
     try {
       StoreEvaluationResponse response = await Exercise()
-          .storeEvaluation(StoreEvaluationRequest(data, exerciseId, 2), token);
+          .storeEvaluation(StoreEvaluationRequest(data, attemptId), token);
       responseResult = ScoreCardModel(
-        maxScore: int.parse(response.data.maxScore),
+        //TODO: change the hard code numbers as the response is null
+        maxScore: int.parse('20'),//response.data.maxScore
         expectedScore: int.parse(response.data.expectedScore),
-        actualScore: int.parse(response.data.actualScore),
+        actualScore: int.parse('10'),//response.data.actualScore
         buddyWords: response.data.buddyWord,
       );
     } catch (error) {
@@ -137,4 +135,6 @@ class EvaluationsQuestionsProvider with ChangeNotifier {
     }
     return responseResult;
   }
+
+
 }

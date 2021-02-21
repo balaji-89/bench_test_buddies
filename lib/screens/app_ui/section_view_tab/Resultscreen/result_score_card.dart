@@ -1,11 +1,11 @@
 import 'package:bench_test_buddies/model/attempt_official_model.dart';
-import 'package:bench_test_buddies/provider/attempt_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
-import 'package:provider/provider.dart';
 
 class ResultsScoreCard extends StatelessWidget {
   final ScoreCardModel userResults;
+
+
 
   ResultsScoreCard({this.userResults});
 

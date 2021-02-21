@@ -25,7 +25,7 @@ class _ViewSolutionState extends State<ViewSolution>
   @override
   void initState() {
     super.initState();
-    // Create TabController for getting the index of current tab
+    // Created TabController for getting the index of current tab
     _controller = TabController(length: list.length, vsync: this);
     _controller.addListener(() {
       setState(() {

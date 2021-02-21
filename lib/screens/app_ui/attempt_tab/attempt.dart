@@ -77,11 +77,14 @@ class AttemptTab extends StatelessWidget {
                   ],
                 )),
             Container(
-              height: mediaQueryHeight*85,
+              height: mediaQueryHeight*8.2,
               width: mediaQueryWidth,
               color: Colors.white,
               padding: EdgeInsets.only(top:mediaQueryHeight*0.012),
-              child: ListView.builder(itemCount:exerciseAttempt.length,itemBuilder:(context,index)=>AttemptCard(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                  itemCount:exerciseAttempt.length,
+                  itemBuilder:(context,index)=>AttemptCard(
                  attemptedId:exerciseAttempt[index].attemptId ,
                  attemptedDate: exerciseAttempt[index].attemptedOn,
                  scoreCard: null,

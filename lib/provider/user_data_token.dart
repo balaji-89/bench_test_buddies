@@ -20,6 +20,7 @@ class UserLogData with ChangeNotifier {
     await Provider.of<CountryProvider>(context, listen: false)
         .initialiseCountry();
     await Provider.of<CountryProvider>(context, listen: false)
+
         .getQuestionsSet();}
   }
 

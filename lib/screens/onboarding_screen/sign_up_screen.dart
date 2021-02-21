@@ -91,7 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     builder: (context) =>
                         EmailVerification(
                           emailController
-                              .text,
+                              .text,""//empty String to verify know whether userNAme is already exists or not
                         )));
           });
         } catch (error) {
@@ -103,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     builder: (context) =>
                         EmailVerification(
                           emailController
-                              .text,
+                              .text,error
                         )));
           }
         }

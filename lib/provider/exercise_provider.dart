@@ -19,6 +19,7 @@ class Exercises with ChangeNotifier {
     }).toList();
   }
   Future getAllExercise(String token) async {
+    if(_exercises.isEmpty)
     try {
       var dartList=await Exercise().getAllExercise(token);
       listToExerciseModel(dartList);

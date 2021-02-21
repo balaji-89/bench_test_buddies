@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'degree.dart';
 
+//As it is not used in app I am not using this value entering in mm screen
+
 class ValueScreen extends StatefulWidget {
   @override
   _ValueScreenState createState() => _ValueScreenState();

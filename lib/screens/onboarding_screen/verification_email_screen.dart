@@ -1,5 +1,6 @@
+import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
-import 'package:bench_test_buddies/screens/onboarding_screen/sign_up_screen.dart';
+import 'package:bench_test_buddies/screens/onboarding_screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
@@ -7,8 +8,9 @@ import 'package:provider/provider.dart';
 
 class EmailVerification extends StatefulWidget {
   final String email;
+  final String errorMessage;
 
-  EmailVerification(this.email);
+  EmailVerification(this.email, this.errorMessage);
 
   @override
   _EmailVerificationState createState() => _EmailVerificationState();
@@ -16,22 +18,24 @@ class EmailVerification extends StatefulWidget {
 
 class _EmailVerificationState extends State<EmailVerification> {
   String receivedCode;
+  bool resendClicked = false;
 
   bool isLoading = false;
-  final GlobalKey<ScaffoldState> _scaffoldKey=GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     bool isKeyboardVisibility =
         MediaQuery.of(context).viewInsets.bottom != 0.0 ? true : false;
 
-      showSnackBar(){
-       return _scaffoldKey.currentState.showSnackBar(SnackBar(
-         content: Text("The verification code is sent",
-             style: TextStyle(color: Colors.white)),
-         backgroundColor: Colors.black,
-       ));
-     }
+    showSnackBar() {
+      return _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("The verification code is sent",
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
+      ));
+    }
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -106,7 +110,6 @@ class _EmailVerificationState extends State<EmailVerification> {
                           setState(() {
                             receivedCode = enteredCode;
                           });
-
                         },
                         highlightPinBoxColor: Theme.of(context).primaryColor,
                         defaultBorderColor: Colors.white,
@@ -152,31 +155,52 @@ class _EmailVerificationState extends State<EmailVerification> {
                             await Provider.of<SignInUp>(context, listen: false)
                                 .emailVerification(
                                     widget.email, int.parse(receivedCode))
-                                .whenComplete(() {
-                              setState(() {
-                                isLoading = false;
-                              });
-
-                              showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: Text('Email Verified'),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text('Ok'))
-                                          ],
-                                        );
-                                      })
-                                  .whenComplete(() => Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
-                                          builder: (context) => SignUpPage())));
+                                .then((value) {
+                              print('value $value');
+                              if (value == "Email verified" ||
+                                  value == 'The code must be 6 digits.')
+                                showDialog(
+                                    context: _scaffoldKey.currentContext,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: Text('Email Verified'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                if (widget.errorMessage ==
+                                                    "Email already in Use.") {
+                                                  Navigator.of(context)
+                                                      .pushReplacement(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  SignInPage()));
+                                                } else {
+                                                  Navigator.of(context)
+                                                      .pushReplacement(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  SetupScreen()));
+                                                }
+                                              },
+                                              child: Text('Ok'))
+                                        ],
+                                      );
+                                    });
                             });
                           } catch (errorMessage) {
-                            print("$errorMessage");
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      content: Text('$errorMessage'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Ok"))
+                                      ],
+                                    ));
                           }
                         }
                       },
@@ -200,28 +224,37 @@ class _EmailVerificationState extends State<EmailVerification> {
                           ),
                           child: InkWell(
                             onTap: () async {
-                              try {
-                                await Provider.of<SignInUp>(context,
-                                        listen: false)
-                                    .resendCodeForVerification(widget.email).whenComplete(() {
-                                  showSnackBar();
+                              if (resendClicked == false) {
+                                setState(() {
+                                  resendClicked = true;
                                 });
 
-                              } catch (error) {
-                                print('${error["message"]}');
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          title: Text('Error'),
-                                          content: Text('$error'),
-                                          actions: [
-                                            FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text('OK'))
-                                          ],
-                                        ));
+                                try {
+                                  await Provider.of<SignInUp>(context,
+                                          listen: false)
+                                      .resendCodeForVerification(widget.email)
+                                      .whenComplete(() {
+                                    showSnackBar();
+                                    setState(() {
+                                      resendClicked = false;
+                                    });
+                                  });
+                                } catch (error) {
+                                  print('${error["message"]}');
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Error'),
+                                            content: Text('$error'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('OK'))
+                                            ],
+                                          ));
+                                }
                               }
                             },
                             child: Text(
@@ -229,7 +262,9 @@ class _EmailVerificationState extends State<EmailVerification> {
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
+                                color: resendClicked == true
+                                    ? Colors.black12
+                                    : Theme.of(context).primaryColor,
                               ),
                             ),
                           ),
