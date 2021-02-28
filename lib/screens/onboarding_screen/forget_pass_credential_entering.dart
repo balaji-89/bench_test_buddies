@@ -1,20 +1,17 @@
-import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
+import 'package:bench_test_buddies/screens/onboarding_screen/succeeded_forget_password.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../onboarding_screen/sign_in_screen.dart';
-import 'verification_email_screen.dart';
-
-class SignUpPage extends StatefulWidget {
+class ForgetPassScreen extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _ForgetPassScreenState createState() => _ForgetPassScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController userController = TextEditingController();
+class _ForgetPassScreenState extends State<ForgetPassScreen> {
+  final TextEditingController codeController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
 
   bool disableButton = true;
   var formKey = GlobalKey<FormState>();
@@ -22,7 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     passwordController.addListener(() {
-      if (passwordController.text.isEmpty) {
+      if (passwordController.text.isEmpty&&confirmPassword.text.isEmpty) {
         setState(() {
           disableButton = true;
         });
@@ -50,62 +47,49 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    passwordController.removeListener(() {});
+    codeController.dispose();
+    passwordController.dispose();
+    confirmPassword.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
 
     bool isLoading = Provider.of<SignInUp>(context).isLoading;
 
-    Future logInFunction()async{
+    Future changePassword() async {
       FocusScope.of(context).unfocus();
       if (formKey.currentState.validate()) {
+        setState(() {
+          isLoading=true;
+        });
         try {
-          await Provider.of<SignInUp>(
-              context,
-              listen: false)
-              .signUp(
-              userController.text,
-              emailController.text,
-              passwordController.text,
-              passwordController.text,
-              context
-          )
-              .then((value) {
-            if (Provider.of<SignInUp>(
-                context,listen:false)
-                .emailVerified ==
-                true) {
-              return Navigator.of(context)
-                  .pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SetupScreen()));
-            }
-            if (Provider.of<SignInUp>(
-                context,listen:false)
-                .emailVerified !=
-                true)
-             Navigator.of(context)
-                .pushReplacement(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        EmailVerification(
-                          emailController
-                              .text,""//empty String to verify know whether userNAme is already exists or not
-                        )));
-          });
+           await Provider.of<SignIn>(context,listen:false).changeUserPassword(confirmPassword.text,codeController.text,context)
+               .then((value) {
+                 setState(() {
+                   isLoading=false;
+                 });
+                 if(value!=null){
+                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SucceededPasswordScreen(
+                       Provider.of<SignIn>(context,listen: false).forgetEmailId
+                   )));
+                 }
+           });
+
         } catch (error) {
-          if (error ==
-              "Email already in Use.") {
-            Navigator.of(context)
-                .pushReplacement(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        EmailVerification(
-                          emailController
-                              .text,error
-                        )));
-          }
+          showDialog(context: context,builder: (context)=>AlertDialog(
+            title: Text('${error["message"]}'),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.of(context).pop();
+              }, child: Text('Ok'))
+            ],
+          ));
         }
       }
     }
@@ -113,30 +97,17 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-          iconTheme: IconThemeData(
-            color: Color(0xFF1a1a4b),
-          ),
-          centerTitle: true,
-          title: Text(
-            'Sign up',
-            style: TextStyle(color: Color(0xFF232323), fontSize: 20),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 1,
-          actions: <Widget>[
-            FlatButton(
-              textColor: Colors.blueAccent,
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SignInPage()));
-              },
-              child: Text(
-                "Sign in",
-                style: TextStyle(fontSize: 16),
-              ),
-              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-            ),
-          ]),
+        iconTheme: IconThemeData(
+          color: Color(0xFF1a1a4b),
+        ),
+        centerTitle: true,
+        title: Text(
+          'Forgot Password',
+          style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 1,
+      ),
       body: Stack(
         children: [
           SizedBox(
@@ -161,9 +132,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           children: [
                             TextFormField(
                               decoration: InputDecoration(
-                                labelText: 'User Name',
+                                labelText: 'Code received in mail',
                                 labelStyle: TextStyle(color: Colors.grey),
-                                errorText: instance.userErrorText,
                                 errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Color(0xFFFF0000), width: 2.0),
@@ -173,37 +143,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                       color: Color(0xFFFF0000), width: 2.0),
                                 ),
                               ),
-                              keyboardType: TextInputType.name,
-                              controller: userController,
+                              keyboardType: TextInputType.number,
+                              controller: codeController,
                               textInputAction: TextInputAction.next,
                               validator: (String enteredValue) {
                                 if (enteredValue == null ||
                                     enteredValue == '') {
-                                  return 'The name field is required';
+                                  return 'The code field is required';
+                                } else if (enteredValue.length >= 5) {
+                                  return 'Invalid code';
                                 }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Email Address',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                errorText: instance.emailErrorText,
-                                errorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0)),
-                                focusedErrorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0)),
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              controller: emailController,
-                              textInputAction: TextInputAction.next,
-                              validator: (String enteredEmailAdd) {
-                                if (enteredEmailAdd.isEmpty ||
-                                    enteredEmailAdd == null ||
-                                    !enteredEmailAdd.contains('@'))
-                                  return 'Enter valid Email Address';
                                 return null;
                               },
                             ),
@@ -211,9 +160,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 builder: (context, classObject, child) {
                               return TextFormField(
                                 decoration: InputDecoration(
-                                    labelText: 'Password',
+                                    labelText: ' New Password',
                                     labelStyle: TextStyle(color: Colors.grey),
-                                    errorText: instance.passwordErrorText,
                                     errorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Color(0xFFFF0000), width: 2.0),
@@ -232,10 +180,38 @@ class _SignUpPageState extends State<SignUpPage> {
                                     )),
                                 keyboardType: TextInputType.visiblePassword,
                                 controller: passwordController,
-                                textInputAction: TextInputAction.done,
+                                textInputAction: TextInputAction.next,
                                 obscureText: classObject.passwordInvisible,
                                 validator: (String enteredPassword) {
                                   return passwordValidation(enteredPassword);
+                                },
+                              );
+                            }),
+                            Consumer<SignInUp>(
+                                builder: (context, classObject, child) {
+                              return TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: 'Confirm Password',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  errorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color(0xFFFF0000), width: 2.0),
+                                  ),
+                                  focusedErrorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color(0xFFFF0000), width: 2.0),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.visiblePassword,
+                                controller: confirmPassword,
+                                textInputAction: TextInputAction.done,
+                                obscureText: true,
+                                validator: (String enteredPassword) {
+                                  if (enteredPassword.trim() !=
+                                      passwordController.text.trim()) {
+                                    return 'Wrong password';
+                                  }
+                                  return null;
                                 },
                               );
                             }),
@@ -245,16 +221,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: RaisedButton(
                                   textColor: disableButton
-                                      ? Color(0xFF232323)
+                                      ? Colors.black
                                       : Colors.white,
                                   color: disableButton
-                                      ? Color(0xFF4667EE)
+                                      ? Theme.of(context).accentColor
                                       : Theme.of(context).primaryColor,
-                                  child: Text('Sign up'),
+                                  child: Text('Change password'),
                                   onPressed: disableButton
                                       ? null
                                       : () async {
-                                        await logInFunction();
+                                          await changePassword();
                                         },
                                 )),
                           ],
@@ -275,16 +251,16 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextSpan(
                           text: 'By Signing up you are agree to our  ',
                           style: TextStyle(
-                            color: Color(0xFF232323),
+                            color: Colors.black54,
                             fontSize: 12.0,
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         TextSpan(
                           text: 'terms and policy',
                           style: TextStyle(
                             decoration: TextDecoration.underline,
-                            color: Color(0xFF232323),
+                            color: Colors.black,
                             fontSize: 13.0,
                             fontWeight: FontWeight.bold,
                           ),
@@ -308,14 +284,5 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    passwordController.removeListener(() {});
-    userController.dispose();
-    passwordController.dispose();
-    emailController.dispose();
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../upload_image_screen/uploaded_images.dart';
+import '../upload_image_screen/image_section_home.dart';
 
 class TaskFinishedTimerScreen extends StatefulWidget {
   final String exerciseName;
@@ -75,7 +75,7 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
         title: Text('Timer Summary',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF232323),
                 fontSize: 18,
                 letterSpacing: 0.7)),
         elevation: 1,
@@ -93,7 +93,7 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                     '${widget.exerciseName}',
                     style: TextStyle(
                       fontSize: 17,
-                      color: Colors.black,
+                      color: Color(0xFF232323),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -116,10 +116,10 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                           Text(
                             '${attemptKey[index]}:',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Color(0xFF232323),
                               wordSpacing: 0.4,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                           ),
                           if (index <= 2)
@@ -135,9 +135,9 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                                           '${DateFormat.m().format(attemptValue[index])}m'),
                                 ],
                                 style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 22,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.blue,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),
@@ -145,9 +145,9 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                             Text(
                               '${DateFormat().add_jm().format(attemptValue[index])}',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 21,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                         ],

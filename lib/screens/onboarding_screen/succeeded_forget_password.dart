@@ -1,4 +1,6 @@
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
+import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
+import 'package:bench_test_buddies/screens/onboarding_screen/get_started_screen.dart';
 import 'package:flutter/material.dart';
 
 class SucceededPasswordScreen extends StatelessWidget {
@@ -19,7 +21,7 @@ class SucceededPasswordScreen extends StatelessWidget {
         ),
         centerTitle: true,
         title: Text(
-          'Forgot Password',
+          'Password changed',
           style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
         ),
         backgroundColor: Colors.white,
@@ -71,11 +73,11 @@ class SucceededPasswordScreen extends StatelessWidget {
                       child: RaisedButton(
                         textColor: Colors.white,
                         color: Color(0xFF4667EE),
-                        child: Text('Open Email App'),
+                        child: Text('Go to homepage'),
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => SetupScreen()));
+                                  builder: (context) => HomeExerciseList()));
                         },
                       )),
                 ],

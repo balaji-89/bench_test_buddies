@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:bench_test_buddies/provider/user_data_token.dart';
-import 'package:bench_test_service/service/exercise.dart';
-
-import 'package:flutter/material.dart';
 import 'package:bench_test_service/bench_test_service.dart';
+import 'package:bench_test_service/service/exercise.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SignInUp with ChangeNotifier {
@@ -15,14 +12,16 @@ class SignInUp with ChangeNotifier {
   bool passwordInvisible = true;
 
   bool isLoading = false;
-  bool emailVerified=false;
+  bool emailVerified = false;
   var logInResponse;
+
   void changePasswordVisibility() {
     passwordInvisible = !passwordInvisible;
     notifyListeners();
   }
 
-  Future<void> signUp(userName, emailAddress, password, confirmPassword,context) async {
+  Future<void> signUp(
+      userName, emailAddress, password, confirmPassword, context) async {
     userErrorText = null;
     emailErrorText = null;
     passwordErrorText = null;
@@ -31,8 +30,9 @@ class SignInUp with ChangeNotifier {
     try {
       RegisterResponse registerResponse = await User().register(
           RegisterRequest(userName, emailAddress, password, password));
-       logInResponse = registerResponse.data;
-      await Provider.of<UserLogData>(context,listen:false).assigningData(logInResponse,context,"signUp");
+      logInResponse = registerResponse.data;
+      await Provider.of<UserLogData>(context, listen: false)
+          .assigningData(logInResponse, context, "signUp");
       isLoading = false;
       notifyListeners();
     } on ErrorResponse catch (error) {
@@ -49,12 +49,11 @@ class SignInUp with ChangeNotifier {
         passwordErrorText = errorMessage;
         userErrorText = null;
         emailErrorText = null;
-      } else if(errorMessage =='Email already in Use.'){
+      } else if (errorMessage == 'Email already in Use.') {
         emailErrorText = errorMessage;
         userErrorText = null;
         passwordErrorText = null;
-      }
-      else if (errorMessage.contains('email') ||
+      } else if (errorMessage.contains('email') ||
           (errorMessage.contains('Email'))) {
         emailErrorText = errorMessage;
         userErrorText = null;
@@ -65,40 +64,36 @@ class SignInUp with ChangeNotifier {
       throw errorMessage;
     }
   }
-  Future<String> emailVerification(String email,int code)async{
-    try{
-     String message=await Exercise().emailVerification(email, code);
-     emailVerified=true;
-     print(message);
-     notifyListeners();
-     return message;
 
-
-
-    }catch(error){
-      print(error);
+  Future<String> emailVerification(String email, int code) async {
+    try {
+      String message = await Exercise().emailVerification(email, code);
+      emailVerified = true;
+      print('message $message');
+      notifyListeners();
+      return message;
+    } catch (error) {
+      print('error $error');
       throw error;
     }
-
   }
-   Future resendCodeForVerification(String mail)async{
-      try{
-         String  message=await Exercise().resendEmailVerification(mail);
-         print(message);
-        }
-      catch(error){
-        throw jsonDecode(error);
-      }
+
+  Future<String> resendCodeForVerification(String mail) async {
+    try {
+      String message = await Exercise().resendEmailVerification(mail);
+      return message;
+    } catch (error) {
+      throw error;
+    }
   }
 }
-
 
 class SignIn with ChangeNotifier {
   String emailErrorText;
   String passwordErrorText;
 
   bool passwordInvisible = true;
-
+  String forgetEmailId;
   bool isLoading = false;
 
   void changePasswordVisibility() {
@@ -106,8 +101,9 @@ class SignIn with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> signIn(emailAddress, password,context) async {
+  Future<dynamic> signIn(emailAddress, password, context) async {
     emailErrorText = null;
+
     passwordErrorText = null;
     isLoading = true;
     notifyListeners();
@@ -115,7 +111,8 @@ class SignIn with ChangeNotifier {
       LoginResponse logIn =
           await User().login(LoginRequest(emailAddress, password));
       var userData = logIn.data;
-      await Provider.of<UserLogData>(context,listen:false).assigningData(userData,context,"signIn");
+      await Provider.of<UserLogData>(context, listen: false)
+          .assigningData(userData, context, "signIn");
       return userData;
     } on ErrorResponse catch (error) {
       isLoading = false;
@@ -137,19 +134,26 @@ class SignIn with ChangeNotifier {
     }
   }
 
-
-  Future<void> sendTheLink(String emailAddress) async {
+  Future<String> sendTheLink(String emailAddress) async {
     emailErrorText = null;
+    forgetEmailId = emailAddress;
     try {
-      isLoading = true;
-      notifyListeners();
-      String response = await User().forgotPassword(emailAddress);
-      isLoading = false;
-      notifyListeners();
+      String response = await User().forgotPassword(forgetEmailId);
+      return response;
     } on ErrorResponse catch (error) {
-      isLoading = false;
       emailErrorText = error.message;
-      notifyListeners();
+      throw emailErrorText;
+    }
+  }
+
+  Future changeUserPassword(String newPassword, String code, context) async {
+    try {
+      LoginResponse userData =
+          await User().resetPassword(forgetEmailId, newPassword, code);
+      await Provider.of<UserLogData>(context, listen: false)
+          .assigningData(userData.data, context, "signIn");
+      return userData.message;
+    } catch (error) {
       throw error;
     }
   }

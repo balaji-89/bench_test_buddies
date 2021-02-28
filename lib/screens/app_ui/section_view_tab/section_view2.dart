@@ -1,15 +1,16 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/exercise_timer_home.dart';
-import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:im_stepper/stepper.dart';
 
 import 'Evaluationscreen/evaluation_home.dart';
 import 'Resultscreen/view_result_home.dart';
-import 'upload_image_screen/uploaded_images.dart';
+import 'upload_image_screen/image_section_home.dart';
 
 class SectionViewTwo extends StatelessWidget {
   @override
@@ -34,7 +35,15 @@ class SectionViewTwo extends StatelessWidget {
 
     final numbers =
         Provider.of<ExerciseStages>(context).getPositionsOfExerciseStages;
-    List<int> addingFinishedExerciseForDotIndicator=[];
+    List<int> addingFinishedExerciseForDotIndicator = [];
+
+    bool whetherNumberIsFinished(int number) {
+      if (number <= userFinishedExercise.length) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     return Scaffold(
       body: isLoading == true
@@ -82,38 +91,81 @@ class SectionViewTwo extends StatelessWidget {
                               ),
                             )),
                         SizedBox(
-                          height: constraints.maxHeight * 0.5,
-                          width: constraints.maxWidth * 0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: NumberStepper(
-                                  activeStep: userFinishedExercise.length-1,
-                                  numbers: numbers,
-                                  numberStyle: TextStyle(color: Colors.white),
-                                  activeStepColor: Theme.of(context).primaryColor,
-                                  activeStepBorderColor: Theme.of(context).accentColor,
-                                  direction: Axis.horizontal,
-                                  stepColor: Colors.grey,
-                                  stepReachedAnimationEffect: Curves.easeInOut,
-                                  lineColor: Colors.blue,
-                                  lineDotRadius: 1,
-                                  lineLength: constraints.maxWidth * 0.155,
-                                  scrollingDisabled: true,
-                                  steppingEnabled: true,
-                                  stepRadius: constraints.maxHeight * 0.14,
-                                  enableStepTapping: false,
-                                  enableNextPreviousButtons: false,
-                                  onStepReached: (int){
-                                    addingFinishedExerciseForDotIndicator.add(int);
-                                  },
+                            height: constraints.maxHeight * 0.5,
+                            width: constraints.maxWidth * 0.8,
+                            child: ListView.separated(
+                              itemCount: numbers.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Container(
+                                height: constraints.maxHeight * 0.39,
+                                width: constraints.maxWidth * 0.1,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color:
+                                      whetherNumberIsFinished(numbers[index]) ==
+                                              true
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.white,
+                                  border: Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 1.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  numbers[index].toString(),
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: whetherNumberIsFinished(
+                                                numbers[index]) ==
+                                            true
+                                        ? Colors.white
+                                        : Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
+                              separatorBuilder: (context, index) {
+                                if (whetherNumberIsFinished(numbers[index]) ==
+                                    true) {
+                                  return Padding(
+                                    padding:EdgeInsets.only(left:constraints.maxWidth*0.0035,right: constraints.maxWidth*0.0035),
+                                    child: SizedBox(
+                                      width: constraints.maxWidth * 0.122,
+                                      child: Divider(
+                                        color: Theme.of(context).primaryColor,
+                                        thickness: 1.2,
+                                        indent: 2,
+                                        endIndent: 2,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding:EdgeInsets.only(right: constraints.maxWidth*0.01),
+                                    child: SizedBox(
+                                      width: constraints.maxWidth * 0.122,
+                                      child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) =>
+                                              SizedBox(
+                                                width: constraints.maxWidth*0.035,
+                                                child: Divider(
+                                                  thickness: 1,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  indent: 3,
+                                                  endIndent: 3,
+                                                ),
+                                              )),
+                                    ),
+                                  );
+                                }
+                              },
+                            )),
+
                         SizedBox(
                             height: constraints.maxHeight * 0.3,
                             width: constraints.maxWidth * 0.9,
@@ -139,10 +191,11 @@ class SectionViewTwo extends StatelessWidget {
                 ),
                 Container(
                   height: ((() {
-                    if(currentExerciseStage['step']==Stages.Completed_stage){
+                    if (currentExerciseStage['step'] ==
+                        Stages.Completed_stage) {
                       return MediaQuery.of(context).size.height * 0.05;
                     }
-                    if(userUpcomingStage.isEmpty){
+                    if (userUpcomingStage.isEmpty) {
                       return MediaQuery.of(context).size.height * 0.22;
                     }
                     switch (userUpcomingStage.length) {
@@ -152,7 +205,6 @@ class SectionViewTwo extends StatelessWidget {
                       case 2:
                         return MediaQuery.of(context).size.height * 0.50;
                         break;
-
                     }
                   }())),
                   color: Colors.white,
@@ -160,99 +212,96 @@ class SectionViewTwo extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if(currentExerciseStage['step']!=Stages.Completed_stage)
-                      Padding(
-                        padding: EdgeInsets.only(top: 15, left: 15),
-                        child: Text(
-                          'Inprogress section',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w700),
+                      if (currentExerciseStage['step'] !=
+                          Stages.Completed_stage)
+                        Padding(
+                          padding: EdgeInsets.only(top: 15, left: 15),
+                          child: Text(
+                            'Inprogress section',
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
-                      ),
-                      if(currentExerciseStage['step']!=Stages.Completed_stage)
-                      InkWell(
-                        onTap: (){
-                          switch (currentExerciseStage['step']) {
-                            case Stages.Start_the_exercise:
-                              {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ExerciseTimerHome()));
-                              }
-                              break;
-                            case Stages.Uploaded_images:
-                              {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PractisedImages()));
-                              }
-                              break;
-                            case Stages.Evaluate_the_result:
-                              {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              EvaluationHome()));
-                              }
-
-                              break;
-                            case Stages.View_the_results:
-                              {
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewResultHome()));
+                      if (currentExerciseStage['step'] !=
+                          Stages.Completed_stage)
+                        InkWell(
+                          onTap: () {
+                            switch (currentExerciseStage['step']) {
+                              case Stages.Start_the_exercise:
+                                {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ExerciseTimerHome()));
+                                }
                                 break;
-                              }
-                          }
-                        },
-                        child: HeadingCard(
-                          iconPath: currentExerciseStage['icon'],
-                          arrow:true,
-                          stageName: currentExerciseStage['stage'],
-                        ),
-                      ),
-                      if(userUpcomingStage.isNotEmpty)
-                      Padding(
-                        padding: EdgeInsets.only(top: 15, left: 15),
-                        child: Text(
-                          'Upcoming section',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      if(userUpcomingStage.isNotEmpty)
-                      SizedBox(
-                        height: ((() {
-                          switch (userUpcomingStage.length) {
-                            case 1:
-                              return MediaQuery.of(context).size.height * 0.12;
-                              break;
-                            case 2:
-                              return MediaQuery.of(context).size.height * 0.23;
-                              break;
-                            case 3:
-                              return MediaQuery.of(context).size.height * 0.35;
-                          }
+                              case Stages.Uploaded_images:
+                                {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PractisedImages()));
+                                }
+                                break;
+                              case Stages.Evaluate_the_result:
+                                {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => EvaluationHome()));
+                                }
 
-                        }())),
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: userUpcomingStage.length,
-                          itemBuilder: (context, index) => SizedBox(
-                            width: double.infinity,
-                            child: HeadingCard(
-                              iconPath: userUpcomingStage[index]['icon'],
-                              arrow:false,
-                              stageName: userUpcomingStage[index]['stage'],
+                                break;
+                              case Stages.View_the_results:
+                                {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ViewResultHome()));
+                                  break;
+                                }
+                            }
+                          },
+                          child: HeadingCard(
+                            iconPath: currentExerciseStage['icon'],
+                            arrow: true,
+                            stageName: currentExerciseStage['stage'],
+                          ),
+                        ),
+                      if (userUpcomingStage.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(top: 15, left: 15),
+                          child: Text(
+                            'Upcoming section',
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      if (userUpcomingStage.isNotEmpty)
+                        SizedBox(
+                          height: ((() {
+                            switch (userUpcomingStage.length) {
+                              case 1:
+                                return MediaQuery.of(context).size.height *
+                                    0.12;
+                                break;
+                              case 2:
+                                return MediaQuery.of(context).size.height *
+                                    0.23;
+                                break;
+                              case 3:
+                                return MediaQuery.of(context).size.height *
+                                    0.35;
+                            }
+                          }())),
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: userUpcomingStage.length,
+                            itemBuilder: (context, index) => SizedBox(
+                              width: double.infinity,
+                              child: HeadingCard(
+                                iconPath: userUpcomingStage[index]['icon'],
+                                arrow: false,
+                                stageName: userUpcomingStage[index]['stage'],
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 15, left: 15),
                         child: Text(

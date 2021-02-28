@@ -29,7 +29,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
   bool isEvaluationClicked = false;
   int selectedAttemptId;
   int selectedQuestionItemToView;
-  bool bookMarkStatus;
+  bool isBookMarked;
 
   @override
   void initState() {
@@ -41,12 +41,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
         .inCorrectAttemptId;
     isTrueForAllType = Provider.of<ViewResultProvider>(context, listen: false)
         .isTrueForAllType;
-    bookMarkStatus = Provider.of<ViewResultProvider>(context, listen: false)
-                .individualQuestion
-                .bookmarkStatus ==
-            0
-        ? false
-        : true;
+
     checkBoxKeys = checkBoxItems.keys.toList();
     super.initState();
   }
@@ -64,9 +59,16 @@ class _ViewSolutionsState extends State<ViewSolutions> {
   }
 
   Widget bookMarkButton(constraints) {
+    isBookMarked = Provider.of<ViewResultProvider>(context, listen: false)
+                .individualQuestion
+                .bookmarkStatus ==
+            0
+        ? false
+        : true;
     return InkWell(
       onTap: () {
-        if (bookMarkStatus == true) {
+        if (isBookMarked == true) {
+          //TODO:un bookmark function
         } else {
           Provider.of<ViewResultProvider>(context, listen: false)
               .storeBookMarks(
@@ -75,25 +77,25 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                       .id,
                   Provider.of<UserLogData>(context, listen: false).token);
           setState(() {
-            bookMarkStatus = true;
+            isBookMarked = true;
           });
         }
       },
       child: Container(
         height: constraints.maxHeight * 0.056,
         width: constraints.maxWidth * 0.4,
-        padding: EdgeInsets.all(5),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: bookMarkStatus == true
+          color: isBookMarked == true
               ? Colors.grey.withOpacity(0.6)
               : Colors.orangeAccent,
           borderRadius: BorderRadiusDirectional.circular(3),
         ),
         child: Text(
-          bookMarkStatus == true ? 'UnBookmark' : 'Bookmark',
+          isBookMarked == true ? 'UnBookmark' : 'Bookmark',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: bookMarkStatus == true ? Colors.black : Colors.white,
+            color: isBookMarked == true ? Colors.black : Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -131,6 +133,8 @@ class _ViewSolutionsState extends State<ViewSolutions> {
               activeColor: Theme.of(context).primaryColor,
               value: checkBoxItems[checkBoxKeys[index]],
               onChanged: (bool changed) {
+                isEvaluationClicked = false;
+                selectedAttemptId = null;
                 if (checkedIndex != index) {
                   checkedIndex = index;
                   changeCheckBoxState(checkBoxKeys[index], changed);
@@ -359,7 +363,10 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Question?',
+                                      Provider.of<ViewResultProvider>(context,
+                                              listen: false)
+                                          .individualQuestion
+                                          .question,
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w700,
@@ -423,6 +430,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                             divider(mediaQuery),
                             Container(
                                 height: constraints.maxHeight * 0.19,
+                                alignment: Alignment.topLeft,
                                 padding: EdgeInsets.symmetric(
                                     vertical: 14, horizontal: 7),
                                 child: Column(
@@ -455,6 +463,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                             divider(mediaQuery),
                             Container(
                                 height: constraints.maxHeight * 0.15,
+                                alignment: Alignment.topLeft,
                                 padding: EdgeInsets.symmetric(
                                     vertical: 13, horizontal: 7),
                                 child: Column(

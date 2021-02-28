@@ -1,5 +1,6 @@
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
+import 'package:bench_test_buddies/screens/onboarding_screen/get_started_screen.dart';
 import 'package:bench_test_buddies/screens/onboarding_screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -157,8 +158,8 @@ class _EmailVerificationState extends State<EmailVerification> {
                                     widget.email, int.parse(receivedCode))
                                 .then((value) {
                               print('value $value');
-                              if (value == "Email verified" ||
-                                  value == 'The code must be 6 digits.')
+
+                              if (value == "Email verified.")
                                 showDialog(
                                     context: _scaffoldKey.currentContext,
                                     builder: (context) {
@@ -233,23 +234,24 @@ class _EmailVerificationState extends State<EmailVerification> {
                                   await Provider.of<SignInUp>(context,
                                           listen: false)
                                       .resendCodeForVerification(widget.email)
-                                      .whenComplete(() {
-                                    showSnackBar();
+                                      .then((String value) {
+                                        if(value.contains("sent")){
+                                          showSnackBar();
+                                        }
                                     setState(() {
                                       resendClicked = false;
                                     });
                                   });
                                 } catch (error) {
-                                  print('${error["message"]}');
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                            title: Text('Error'),
-                                            content: Text('$error'),
+                                            title: Text('${error.toString()}'),
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
+                                                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>GetStartedScreen()));
                                                   },
                                                   child: Text('OK'))
                                             ],

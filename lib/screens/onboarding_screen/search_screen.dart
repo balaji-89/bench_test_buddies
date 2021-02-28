@@ -75,14 +75,14 @@ class SearchScreen extends SearchDelegate<String> {
                     text: country[index].substring(0, query.length),
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                      color: Color(0xFF232323),
                       fontSize: 16,
                     ),
                     children: [
                       TextSpan(
                           text: country[index].substring(query.length),
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: Color(0xFF232323),
                             fontSize: 15,
                           )),
                     ],

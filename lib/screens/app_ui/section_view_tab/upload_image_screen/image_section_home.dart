@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:bench_test_buddies/screens/app_ui/section_view_tab/upload_image_screen/UploadedImageView.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/upload_image_screen/selected_image_view.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import '../../home.dart';
+import '../../home_tabs.dart';
 
 class PractisedImages extends StatefulWidget {
   @override
@@ -51,7 +51,7 @@ class _PractisedImagesState extends State<PractisedImages> {
     if (clickedImage != null) {
       var image = File(clickedImage.path);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => UploadedImageView(selectedImages: [image])));
+          builder: (context) => SelectedImageView(selectedImages: [image])));
     }
   }
 
@@ -72,7 +72,7 @@ class _PractisedImagesState extends State<PractisedImages> {
                .toList();
            Navigator.of(context).pushReplacement(MaterialPageRoute(
                builder: (context) =>
-                   UploadedImageView(
+                   SelectedImageView(
                      selectedImages: files,
                    )));
          }else{

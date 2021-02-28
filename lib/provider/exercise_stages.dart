@@ -67,7 +67,7 @@ class ExerciseStages with ChangeNotifier {
       var value=( _stages[i]["position"]);
       position.add(int.parse(value));
     }
-    position.remove(5);//because it is added for removing of acknowledgement stage 'Completed_section'
+    position.remove(5);//because it is added for removing the acknowledgement stage 'Completed_section'
     return position;
   }
 }

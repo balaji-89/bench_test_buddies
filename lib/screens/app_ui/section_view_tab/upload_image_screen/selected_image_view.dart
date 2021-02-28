@@ -1,26 +1,26 @@
 import 'dart:io';
+
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
-import 'package:bench_test_buddies/screens/app_ui/section_view_tab/Evaluationscreen/evaluation_home.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/upload_image_screen/view_uploaded_images.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'image_delete_screen.dart';
 
-class UploadedImageView extends StatefulWidget {
+class SelectedImageView extends StatefulWidget {
   List<File> selectedImages;
 
-  UploadedImageView({this.selectedImages});
+  SelectedImageView({this.selectedImages});
 
   @override
-  _UploadedImageViewState createState() => _UploadedImageViewState();
+  _SelectedImageViewState createState() => _SelectedImageViewState();
 }
 
-class _UploadedImageViewState extends State<UploadedImageView> {
+class _SelectedImageViewState extends State<SelectedImageView> {
   bool isLoading = false;
 
   @override
@@ -65,7 +65,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
           ),
           centerTitle: true,
           title: Text(
-            'Uploaded Images',
+            'Image Gallery',
             style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
           ),
           backgroundColor: Colors.white,
@@ -139,8 +139,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                                         ))
                                             .then((value) {
                                           setState(() {
-                                            widget.selectedImages = [];
-                                            widget.selectedImages.addAll(value);
+                                            widget.selectedImages = value;
                                           });
                                         });
                                       },
@@ -219,15 +218,38 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                         textColor: Colors.white,
                         color: Color(0xFF4667EE),
                         child: Text(
-                          'Continue to Evaluate the results',
+                          'Uploaded Images',
                           style: TextStyle(fontSize: 14),
                         ),
-                        onPressed: () {
-                          Provider.of<UserLevel>(context, listen: false)
-                              .changeUserStage(currentExerciseStages['step']);
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => EvaluationHome(),
-                          ));
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          try {
+                            // String response= await Exercise().storeImages(
+                            //      Provider.of<AttemptOfficial>(context,
+                            //              listen: false)
+                            //          .newCreatedAttempt,
+                            //      Provider.of<Exercises>(context, listen: false)
+                            //          .selectedExercise
+                            //          .id,
+                            //      widget.selectedImages,
+                            //      Provider.of<UserLogData>(context,listen:false).token);
+                            // print(' res[one $response');
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => UploadedImageView(
+                                  uploadedImages: widget.selectedImages),
+                            ));
+                          } on Exception catch (e) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            print(e);
+                          }
                         },
                       ))
                 ],

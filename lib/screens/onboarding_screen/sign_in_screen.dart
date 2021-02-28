@@ -1,7 +1,6 @@
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
-import 'package:bench_test_service/model/response/response_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +16,21 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   bool disableButton = true;
+  var formKey = GlobalKey<FormState>();
+
+  String passwordValidation(String password) {
+    password.trim();
+    if (password == null || password.isEmpty)
+      return 'The name field is required';
+    else if (!password.contains(new RegExp(r'[A-Z]')))
+      return 'The password must contain  or more uppercase characters';
+    else if (!password.contains(new RegExp(r'[0-9]')))
+      return 'The password must contain 1 or more digit characters';
+    else if (!password.contains(new RegExp(r'[!@#%^&*()<>?":{}|]')))
+      return 'The password must contain 1 or more special characters';
+    else
+      return null;
+  }
 
   @override
   void initState() {
@@ -83,34 +97,17 @@ class _SignInPageState extends State<SignInPage> {
                       padding: EdgeInsets.symmetric(
                         horizontal: 14,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Email Address',
-                              labelStyle: TextStyle(color: Colors.grey),
-                              errorText: instance.emailErrorText,
-                              errorBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFFFF0000), width: 2.0),
-                              ),
-                              focusedErrorBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFFFF0000), width: 2.0),
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            controller: emailController,
-                            textInputAction: TextInputAction.next,
-                            autovalidateMode: AutovalidateMode.always,
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                                labelText: 'Password',
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Email Address',
                                 labelStyle: TextStyle(color: Colors.grey),
-                                errorText: instance.passwordErrorText,
+                                errorText: instance.emailErrorText,
                                 errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Color(0xFFFF0000), width: 2.0),
@@ -119,93 +116,127 @@ class _SignInPageState extends State<SignInPage> {
                                   borderSide: BorderSide(
                                       color: Color(0xFFFF0000), width: 2.0),
                                 ),
-                                suffixIcon: IconButton(
-                                  icon: instance.passwordInvisible
-                                      ? Icon(Icons.visibility_off)
-                                      : Icon(Icons.visibility),
-                                  onPressed: () {
-                                    instance.changePasswordVisibility();
-                                  },
-                                )),
-                            obscureText: instance.passwordInvisible,
-                            keyboardType: TextInputType.visiblePassword,
-                            controller: passwordController,
-                            textInputAction: TextInputAction.done,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        ForgetPasswordscreen()));
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              controller: emailController,
+                              textInputAction: TextInputAction.next,
+                              validator: (String enteredEmailAdd) {
+                                if (enteredEmailAdd.isEmpty ||
+                                    enteredEmailAdd == null ||
+                                    !enteredEmailAdd.contains('@'))
+                                  return 'Enter valid Email Address';
+                                return null;
                               },
-                              child: Text(
-                                'Forgot Password?',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 12),
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  errorText: instance.passwordErrorText,
+                                  errorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color(0xFFFF0000), width: 2.0),
+                                  ),
+                                  focusedErrorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color(0xFFFF0000), width: 2.0),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: instance.passwordInvisible
+                                        ? Icon(Icons.visibility_off)
+                                        : Icon(Icons.visibility),
+                                    onPressed: () {
+                                      instance.changePasswordVisibility();
+                                    },
+                                  )),
+                              obscureText: instance.passwordInvisible,
+                              keyboardType: TextInputType.visiblePassword,
+                              controller: passwordController,
+                              textInputAction: TextInputAction.done,
+                              validator: (String enteredPassword) {
+                                return passwordValidation(enteredPassword);
+                              },
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgetPasswordscreen()));
+                                },
+                                child: Text(
+                                  'Forgot Password?',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 12),
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                              height: mediaQueryHeight * 0.065,
-                              width: MediaQuery.of(context).size.width - 30,
-                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: RaisedButton(
-                                textColor:
-                                    disableButton ? Colors.black : Colors.white,
-                                color: disableButton
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).primaryColor,
-                                child: Text('Sign in'),
-                                onPressed: disableButton
-                                    ? null
-                                    : () async {
-                                        FocusScope.of(context).unfocus();
-                                        try {
-                                          await Provider.of<SignIn>(context,
-                                                  listen: false)
-                                              .signIn(
-                                                  emailController.text,
-                                                  passwordController.text,
-                                                  context)
-                                              .then((value) async {
-                                            await Provider.of<Exercises>(
-                                                    context,
-                                                    listen: false)
-                                                .getAllExercise(value.token);
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            HomeExerciseList()));
-                                          });
-                                        } on ErrorResponse catch (error) {
-                                          print(error);
-                                        } catch (error) {
-                                          print(error);
-                                          // showDialog(
-                                          //     context: context,
-                                          //     builder: (context) => AlertDialog(
-                                          //           title: Text('Error'),
-                                          //           content: Text(
-                                          //               'Check your internet connection'),
-                                          //           actions: [
-                                          //             FlatButton(
-                                          //                 onPressed: () {
-                                          //                   Navigator.of(
-                                          //                           context)
-                                          //                       .pop();
-                                          //                 },
-                                          //                 child: Text('OK'))
-                                          //           ],
-                                          //         ));
-                                        }
-                                      },
-                              )),
-                        ],
+                            Container(
+                                height: mediaQueryHeight * 0.065,
+                                width: MediaQuery.of(context).size.width - 30,
+                                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: RaisedButton(
+                                    textColor: disableButton
+                                        ? Colors.black
+                                        : Colors.white,
+                                    color: disableButton
+                                        ? Theme.of(context).accentColor
+                                        : Theme.of(context).primaryColor,
+                                    child: Text('Sign in'),
+                                    onPressed: disableButton
+                                        ? null
+                                        : () async {
+                                            FocusScope.of(context).unfocus();
+                                            if (formKey.currentState
+                                                .validate()) {
+                                              try {
+                                                await Provider.of<SignIn>(
+                                                        context,
+                                                        listen: false)
+                                                    .signIn(
+                                                        emailController.text,
+                                                        passwordController.text,
+                                                        context)
+                                                    .then((value) async {
+                                                  await Provider.of<Exercises>(
+                                                          context,
+                                                          listen: false)
+                                                      .getAllExercise(
+                                                          value.token);
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context)
+                                                      .pushReplacement(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  HomeExerciseList()));
+                                                });
+                                              } catch (error) {
+                                                print(error);
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                          title: Text('Error'),
+                                                          content: Text(error),
+                                                          actions: [
+                                                            FlatButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child:
+                                                                    Text('OK'))
+                                                          ],
+                                                        ));
+                                              }
+                                            }
+                                          })),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/google_sign.dart';
 import 'package:flutter/material.dart';
@@ -50,21 +52,22 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                       'Get Started',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Color(0xFF232323),
                           fontWeight: FontWeight.bold,
-                          fontSize: 15),
+                          fontSize: 19),
                     ),
-                  ),
-                  SizedBox(
-                    height: constraints.maxHeight * 0.16,
-                    width: constraints.maxWidth * 0.88,
-                    child: buildSocialLogInButton(googleImage, 'Google'),
                   ),
                   SizedBox(
                     height: constraints.maxHeight * 0.16,
                     width: constraints.maxWidth * 0.88,
                     child: buildSocialLogInButton(faceBookImage, 'Facebook'),
                   ),
+                  SizedBox(
+                    height: constraints.maxHeight * 0.16,
+                    width: constraints.maxWidth * 0.88,
+                    child: buildSocialLogInButton(googleImage, 'Google'),
+                  ),
+
                   SizedBox(
                     height: constraints.maxHeight * 0.13,
                     width: constraints.maxWidth * 0.88,
@@ -131,9 +134,10 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
       builder: (context, buttonConstraints) => Padding(
           padding: EdgeInsets.only(bottom: buttonConstraints.maxHeight * 0.2),
           child: new FlatButton.icon(
-            padding: EdgeInsets.all(10.0),
-            icon: new Image.asset(image), //`Icon` to display
-            label: Text('Proceed with $buttonName'), //`Text` to display
+           // padding: EdgeInsets.all(10.0),
+            icon: Image.asset(image),
+                //`Icon` to display
+            label: Text('Proceed with $buttonName',style:TextStyle(color: Color(0xff232323))), //`Text` to display
             shape: RoundedRectangleBorder(
                 side: BorderSide(
                     color: const Color(0xffD2D2D2),
@@ -162,7 +166,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
         child: new FlatButton.icon(
             padding: EdgeInsets.all(10.0),
             icon: new Image.asset(mailLogoPath),
-            label: Text(label),
+            label: Text(label,style: TextStyle(color: Color(0xff232323)),),
             shape: RoundedRectangleBorder(
                 side: BorderSide(
                     color: const Color(0xffD2D2D2),
@@ -199,9 +203,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             text: 'terms and policy',
             style: TextStyle(
               decoration: TextDecoration.underline,
-              color: Colors.black,
+              color: Color(0xff232323),
               fontSize: 13.0,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],

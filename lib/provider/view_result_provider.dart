@@ -1,27 +1,7 @@
+import 'package:bench_test_buddies/model/solution_model.dart';
 import 'package:bench_test_service/model/response/solution_response.dart';
 import 'package:bench_test_service/service/exercise.dart';
 import 'package:flutter/material.dart';
-
-class Solution {
-  int attemptId;
-  int evaluationId;
-  var image;
-  var video;
-  String explanation;
-  String commonErrorCause;
-  String prevent;
-  int bookmarkStatus;
-
-  Solution(
-      {this.attemptId,
-      this.evaluationId,
-      this.image,
-      this.video,
-      this.explanation,
-      this.commonErrorCause,
-      this.prevent,
-      this.bookmarkStatus});
-}
 
 class ViewResultProvider with ChangeNotifier {
   List<Data> allResponse;
@@ -36,7 +16,6 @@ class ViewResultProvider with ChangeNotifier {
 
   Solution individualQuestion;
   bool isInitialized = false;
-
 
   Future<void> initializeData(String token) async {
     if (isInitialized == false)
@@ -64,32 +43,75 @@ class ViewResultProvider with ChangeNotifier {
       }
   }
 
-
-  Future<dynamic> getSolutionsForAQuestion(int evaluationID,String token) async {
-        try {
+  Future<dynamic> getSolutionsForAQuestion(
+      int evaluationID, String token) async {
+    try {
       Map response =
-          (await Exercise().getSolutionForAQuestion(token, evaluationID))[0];
+          (await Exercise().getSolutionForAQuestion(token, evaluationID));
       var data = response["Solution"][0];
       individualQuestion = Solution(
-          image: data["image"]==null?"":data["image"],
-          video: data["video"]==null?"":data["video"],
+          question: data["question"],
+          image: data["image"] == null ? "" : data["image"],
+          video: data["video"] == null ? "" : data["video"],
           explanation: data["explanation"],
           commonErrorCause: data["common_error_cause"],
           prevent: data["prevent"],
-          bookmarkStatus:response["bookmark_status"]);
+          bookmarkStatus: response["boommark_status"]);
     } catch (error) {
       throw error;
     }
   }
 
-  Future storeBookMarks(int evaluationId,String token)async{
-    try{
+  Future storeBookMarks(int evaluationId, String token) async {
+    try {
       await Exercise().saveBookmark(evaluationId, token);
-    }catch(error){
+    } catch (error) {
       throw error;
     }
+  }
+
+  Future removeBookMarks() async {
+    try {} catch (error) {}
+  }
+}
 
 
+class BookmarksProvider with ChangeNotifier {
+  List<int> bookmarks = [];
+  Solution selectedBookmarkSolution;
 
+  Future getAllBookmarks(String token) async {
+    if(bookmarks.isEmpty){
+    try {
+      List response = await Exercise().getAllBookmarks(token);
+      response.map((element) {
+        bookmarks.add(element["id"]);
+      }).toList();
+      return bookmarks;
+    } on Exception catch (error) {
+      throw error;
+    }}
+  }
+
+  Future getBookmarkedItem(int bookmarkedItem,token)async{
+     try {
+       //TODO:Have to cj=have the hardCoded bookItem
+       var response= await (Exercise().getBookmarkedData(7, token));
+       var bookmarkedInfo=response["bookmarked_question"];
+       var userResponse=response["user_answer"];
+       selectedBookmarkSolution=Solution(
+         question: bookmarkedInfo["question"],
+         image: bookmarkedInfo["image"] == null ? "" : bookmarkedInfo["image"],
+         video: bookmarkedInfo["video"] == null ? "" : bookmarkedInfo["video"],
+         explanation: bookmarkedInfo["explanation"],
+         commonErrorCause: bookmarkedInfo["common_error_cause"],
+         prevent: bookmarkedInfo["prevent"],
+         userAnswer: userResponse["answer"],
+         correctAnswer: userResponse["points"],
+       );
+       return selectedBookmarkSolution;
+     } on Exception catch (e) {
+       throw e;
+     }
   }
 }

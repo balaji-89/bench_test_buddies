@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:bench_test_buddies/provider/attempt_provider.dart';
 import 'package:bench_test_buddies/provider/country_provider.dart';
@@ -7,10 +9,12 @@ import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/provider/view_result_provider.dart';
+import 'package:bench_test_service/service/exercise.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './provider/google_sign.dart';
+import 'on_boarding_setup/set_up.dart';
 import 'provider/user_data_token.dart';
 import 'screens/onboarding_screen/get_started_screen.dart';
 
@@ -52,6 +56,9 @@ void main() async {
     ChangeNotifierProvider(
       create: (context) => ViewResultProvider(),
     ),
+    ChangeNotifierProvider(
+      create: (context) => BookmarksProvider(),
+    ),
   ],
 
       child: MyApp()));
@@ -67,14 +74,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFF4667EE),
         backgroundColor: Colors.white,
-        accentColor: Color.fromRGBO(240, 238, 235, 1),
+        accentColor: Color(0xFFEFEFEF),
+        primaryTextTheme: TextTheme(button: TextStyle(color:Color(0xff232323))),
         appBarTheme: AppBarTheme(
             centerTitle: true,
             color: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black),
+            iconTheme: IconThemeData(color: Color(0xffEFEFEF)),
             elevation: 0,
             actionsIconTheme: IconThemeData(
-              color: Colors.blue,
+              color: Color(0xFF4667EE),
             )),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

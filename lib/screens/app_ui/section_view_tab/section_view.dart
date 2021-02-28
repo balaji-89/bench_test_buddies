@@ -1,7 +1,7 @@
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
-import '../home.dart';
+import '../home_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:bench_test_buddies/widgets/heading_card.dart';
 import 'package:provider/provider.dart';

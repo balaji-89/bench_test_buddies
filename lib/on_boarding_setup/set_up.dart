@@ -99,8 +99,8 @@ class _SetupScreenState extends State<SetupScreen> {
                 if (countryInstance.selectedCountry != null)
                   Text(countryInstance.selectedCountry.name,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff232323),
                           fontSize: 15)),
                 Spacer(),
                 if (countryInstance.selectedCountry != null)
@@ -120,17 +120,17 @@ class _SetupScreenState extends State<SetupScreen> {
             child: Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
-                child: RaisedButton(
+                child: FlatButton(
                   textColor: countryInstance.selectedCountry != null
                       ? Colors.white
-                      : Colors.black,
+                      : Color(0xFF232323),
                   color: countryInstance.selectedCountry != null
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).accentColor,
                   child: Text(
                     'Next',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                    style: TextStyle(fontSize: 15,color: Color(0xff232323),
+                  ),),
                   onPressed: () async {
                     if (countryInstance.selectedCountry != null) {
                       await Provider.of<CountryProvider>(context, listen: false)
@@ -285,7 +285,9 @@ class _SetupScreenState extends State<SetupScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                   ),
-                  child: RaisedButton(
+                  child:FlatButton(
+                      disabledTextColor: Color(0xFF232323),
+                      disabledColor: Color(0xFFEFEFEF),
                       textColor: Colors.white,
                       color: Color(0xFF4667EE),
                       child: Text(
@@ -393,8 +395,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                             Radius.circular(3)),
                                         color: Colors.white,
                                         border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color:Color(0xFF4667EE),
                                             width: 1.3,
                                             style: BorderStyle.solid),
                                       ),
@@ -404,8 +405,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                                   constraints.maxHeight * 0.018,
                                               width:
                                                   constraints.maxWidth * 0.03,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
+                                              color: Color(0xFF4667EE),
                                             )
                                           : null,
                                     ),
@@ -445,7 +445,7 @@ class _SetupScreenState extends State<SetupScreen> {
                   margin: EdgeInsets.symmetric(
                     horizontal: constraints.maxWidth * 0.05,
                   ),
-                  child: RaisedButton(
+                  child: FlatButton(
                     textColor: Colors.white,
                     color: Color(0xFF4667EE),
                     child: Text('Next',
@@ -562,7 +562,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         fontSize: 15,
-                        color: Theme.of(context).primaryColor,
+                        color: Color(0xFF4667EE),
                       )),
                   onPressed: () {
                     showSearch(context: context, delegate: SearchScreen());

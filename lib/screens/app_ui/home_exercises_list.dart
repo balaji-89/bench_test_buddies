@@ -4,7 +4,7 @@ import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'home.dart';
+import 'home_tabs.dart';
 
 class HomeExerciseList extends StatefulWidget {
   @override

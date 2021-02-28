@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bench_test_service/model/response/countries.dart';
 import 'package:bench_test_service/model/response/get_user_response.dart';
 import 'package:bench_test_service/model/response/signup_question_response.dart';
@@ -17,10 +19,13 @@ class User {
     dio = BaseService().getClient();
   }
 
+  String baseUrl = 'https://innercircle.caapidsimplified.com/api';
+
   register(RegisterRequest registerRequest) async {
     try {
       Response response =
           await dio.post('/register', data: registerRequest.toJson());
+
       return RegisterResponse.fromJson(response.data);
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
@@ -60,6 +65,19 @@ class User {
     }
   }
 
+  Future resetPassword(String mail, String newPassword, String code) async {
+    print('reached');
+    try {
+      Response response = await dio.post('/reset-password',
+          data: {"email": mail, "password": newPassword, "code": code});
+      print(response.data);
+      return LoginResponse.fromJson(response.data);
+    } on DioError catch (err) {
+      print('error $err');
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
   update(String name, String token) async {
     try {
       Response response = await dio.post('/user-data/update',
@@ -95,7 +113,6 @@ class User {
             "Authorization": "Bearer $token"
           }));
       return CountryResponse.fromJson(response.data);
-
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
     }
@@ -104,7 +121,7 @@ class User {
   getQuestions(String token) async {
     try {
       Response response = await dio.get('/signup-questions',
-          options: Options(headers:{
+          options: Options(headers: {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           }));
@@ -129,18 +146,18 @@ class User {
     }
   }
 
-  getAllAnswers(String token)async{
-     try{
-       Response response= await dio.get('/exercise/all',options: Options(
-         headers: {
-           "Accept":"application/json",
-           "Authorization":"Bearer $token"
-         },
-       ));
-       return CountryResponse.fromJson(response.data);
-     }on DioError catch(exception){
-        throw ErrorResponse.fromJson(exception.response.data);
-     }
+  getAllAnswers(String token) async {
+    try {
+      Response response = await dio.get('/exercise/all',
+          options: Options(
+            headers: {
+              "Accept": "application/json",
+              "Authorization": "Bearer $token"
+            },
+          ));
+      return CountryResponse.fromJson(response.data);
+    } on DioError catch (exception) {
+      throw ErrorResponse.fromJson(exception.response.data);
+    }
   }
-  }
-
+}

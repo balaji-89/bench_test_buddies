@@ -43,7 +43,8 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
           title: Text('${deleteList.length} images selected',
               style: TextStyle(
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                fontWeight: FontWeight.w500
               )),
           centerTitle: false,
           actions: <Widget>[
@@ -197,21 +198,6 @@ class _ImageDeletionScreenState extends State<ImageDeletionScreen> {
                     ],
                   ),
                 ),
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height * 0.04),
-                    alignment: Alignment.center,
-                    child: RaisedButton(
-                      textColor: Colors.white,
-                      color: Color(0xFF4667EE),
-                      child: Text(
-                        'Continue to Evaluate the results',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      onPressed: () async {},
-                    ))
               ],
             )));
   }

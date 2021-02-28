@@ -2,7 +2,7 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   async:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: async
       url: "https://pub.dartlang.org"
@@ -260,7 +260,7 @@ packages:
       name: im_stepper
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2+9"
+    version: "0.1.2+10"
   image_picker:
     dependency: "direct main"
     description:
