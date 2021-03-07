@@ -75,6 +75,7 @@ class SucceededPasswordScreen extends StatelessWidget {
                         color: Color(0xFF4667EE),
                         child: Text('Go to homepage'),
                         onPressed: () {
+                          Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => HomeExerciseList()));

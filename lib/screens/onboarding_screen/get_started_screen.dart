@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/google_sign.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -53,8 +54,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Color(0xFF232323),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 19),
+                          fontWeight: FontWeight.w800,
+                          fontSize: 20),
                     ),
                   ),
                   SizedBox(
@@ -87,7 +88,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
-                              fontWeight: FontWeight.w400,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -137,7 +139,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
            // padding: EdgeInsets.all(10.0),
             icon: Image.asset(image),
                 //`Icon` to display
-            label: Text('Proceed with $buttonName',style:TextStyle(color: Color(0xff232323))), //`Text` to display
+            label: Text('Proceed with $buttonName',style:TextStyle(fontWeight:FontWeight.w500,color: Color(0xff232323))), //`Text` to display
             shape: RoundedRectangleBorder(
                 side: BorderSide(
                     color: const Color(0xffD2D2D2),
@@ -166,7 +168,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
         child: new FlatButton.icon(
             padding: EdgeInsets.all(10.0),
             icon: new Image.asset(mailLogoPath),
-            label: Text(label,style: TextStyle(color: Color(0xff232323)),),
+            label: Text(label,style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xff232323)),),
             shape: RoundedRectangleBorder(
                 side: BorderSide(
                     color: const Color(0xffD2D2D2),

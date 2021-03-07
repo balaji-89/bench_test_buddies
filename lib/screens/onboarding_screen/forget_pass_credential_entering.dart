@@ -3,15 +3,13 @@ import 'package:bench_test_buddies/screens/onboarding_screen/succeeded_forget_pa
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ForgetPassScreen extends StatefulWidget {
+class NewPasswordScreen extends StatefulWidget {
   @override
-  _ForgetPassScreenState createState() => _ForgetPassScreenState();
+  _NewPasswordScreenState createState() => _NewPasswordScreenState();
 }
 
-class _ForgetPassScreenState extends State<ForgetPassScreen> {
-  final TextEditingController codeController = TextEditingController();
+class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPassword = TextEditingController();
 
   bool disableButton = true;
   var formKey = GlobalKey<FormState>();
@@ -19,7 +17,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   @override
   void initState() {
     passwordController.addListener(() {
-      if (passwordController.text.isEmpty&&confirmPassword.text.isEmpty) {
+      if (passwordController.text.isEmpty) {
         setState(() {
           disableButton = true;
         });
@@ -50,9 +48,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   void dispose() {
     super.dispose();
     passwordController.removeListener(() {});
-    codeController.dispose();
     passwordController.dispose();
-    confirmPassword.dispose();
   }
 
   @override
@@ -69,7 +65,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
           isLoading=true;
         });
         try {
-           await Provider.of<SignIn>(context,listen:false).changeUserPassword(confirmPassword.text,codeController.text,context)
+           await Provider.of<SignIn>(context,listen:false).changeUserPassword(passwordController.text,context)
                .then((value) {
                  setState(() {
                    isLoading=false;
@@ -116,7 +112,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             child: ListView(
               children: [
                 SizedBox(
-                  height: mediaQueryHeight * 0.5,
+                  height: mediaQueryHeight * 0.3,
                   width: mediaQueryWidth * 0.90,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -127,35 +123,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                       return Form(
                         key: formKey,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Code received in mail',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color(0xFFFF0000), width: 2.0),
-                                ),
-                                focusedErrorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color(0xFFFF0000), width: 2.0),
-                                ),
-                              ),
-                              keyboardType: TextInputType.number,
-                              controller: codeController,
-                              textInputAction: TextInputAction.next,
-                              validator: (String enteredValue) {
-                                if (enteredValue == null ||
-                                    enteredValue == '') {
-                                  return 'The code field is required';
-                                } else if (enteredValue.length >= 5) {
-                                  return 'Invalid code';
-                                }
-                                return null;
-                              },
-                            ),
                             Consumer<SignInUp>(
                                 builder: (context, classObject, child) {
                               return TextFormField(
@@ -184,34 +154,6 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                                 obscureText: classObject.passwordInvisible,
                                 validator: (String enteredPassword) {
                                   return passwordValidation(enteredPassword);
-                                },
-                              );
-                            }),
-                            Consumer<SignInUp>(
-                                builder: (context, classObject, child) {
-                              return TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Confirm Password',
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  errorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0),
-                                  ),
-                                  focusedErrorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.visiblePassword,
-                                controller: confirmPassword,
-                                textInputAction: TextInputAction.done,
-                                obscureText: true,
-                                validator: (String enteredPassword) {
-                                  if (enteredPassword.trim() !=
-                                      passwordController.text.trim()) {
-                                    return 'Wrong password';
-                                  }
-                                  return null;
                                 },
                               );
                             }),

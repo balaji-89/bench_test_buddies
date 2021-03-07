@@ -119,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
           centerTitle: true,
           title: Text(
             'Sign up',
-            style: TextStyle(color: Color(0xFF232323), fontSize: 20),
+            style: TextStyle(fontWeight:FontWeight.w800,color: Color(0xFF232323), fontSize: 20),
           ),
           backgroundColor: Colors.white,
           elevation: 1,
@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               child: Text(
                 "Sign in",
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(color:Theme.of(context).primaryColor,fontSize: 16,fontWeight: FontWeight.w600),
               ),
               shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
@@ -162,15 +162,16 @@ class _SignUpPageState extends State<SignUpPage> {
                             TextFormField(
                               decoration: InputDecoration(
                                 labelText: 'User Name',
-                                labelStyle: TextStyle(color: Colors.grey),
                                 errorText: instance.userErrorText,
+                                errorStyle: TextStyle(color: Color(0xffE54839)),
+                                labelStyle: TextStyle(color: Color(0xffB1B1B1)),
                                 errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color(0xFFFF0000), width: 2.0),
+                                      color: Color(0xffE54839), width: 2.0),
                                 ),
                                 focusedErrorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color(0xFFFF0000), width: 2.0),
+                                      color: Color(0xffE54839), width: 2.0),
                                 ),
                               ),
                               keyboardType: TextInputType.name,
@@ -187,14 +188,17 @@ class _SignUpPageState extends State<SignUpPage> {
                             TextFormField(
                               decoration: InputDecoration(
                                 labelText: 'Email Address',
-                                labelStyle: TextStyle(color: Colors.grey),
                                 errorText: instance.emailErrorText,
+                                errorStyle: TextStyle(color: Color(0xffE54839)),
+                                labelStyle: TextStyle(color: Color(0xffB1B1B1)),
                                 errorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0)),
+                                  borderSide: BorderSide(
+                                      color: Color(0xffE54839), width: 2.0),
+                                ),
                                 focusedErrorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0)),
+                                  borderSide: BorderSide(
+                                      color: Color(0xffE54839), width: 2.0),
+                                ),
                               ),
                               keyboardType: TextInputType.emailAddress,
                               controller: emailController,
@@ -212,15 +216,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               return TextFormField(
                                 decoration: InputDecoration(
                                     labelText: 'Password',
-                                    labelStyle: TextStyle(color: Colors.grey),
                                     errorText: instance.passwordErrorText,
+                                    errorStyle: TextStyle(color: Color(0xffE54839)),
+                                    labelStyle: TextStyle(color: Color(0xffB1B1B1)),
                                     errorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Color(0xFFFF0000), width: 2.0),
+                                          color: Color(0xffE54839), width: 2.0),
                                     ),
                                     focusedErrorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Color(0xFFFF0000), width: 2.0),
+                                          color: Color(0xffE54839), width: 2.0),
                                     ),
                                     suffixIcon: IconButton(
                                       icon: classObject.passwordInvisible
@@ -246,9 +251,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: RaisedButton(
                                   textColor: disableButton
                                       ? Color(0xFF232323)
-                                      : Colors.white,
+                                      : Color(0xFFFFFFFF),
                                   color: disableButton
-                                      ? Color(0xFF4667EE)
+                                      ? Theme.of(context).accentColor
                                       : Theme.of(context).primaryColor,
                                   child: Text('Sign up'),
                                   onPressed: disableButton
@@ -286,7 +291,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             decoration: TextDecoration.underline,
                             color: Color(0xFF232323),
                             fontSize: 13.0,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],

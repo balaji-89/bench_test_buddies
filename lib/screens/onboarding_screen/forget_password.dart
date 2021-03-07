@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../onboarding_screen/succeeded_forget_password.dart';
+import 'password_code_verification.dart';
 
 class ForgetPasswordscreen extends StatefulWidget {
   @override
@@ -48,7 +49,7 @@ class _ForgetPasswordscreenState extends State<ForgetPasswordscreen> {
                             horizontal: 14,
                           ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextFormField(
@@ -90,11 +91,10 @@ class _ForgetPasswordscreenState extends State<ForgetPasswordscreen> {
                                               setState(() {
                                                 isLoading=false;
                                               });
-
                                           Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ForgetPassScreen()));
+                                                      PasswordCodeVerification()));
                                         }});
                                       }  catch (error) {
                                         setState(() {

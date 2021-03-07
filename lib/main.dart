@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFF4667EE),
         backgroundColor: Colors.white,
         accentColor: Color(0xFFEFEFEF),
+        fontFamily: 'SFPro',
         primaryTextTheme: TextTheme(button: TextStyle(color:Color(0xff232323))),
         appBarTheme: AppBarTheme(
             centerTitle: true,

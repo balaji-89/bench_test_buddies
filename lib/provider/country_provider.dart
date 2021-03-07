@@ -86,7 +86,7 @@ class CountryProvider with ChangeNotifier {
   }
 
   Future updateSetupQuestion() async {
-    var message=await User().postAnswers(selectedAnswers, userToken);
+    var message=await User().postAnswers(selectedAnswers.reversed.toList(), userToken);
     print(message);
     notifyListeners();
   }

@@ -61,6 +61,7 @@ class _SetupScreenState extends State<SetupScreen> {
           height: constraints.maxHeight * 0.13,
           child: ListTile(
             leading: CircleAvatar(
+              backgroundColor: Color(0xfff16c28),
               radius: 25,
               backgroundImage:
                   AssetImage("assets/on_boarding_images/setup1.png"),
@@ -68,10 +69,9 @@ class _SetupScreenState extends State<SetupScreen> {
             title: Text(
               'Enter your Origin Country',
               style: TextStyle(
-                fontFamily: 'SF Pro Text',
                 fontSize: 18,
                 color: const Color(0xff232323),
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 height: 1.3333333333333333,
               ),
               textAlign: TextAlign.left,
@@ -101,7 +101,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Color(0xff232323),
-                          fontSize: 15)),
+                          fontSize: 16)),
                 Spacer(),
                 if (countryInstance.selectedCountry != null)
                   SizedBox(
@@ -122,7 +122,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: FlatButton(
                   textColor: countryInstance.selectedCountry != null
-                      ? Colors.white
+                      ? Color(0xffffffff)
                       : Color(0xFF232323),
                   color: countryInstance.selectedCountry != null
                       ? Theme.of(context).primaryColor
@@ -172,7 +172,7 @@ class _SetupScreenState extends State<SetupScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: index == 0
-                                ? Colors.green
+                                ? Color(0xff4caf50)
                                 : Theme.of(context).accentColor,
                           ),
                         )),
@@ -182,6 +182,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 26,
+                    backgroundColor: Color(0xff14D99c),
                     backgroundImage:
                         AssetImage("assets/on_boarding_images/setup2.png"),
                   ),
@@ -191,10 +192,9 @@ class _SetupScreenState extends State<SetupScreen> {
                       Provider.of<CountryProvider>(context, listen: false)
                           .getOnlyQuestion(2),
                       style: TextStyle(
-                        fontFamily: 'SF Pro Text',
                         fontSize: 17,
                         color: const Color(0xff232323),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         height: 1.3333333333333333,
                       ),
                       textAlign: TextAlign.left,
@@ -231,7 +231,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                     decoration: BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(3)),
-                                      color: Colors.white,
+                                      color: Color(0xffffffff),
                                       border: Border.all(
                                           color: Theme.of(context).primaryColor,
                                           width: 1.3,
@@ -260,7 +260,6 @@ class _SetupScreenState extends State<SetupScreen> {
                           title: Text(question1list[index].answer,
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                fontFamily: 'SF Pro Text',
                                 fontSize: 14,
                                 color: const Color(0xff232323),
                                 fontWeight: FontWeight.normal,
@@ -288,7 +287,7 @@ class _SetupScreenState extends State<SetupScreen> {
                   child:FlatButton(
                       disabledTextColor: Color(0xFF232323),
                       disabledColor: Color(0xFFEFEFEF),
-                      textColor: Colors.white,
+                      textColor: Color(0xffffffff),
                       color: Color(0xFF4667EE),
                       child: Text(
                         'Next',
@@ -334,7 +333,7 @@ class _SetupScreenState extends State<SetupScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: index == 0 || index == 1
-                                ? Colors.green
+                                ? Color(0xff4caf50)
                                 : Theme.of(context).accentColor,
                           ),
                         )),
@@ -343,6 +342,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
                 child: ListTile(
                   leading: CircleAvatar(
+                    backgroundColor: Color(0xfff8cf26),
                     radius: 26,
                     backgroundImage:
                         AssetImage("assets/on_boarding_images/setup3.png"),
@@ -351,10 +351,9 @@ class _SetupScreenState extends State<SetupScreen> {
                     Provider.of<CountryProvider>(context, listen: false)
                         .getOnlyQuestion(1),
                     style: TextStyle(
-                      fontFamily: 'SF Pro Text',
                       fontSize: 17,
                       color: const Color(0xff232323),
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       height: 1.3333333333333333,
                     ),
                     textAlign: TextAlign.left,
@@ -420,7 +419,6 @@ class _SetupScreenState extends State<SetupScreen> {
                                 : null,
                             title: Text(question2list[index].answer,
                                 style: TextStyle(
-                                  fontFamily: 'SF Pro Text',
                                   fontSize: 14,
                                   color: const Color(0xff232323),
                                   fontWeight: FontWeight.normal,
@@ -446,7 +444,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     horizontal: constraints.maxWidth * 0.05,
                   ),
                   child: FlatButton(
-                    textColor: Colors.white,
+                    textColor: Color(0xffffffff),
                     color: Color(0xFF4667EE),
                     child: Text('Next',
                         style: TextStyle(
@@ -493,7 +491,7 @@ class _SetupScreenState extends State<SetupScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: index == 0 || index == 1 || index == 2
-                                ? Colors.green
+                                ? Color(0xff4caf50)
                                 : Theme.of(context).accentColor,
                           ),
                         )),
@@ -509,10 +507,9 @@ class _SetupScreenState extends State<SetupScreen> {
                   title: Text(
                     'Hey! You are done with the intial setup.Start practicing.Best wishes.',
                     style: TextStyle(
-                      fontFamily: 'SF Pro Text',
-                      fontSize: 17,
+                      fontSize: 19,
                       color: const Color(0xff232323),
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       height: 1.3333333333333333,
                     ),
                     textAlign: TextAlign.left,
@@ -524,8 +521,9 @@ class _SetupScreenState extends State<SetupScreen> {
                   margin: EdgeInsets.symmetric(
                       horizontal: constraints.maxWidth * 0.04),
                   child: RaisedButton(
-                    textColor: Colors.white,
-                    color: Color(0xFF4667EE),
+                    elevation: 0,
+                    textColor: Color(0xffffffff),
+                    color: Theme.of(context).primaryColor,
                     child: Text(
                       'Continue to Home Screen',
                       style: TextStyle(fontSize: 14),
@@ -550,7 +548,7 @@ class _SetupScreenState extends State<SetupScreen> {
           elevation: 1,
           title: Text(
             'Setup',
-            style: TextStyle(fontSize: 20, color: Color(0xFF1a1a4b)),
+            style: TextStyle(fontSize: 20, color: Color(0xff232323)),
           ),
           backgroundColor: Colors.white,
           actions: [
@@ -561,6 +559,7 @@ class _SetupScreenState extends State<SetupScreen> {
                   child: Text('Search',
                       textAlign: TextAlign.end,
                       style: TextStyle(
+                        fontWeight: FontWeight.w500,
                         fontSize: 15,
                         color: Color(0xFF4667EE),
                       )),

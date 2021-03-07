@@ -103,22 +103,22 @@ class SignIn with ChangeNotifier {
 
   Future<dynamic> signIn(emailAddress, password, context) async {
     emailErrorText = null;
-
+    var userData;
     passwordErrorText = null;
     isLoading = true;
     notifyListeners();
     try {
-      LoginResponse logIn =
-          await User().login(LoginRequest(emailAddress, password));
-      var userData = logIn.data;
-      await Provider.of<UserLogData>(context, listen: false)
-          .assigningData(userData, context, "signIn");
+      User().login(LoginRequest(emailAddress, password)).then((value)async{
+             userData = value.data;
+            await Provider.of<UserLogData>(context, listen: false)
+                .assigningData(userData, context, "signIn");
+          });
+
       return userData;
-    } on ErrorResponse catch (error) {
+    }  catch (error) {
       isLoading = false;
       notifyListeners();
       var errorMessage = error.message;
-      print(errorMessage);
       if (errorMessage.contains('password') ||
           errorMessage.contains('Invalid Credentials')) {
         passwordErrorText = errorMessage;
@@ -129,7 +129,6 @@ class SignIn with ChangeNotifier {
         emailErrorText = errorMessage;
         passwordErrorText = null;
       }
-
       notifyListeners();
     }
   }
@@ -146,10 +145,21 @@ class SignIn with ChangeNotifier {
     }
   }
 
-  Future changeUserPassword(String newPassword, String code, context) async {
+  Future codeVerification(String code)async{
+    try {
+      var response=await User().resetPasswordCodeVerification(forgetEmailId, code);
+      return response;
+    }  catch (error) {
+      throw error;
+    }
+
+
+  }
+
+  Future changeUserPassword(String newPassword, context) async {
     try {
       LoginResponse userData =
-          await User().resetPassword(forgetEmailId, newPassword, code);
+          await User().resetPassword(forgetEmailId, newPassword);
       await Provider.of<UserLogData>(context, listen: false)
           .assigningData(userData.data, context, "signIn");
       return userData.message;

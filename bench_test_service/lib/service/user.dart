@@ -4,6 +4,7 @@ import 'package:bench_test_service/model/response/countries.dart';
 import 'package:bench_test_service/model/response/get_user_response.dart';
 import 'package:bench_test_service/model/response/signup_question_response.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import '../model/request/login.dart';
 import '../model/request/register.dart';
@@ -33,11 +34,31 @@ class User {
   }
 
   login(LoginRequest loginRequest) async {
+    print('reached');
     try {
       Response response = await dio.post('/login', data: loginRequest.toJson());
       return LoginResponse.fromJson(response.data);
     } on DioError catch (err) {
+      print("user $err");
+      print('${err.response}');
+      print('${err.response.data}');
       throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
+  Future resetPasswordCodeVerification(String mail, String code) async {
+    try {
+      http.Response response =
+          await http.post('$baseUrl/reset-password/code/verify', body: {
+        "email": mail,
+        "code": code,
+      });
+      if (response.statusCode == 422) {
+        throw jsonDecode(response.body)["message"];
+      }
+      return "Valid code";
+    } catch (error) {
+      throw jsonDecode(error)["message"];
     }
   }
 
@@ -47,6 +68,18 @@ class User {
           await dio.post('/forgot-password', data: {"email": email});
       return response.data['message'];
     } on DioError catch (err) {
+      throw ErrorResponse.fromJson(err.response.data);
+    }
+  }
+
+  Future resetPassword(String mail, String newPassword) async {
+    print('reached');
+    try {
+      Response response = await dio.post('/reset-password',
+          data: {"email": mail, "password": newPassword});
+      return LoginResponse.fromJson(response.data);
+    } on DioError catch (err) {
+      print('error $err');
       throw ErrorResponse.fromJson(err.response.data);
     }
   }
@@ -61,19 +94,6 @@ class User {
           }));
       return response.data['message'];
     } on DioError catch (err) {
-      throw ErrorResponse.fromJson(err.response.data);
-    }
-  }
-
-  Future resetPassword(String mail, String newPassword, String code) async {
-    print('reached');
-    try {
-      Response response = await dio.post('/reset-password',
-          data: {"email": mail, "password": newPassword, "code": code});
-      print(response.data);
-      return LoginResponse.fromJson(response.data);
-    } on DioError catch (err) {
-      print('error $err');
       throw ErrorResponse.fromJson(err.response.data);
     }
   }

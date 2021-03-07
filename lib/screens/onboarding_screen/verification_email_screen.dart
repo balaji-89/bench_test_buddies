@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/screens/onboarding_screen/get_started_screen.dart';
@@ -50,7 +52,7 @@ class _EmailVerificationState extends State<EmailVerification> {
         centerTitle: true,
         title: Text(
           'Verification',
-          style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+          style: TextStyle(color: Color(0xFF232323), fontSize: 20),
         ),
         backgroundColor: Colors.white,
         elevation: 1,
@@ -77,10 +79,9 @@ class _EmailVerificationState extends State<EmailVerification> {
                       child: Text(
                         'We have sent 4-Digit verification code to your email address',
                         style: TextStyle(
-                          fontFamily: 'SF Pro Text',
                           fontSize: 16,
                           color: const Color(0xff232323),
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           height: 1.3333333333333333,
                         ),
                         textAlign: TextAlign.left,
@@ -124,7 +125,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                             border: Border.all(
                               color: color == Colors.black
                                   ? Theme.of(context).primaryColor
-                                  : color,
+                                  : Color(0xff232323),
                             ),
                           );
                         },
@@ -135,17 +136,18 @@ class _EmailVerificationState extends State<EmailVerification> {
                 Container(
                     height: isKeyboardVisibility
                         ? constraints.maxHeight * 0.1
-                        : constraints.maxHeight * 0.07,
+                        : constraints.maxHeight * 0.072,
                     margin: EdgeInsets.only(top: constraints.maxHeight * 0.05),
                     padding: EdgeInsets.fromLTRB(constraints.maxWidth * 0.15, 0,
                         constraints.maxWidth * 0.15, 0),
                     child: RaisedButton(
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
                       color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
-                      child: Text('Verify and proceed'),
+                      textColor: Color(0xffffffff),
+                      child: Text('Verify and proceed',style: TextStyle(fontWeight: FontWeight.w600),),
                       onPressed: () async {
                         if (receivedCode.length == 4) {
                           try {
@@ -157,14 +159,12 @@ class _EmailVerificationState extends State<EmailVerification> {
                                 .emailVerification(
                                     widget.email, int.parse(receivedCode))
                                 .then((value) {
-                              print('value $value');
-
                               if (value == "Email verified.")
                                 showDialog(
                                     context: _scaffoldKey.currentContext,
                                     builder: (context) {
                                       return AlertDialog(
-                                        content: Text('Email Verified'),
+                                        content: Text('Email Verified',style: TextStyle(color: Color(0xff232323)),),
                                         actions: [
                                           TextButton(
                                               onPressed: () {
@@ -193,7 +193,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                             showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                      content: Text('$errorMessage'),
+                                      content: Text('$errorMessage',style: TextStyle(color: Color(0xff232323)),),
                                       actions: [
                                         TextButton(
                                             onPressed: () {
@@ -216,7 +216,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                         Text(
                           'Didn\'t receive the verfication code ? ',
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: Color(0xffB1B1B1),
                           ),
                         ),
                         Padding(
@@ -246,7 +246,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                            title: Text('${error.toString()}'),
+                                            title: Text('${error.toString()}',style: TextStyle(color: Color(0xff232323)),),
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {

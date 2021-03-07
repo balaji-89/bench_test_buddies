@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
@@ -64,7 +66,10 @@ class _SignInPageState extends State<SignInPage> {
           centerTitle: true,
           title: Text(
             'Sign in',
-            style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+            style: TextStyle(
+                color: Color(0xFF232323),
+                fontWeight: FontWeight.w800,
+                fontSize: 20),
           ),
           backgroundColor: Colors.white,
           elevation: 1,
@@ -77,7 +82,10 @@ class _SignInPageState extends State<SignInPage> {
               },
               child: Text(
                 "Sign up",
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 16),
               ),
               shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
@@ -106,15 +114,16 @@ class _SignInPageState extends State<SignInPage> {
                             TextFormField(
                               decoration: InputDecoration(
                                 labelText: 'Email Address',
-                                labelStyle: TextStyle(color: Colors.grey),
                                 errorText: instance.emailErrorText,
+                                errorStyle: TextStyle(color: Color(0xffE54839)),
+                                labelStyle: TextStyle(color: Color(0xffB1B1B1)),
                                 errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color(0xFFFF0000), width: 2.0),
+                                      color: Color(0xffE54839), width: 2.0),
                                 ),
                                 focusedErrorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color(0xFFFF0000), width: 2.0),
+                                      color: Color(0xffE54839), width: 2.0),
                                 ),
                               ),
                               keyboardType: TextInputType.emailAddress,
@@ -131,15 +140,18 @@ class _SignInPageState extends State<SignInPage> {
                             TextFormField(
                               decoration: InputDecoration(
                                   labelText: 'Password',
-                                  labelStyle: TextStyle(color: Colors.grey),
                                   errorText: instance.passwordErrorText,
+                                  errorStyle:
+                                      TextStyle(color: Color(0xffE54839)),
+                                  labelStyle:
+                                      TextStyle(color: Color(0xffB1B1B1)),
                                   errorBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0),
+                                        color: Color(0xffE54839), width: 2.0),
                                   ),
                                   focusedErrorBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Color(0xFFFF0000), width: 2.0),
+                                        color: Color(0xffE54839), width: 2.0),
                                   ),
                                   suffixIcon: IconButton(
                                     icon: instance.passwordInvisible
@@ -169,8 +181,9 @@ class _SignInPageState extends State<SignInPage> {
                                   'Forgot Password?',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
+                                      fontWeight: FontWeight.w200,
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 12),
+                                      fontSize: 14),
                                 ),
                               ),
                             ),
@@ -180,8 +193,8 @@ class _SignInPageState extends State<SignInPage> {
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: RaisedButton(
                                     textColor: disableButton
-                                        ? Colors.black
-                                        : Colors.white,
+                                        ? Color(0xff232323)
+                                        : Color(0xffFFFFFF),
                                     color: disableButton
                                         ? Theme.of(context).accentColor
                                         : Theme.of(context).primaryColor,
@@ -252,7 +265,7 @@ class _SignInPageState extends State<SignInPage> {
                           TextSpan(
                             text: 'By Signing up you are agree to our  ',
                             style: TextStyle(
-                              color: Colors.black54,
+                              color: Color(0xff232323),
                               fontSize: 12.0,
                               fontWeight: FontWeight.w400,
                             ),
@@ -261,7 +274,7 @@ class _SignInPageState extends State<SignInPage> {
                             text: 'terms and policy',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
-                              color: Colors.black,
+                              color: Color(0xff232323),
                               fontSize: 13.0,
                               fontWeight: FontWeight.bold,
                             ),
