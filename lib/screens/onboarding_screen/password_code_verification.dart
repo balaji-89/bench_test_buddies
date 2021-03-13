@@ -44,7 +44,7 @@ class _PasswordCodeVerificationState extends State<PasswordCodeVerification> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined),
+          icon: Icon(Icons.arrow_back_outlined,color:Color(0xff232323)),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -74,7 +74,7 @@ class _PasswordCodeVerificationState extends State<PasswordCodeVerification> {
               leading: CircleAvatar(
                 radius: 26,
                 backgroundImage:
-                AssetImage("assets/on_boarding_images/setup2.png"),
+                AssetImage("assets/on_boarding_images/VerificationIcon.png"),
               ),
               title: SizedBox(
                 width: constraints.maxWidth * 0.65,
@@ -107,7 +107,7 @@ class _PasswordCodeVerificationState extends State<PasswordCodeVerification> {
                         .of(context)
                         .primaryColor,
                     fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                   ),
                   pinBoxOuterPadding: EdgeInsets.symmetric(
                     horizontal: 8,
@@ -131,14 +131,14 @@ class _PasswordCodeVerificationState extends State<PasswordCodeVerification> {
                     return BoxDecoration(
                       color: Theme
                           .of(context)
-                          .accentColor,
+                          .primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       border: Border.all(
                         color: color == Colors.black
                             ? Theme
                             .of(context)
                             .primaryColor
-                            : color,
+                            : Colors.white,
                       ),
                     );
                   },

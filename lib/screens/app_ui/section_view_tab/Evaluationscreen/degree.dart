@@ -14,7 +14,7 @@ class _DegreeState extends State<Degree> {
   TextEditingController controller = TextEditingController();
   Color buttonColor = Color.fromRGBO(240, 238, 235, 1);
 
-  Color buttonTextColor = Colors.black;
+  Color buttonTextColor = Color(0xff232323);
   bool onTap = false;
 
   void initState() {
@@ -23,13 +23,13 @@ class _DegreeState extends State<Degree> {
       if (controller.text.isNotEmpty)
         setState(() {
           buttonColor = Color(0xFF4667EE);
-          buttonTextColor = Colors.white;
+          buttonTextColor = Color(0xffffffff);
           onTap = true;
         });
       else {
         setState(() {
-          buttonColor = Theme.of(context).accentColor;
-          buttonTextColor = Colors.black;
+          buttonColor = Color.fromRGBO(240, 238, 235, 1);
+          buttonTextColor = Color(0xff232323);
           onTap = false;
         });
       }
@@ -48,7 +48,7 @@ class _DegreeState extends State<Degree> {
           backgroundColor: Colors.white,
           title: Text(
             "Measurement",
-            style: TextStyle(fontSize: 18, color: Colors.black),
+            style: TextStyle(fontWeight:FontWeight.w600,fontSize: 18, color: Color(0xff232323)),
           ),
           leading: IconButton(
             onPressed: () {
@@ -56,7 +56,7 @@ class _DegreeState extends State<Degree> {
             },
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: Color(0xff232323),
             ),
           ),
         ),
@@ -67,7 +67,7 @@ class _DegreeState extends State<Degree> {
               padding: const EdgeInsets.all(10.0),
               child: Text("Enter the Value in degree",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Color(0xff232323),
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   )),
@@ -125,7 +125,7 @@ class _DegreeState extends State<Degree> {
                       child: Text(
                         "Done",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                           fontSize: 18,
                           color: buttonTextColor,
                         ),

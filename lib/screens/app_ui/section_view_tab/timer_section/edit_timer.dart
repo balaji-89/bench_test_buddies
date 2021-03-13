@@ -1,30 +1,26 @@
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:provider/provider.dart';
 import 'circle_timer_screen.dart';
 import 'settings.dart';
 
 class EditTimer extends StatefulWidget {
-  final String exerciseName;
-
-
-  EditTimer({@required this.exerciseName});
-
   @override
   _EditTimerState createState() => _EditTimerState();
 }
 
 class _EditTimerState extends State<EditTimer> {
-
   DateTime changedTime = DateTime.utc(2021, 1, 1, 0, 0, 0);
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
+    final String exerciseName =
+        Provider.of<Exercises>(context, listen: false).selectedExercise.name;
     final mediaQuery = MediaQuery.of(context).size;
 
-
-
-    Widget richText(String indicator) {
+    richText(String indicator) {
       return RichText(
           text: TextSpan(
         children: [
@@ -41,7 +37,6 @@ class _EditTimerState extends State<EditTimer> {
         ],
       ));
     }
-
 
     return SafeArea(
       child: Scaffold(
@@ -62,19 +57,22 @@ class _EditTimerState extends State<EditTimer> {
             alignment: Alignment.bottomCenter,
             child: Text("Exercise Timer",
                 style: TextStyle(
-                  color: Colors.black,
+                  fontWeight:FontWeight.w600,
+                  color: Color(0xff232323),
                   fontSize: 19,
                 )),
           ),
           actions: [
             FlatButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Settings()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Settings()));
                 },
                 child: Text(
                   'Settings',
                   textAlign: TextAlign.end,
                   style: TextStyle(
+                    fontWeight:FontWeight.w600,
                     fontSize: 15,
                     color: Theme.of(context).primaryColor,
                   ),
@@ -94,12 +92,12 @@ class _EditTimerState extends State<EditTimer> {
                   child: Padding(
                     padding: EdgeInsets.only(top: constraints.maxHeight * 0.03),
                     child: Text(
-                      widget.exerciseName,
+                      exerciseName,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 17,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xff232323),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -116,16 +114,16 @@ class _EditTimerState extends State<EditTimer> {
                         itemHeight: constraints.maxHeight * 0.12,
                         itemWidth: constraints.maxWidth * 0.12,
                         highlightedTextStyle:
-                            TextStyle(color: Colors.black87, fontSize: 35),
+                            TextStyle(color: Color(0xff232323), fontSize: 33),
                         normalTextStyle:
-                            TextStyle(color: Colors.grey, fontSize: 30),
+                            TextStyle(color: Colors.grey, fontSize: 28),
                         is24HourMode: true,
                         spacing: constraints.maxWidth * 0.19,
                         isForce2Digits: true,
                         minutesInterval: 1,
                         isShowSeconds: true,
                         secondsInterval: 1,
-                        time:changedTime,
+                        time: changedTime,
                         onTimeChange: (resetValue) {
                           setState(() {
                             changedTime = resetValue;
@@ -180,18 +178,15 @@ class _EditTimerState extends State<EditTimer> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: (){
-
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context)=>EditTimer(exerciseName: widget.exerciseName,)
-                              ));
-                          },
-
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => EditTimer()));
+                        },
                         child: CircleAvatar(
-                          radius: constraints.maxHeight * 0.057,
-                          backgroundColor:Color.fromRGBO(189, 74, 74, 1),
-                          child: Text("Reset",
-                              style: TextStyle(color: Colors.white)),
+                          radius: mediaQuery.height * 0.055,
+                          backgroundColor: Color(0xffe55c4f),
+                          child: Text("Reset", style: TextStyle(color: Color(0xffffffff))),
                         ),
                       ),
                       SizedBox(
@@ -199,14 +194,19 @@ class _EditTimerState extends State<EditTimer> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => CircleTimerScreen(exerciseName: widget.exerciseName,timeSelected:changedTime ,)));
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => CircleTimerScreen(
+                                        exerciseName: exerciseName,
+                                        timeSelected: changedTime,
+                                      )));
                         },
                         child: CircleAvatar(
-                            radius: constraints.maxHeight * 0.057,
-                            backgroundColor: Colors.green,
-                            child: Text("Start",
-                                style: TextStyle(color: Colors.white))),
+                          radius: mediaQuery.height * 0.055,
+                          backgroundColor: Color(0xff4caf50),
+                          child:
+                          Text("Start", style: TextStyle(color: Color(0xffffffff))),
+                        ),
                       ),
                     ],
                   ),
@@ -221,14 +221,14 @@ class _EditTimerState extends State<EditTimer> {
 }
 
 // showAlertDialog(BuildContext context) {
-//   Widget cancelButton = FlatButton(
+//   cancelButton = FlatButton(
 //     child: Text(
 //       "Don't allow",
 //       style: TextStyle(fontSize: 20),
 //     ),
 //     onPressed: () {},
 //   );
-//   Widget continueButton = FlatButton(
+//   continueButton = FlatButton(
 //     child: Text("ok"),
 //     onPressed: () {},
 //   );
@@ -261,7 +261,7 @@ class _EditTimerState extends State<EditTimer> {
 //               child: Text(
 //                   "Bench Test Buddy would like to access your camera to capture and save exercise model photos"),
 //             ),
-//             actions: <Widget>[
+//             actions: <[
 //               CupertinoDialogAction(
 //                 isDefaultAction: true,
 //                 child: Text(

@@ -25,7 +25,7 @@ class _SignInPageState extends State<SignInPage> {
     if (password == null || password.isEmpty)
       return 'The name field is required';
     else if (!password.contains(new RegExp(r'[A-Z]')))
-      return 'The password must contain  or more uppercase characters';
+      return 'The password must contain 1 or more uppercase characters';
     else if (!password.contains(new RegExp(r'[0-9]')))
       return 'The password must contain 1 or more digit characters';
     else if (!password.contains(new RegExp(r'[!@#%^&*()<>?":{}|]')))
@@ -214,6 +214,7 @@ class _SignInPageState extends State<SignInPage> {
                                                         passwordController.text,
                                                         context)
                                                     .then((value) async {
+                                                      if(value!=null){
                                                   await Provider.of<Exercises>(
                                                           context,
                                                           listen: false)
@@ -224,27 +225,26 @@ class _SignInPageState extends State<SignInPage> {
                                                       .pushReplacement(
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  HomeExerciseList()));
+                                                                  HomeExerciseList()));}
                                                 });
                                               } catch (error) {
-                                                print(error);
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        AlertDialog(
-                                                          title: Text('Error'),
-                                                          content: Text(error),
-                                                          actions: [
-                                                            FlatButton(
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                child:
-                                                                    Text('OK'))
-                                                          ],
-                                                        ));
+                                                // showDialog(
+                                                //     context: context,
+                                                //     builder: (context) =>
+                                                //         AlertDialog(
+                                                //           title: Text('Error'),
+                                                //           content: Text(error),
+                                                //           actions: [
+                                                //             FlatButton(
+                                                //                 onPressed: () {
+                                                //                   Navigator.of(
+                                                //                           context)
+                                                //                       .pop();
+                                                //                 },
+                                                //                 child:
+                                                //                     Text('OK'))
+                                                //           ],
+                                                //         ));
                                               }
                                             }
                                           })),

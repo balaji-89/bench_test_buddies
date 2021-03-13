@@ -17,14 +17,14 @@ class SucceededPasswordScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Color(0xFF1a1a4b),
+          color: Color(0xFF232323),
         ),
         centerTitle: true,
         title: Text(
           'Password changed',
-          style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+          style: TextStyle(color: Color(0xFF232323), fontSize: 20),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffffffff),
         elevation: 1,
       ),
       body: SizedBox(

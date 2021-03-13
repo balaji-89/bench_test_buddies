@@ -72,7 +72,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                     leading: CircleAvatar(
                       radius: 26,
                       backgroundImage:
-                          AssetImage("assets/on_boarding_images/setup2.png"),
+                          AssetImage("assets/on_boarding_images/VerificationIcon.png"),
                     ),
                     title: SizedBox(
                       width: constraints.maxWidth * 0.65,
@@ -102,7 +102,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                         pinTextStyle: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
                         ),
                         pinBoxOuterPadding: EdgeInsets.symmetric(
                           horizontal: 8,
@@ -120,12 +120,12 @@ class _EmailVerificationState extends State<EmailVerification> {
                         pinBoxDecoration: (color, colors,
                             {borderWidth, radius}) {
                           return BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).primaryColor.withOpacity(0.1),
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             border: Border.all(
                               color: color == Colors.black
                                   ? Theme.of(context).primaryColor
-                                  : Color(0xff232323),
+                                  : Color(0xffffffff),
                             ),
                           );
                         },
@@ -246,7 +246,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                            title: Text('${error.toString()}',style: TextStyle(color: Color(0xff232323)),),
+                                            content: Text(error,style: TextStyle(color: Color(0xff232323)),),
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {

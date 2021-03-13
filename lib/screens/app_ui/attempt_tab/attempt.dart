@@ -34,7 +34,7 @@ class AttemptTab extends StatelessWidget {
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(bottom:mediaQueryHeight*0.012),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xffffffff),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -45,8 +45,8 @@ class AttemptTab extends StatelessWidget {
                       child: Text(userCurrentExercise.name,
 
                           style: TextStyle(height: 1,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                            color: Color(0xff232323),
+                            fontWeight: FontWeight.w700,
                             fontSize: 17,
                           )),
                     ),
@@ -60,7 +60,7 @@ class AttemptTab extends StatelessWidget {
                             style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           TextSpan(
@@ -79,7 +79,7 @@ class AttemptTab extends StatelessWidget {
             Container(
               height: mediaQueryHeight*8.2,
               width: mediaQueryWidth,
-              color: Colors.white,
+              color: Color(0xffffffff),
               padding: EdgeInsets.only(top:mediaQueryHeight*0.012),
               child: ListView.builder(
                 scrollDirection: Axis.vertical,

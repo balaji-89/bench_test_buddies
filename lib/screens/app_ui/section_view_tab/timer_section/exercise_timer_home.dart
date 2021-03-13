@@ -32,6 +32,7 @@ class ExerciseTimerHome extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Text("Exercise Timer",
               style: TextStyle(
+                fontWeight:FontWeight.w600,
                 color: Colors.black,
                 fontSize: 19,
               )),
@@ -45,6 +46,7 @@ class ExerciseTimerHome extends StatelessWidget {
                 'Settings',
                 textAlign: TextAlign.end,
                 style: TextStyle(
+                  fontWeight:FontWeight.w600,
                   fontSize: 15,
                   color: Theme.of(context).primaryColor,
                 ),
@@ -69,7 +71,7 @@ class ExerciseTimerHome extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -148,13 +150,12 @@ class ExerciseTimerHome extends StatelessWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => EditTimer(
-                                exerciseName: userCurrentExercise.name))),
+                            builder: (_) => EditTimer())),
                     child: CircleAvatar(
                       radius: mediaQuery.height * 0.055,
                       backgroundColor: Theme.of(context).primaryColor,
                       child:
-                          Text("Edit", style: TextStyle(color: Colors.white)),
+                          Text("Edit", style: TextStyle(color: Color(0xffffffff))),
                     ),
                   ),
                   GestureDetector(
@@ -167,9 +168,9 @@ class ExerciseTimerHome extends StatelessWidget {
                     },
                     child: CircleAvatar(
                         radius: mediaQuery.height * 0.055,
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color(0xff4caf50),
                         child: Text("Start",
-                            style: TextStyle(color: Colors.white))),
+                            style: TextStyle(color: Color(0xffffffff)))),
                   ),
                 ],
               ),

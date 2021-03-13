@@ -193,7 +193,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         TextSpan(
                           text: 'By Signing up you are agree to our  ',
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: Color(0xff232323),
                             fontSize: 12.0,
                             fontWeight: FontWeight.w400,
                           ),
@@ -202,7 +202,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           text: 'terms and policy',
                           style: TextStyle(
                             decoration: TextDecoration.underline,
-                            color: Colors.black,
+                            color: Color(0xff232323),
                             fontSize: 13.0,
                             fontWeight: FontWeight.bold,
                           ),

@@ -10,17 +10,15 @@ class UserLogData with ChangeNotifier {
   int userId;
 
   Future assigningData(jsonData, BuildContext context,String req) async {
+    print('reached assigning Data');
     userId = jsonData.user.id;
     userName = jsonData.user.name;
     userMail = jsonData.user.email;
     token = jsonData.token;
     if(req=="signUp"){
-    Provider.of<CountryProvider>(context, listen: false)
-        .initializeUserToken(token);
     await Provider.of<CountryProvider>(context, listen: false)
-        .initialiseCountry();
+        .initialiseCountry(token);
     await Provider.of<CountryProvider>(context, listen: false)
-
         .getQuestionsSet();}
   }
 

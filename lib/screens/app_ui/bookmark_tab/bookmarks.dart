@@ -27,7 +27,8 @@ class _BookMarksState extends State<BookMarks> {
   void initState() {
     token= Provider.of<UserLogData>(context, listen: false).token;
     bookMarksList= Provider.of<BookmarksProvider>(context, listen: false).bookmarks;
-    selectedBookmarkId = bookMarksList[0];
+    if(bookMarksList.isNotEmpty){
+    selectedBookmarkId = bookMarksList[0];}
     checkBoxKeys = checkBoxItems.keys.toList();
     super.initState();
   }
@@ -62,7 +63,13 @@ class _BookMarksState extends State<BookMarks> {
     final mediaQuery = MediaQuery.of(context).size;
 
     return Scaffold(
-        body: Column(
+        body: bookMarksList.isEmpty||null?Center(
+          child:Text('Add Bookmarks to show',style: TextStyle(
+            fontWeight:FontWeight.w600,
+            fontSize:18,
+            color:Color(0xff232323),
+          ),)
+        ):Column(
       children: [
         SizedBox(
           height: mediaQuery.height * 0.1,
@@ -85,9 +92,9 @@ class _BookMarksState extends State<BookMarks> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
                       color: selectedBookmarkId == bookMarksList[i]
-                          ? Colors.orange
-                          : Colors.white,
-                      border: Border.all(color: Colors.orange, width: 1),
+                          ? Color(0xfff79703)
+                          : Color(0xffffffff),
+                      border: Border.all(color: Color(0xfff79703), width: 1),
                     ),
                     child: Center(
                         child: Text(
@@ -96,8 +103,8 @@ class _BookMarksState extends State<BookMarks> {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           color: selectedBookmarkId == bookMarksList[i]
-                              ? Colors.white
-                              : Colors.black),
+                              ? Color(0xffffffff)
+                              : Color(0xff232323)),
                     )),
                   ),
                 );
@@ -166,7 +173,7 @@ class _BookMarksState extends State<BookMarks> {
                                   width: constraints.maxWidth * 0.13,
                                   margin: EdgeInsets.only(top: 8),
                                   decoration: BoxDecoration(
-                                      color: Colors.black,
+                                      color: Color(0xff232323),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(7),
                                       )),
@@ -177,7 +184,7 @@ class _BookMarksState extends State<BookMarks> {
                                       : 'Click to view the video',
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                     fontSize: 15,
                                   ),
                                 ),
@@ -186,7 +193,7 @@ class _BookMarksState extends State<BookMarks> {
                                   alignment: Alignment.centerRight,
                                   icon: Icon(
                                     Icons.arrow_forward,
-                                    color: Colors.black,
+                                    color: Color(0xff232323),
                                     size: 18,
                                   ),
                                   onPressed: () {},
@@ -209,7 +216,7 @@ class _BookMarksState extends State<BookMarks> {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w600,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -218,7 +225,7 @@ class _BookMarksState extends State<BookMarks> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
-                                          color: Colors.black,
+                                          color: Color(0xff232323),
                                         )),
                                   ],
                                 )),
@@ -238,7 +245,7 @@ class _BookMarksState extends State<BookMarks> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w600,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -246,7 +253,7 @@ class _BookMarksState extends State<BookMarks> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
-                                          color: Colors.black,
+                                          color: Color(0xff232323),
                                         )),
                                   ],
                                 )),
@@ -266,7 +273,7 @@ class _BookMarksState extends State<BookMarks> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w600,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -274,7 +281,7 @@ class _BookMarksState extends State<BookMarks> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
-                                          color: Colors.black,
+                                          color: Color(0xff232323),
                                         )),
                                   ],
                                 )),

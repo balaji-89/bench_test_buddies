@@ -40,7 +40,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
         centerTitle: true,
         title: Text(
           'Uploaded Images',
-          style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+          style: TextStyle(color: Color(0xFF232323), fontSize: 18,fontWeight: FontWeight.w600),
         ),
         backgroundColor: Colors.white,
         elevation: 1,
@@ -133,6 +133,7 @@ class _UploadedImageViewState extends State<UploadedImageView> {
                           bottom: MediaQuery.of(context).size.height * 0.04),
                       alignment: Alignment.center,
                       child: RaisedButton(
+                        elevation: 0,
                         textColor: Colors.white,
                         color: Color(0xFF4667EE),
                         child: Text(

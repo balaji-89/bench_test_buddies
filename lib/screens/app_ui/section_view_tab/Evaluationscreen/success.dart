@@ -27,7 +27,7 @@ class Success extends StatelessWidget {
                 actions: [TextButton(onPressed: (){
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
-                }, child: Text('Something went wrong'))],
+                }, child: Text('Something went wrong',style:TextStyle(color:Color(0xffffffff))))],
               );
             }
             if(snapshot.connectionState==ConnectionState.done)
@@ -44,11 +44,11 @@ class Success extends StatelessWidget {
                   preferredSize: Size.fromHeight(mediaQuery.height * 0.2),
                   child: Center(
                     child: CircleAvatar(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color(0xff4caf50),
                         maxRadius: mediaQuery.width * 0.10,
                         child: Icon(
                           Icons.done,
-                          color: Colors.white,
+                          color: Color(0xffffffff),
                           size: mediaQuery.height * 0.08,
                         )),
                   ),
@@ -68,7 +68,8 @@ class Success extends StatelessWidget {
                   child: Container(
                     child: Text("System calculating the score: ",
                         style: TextStyle(
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
+                          color:Color(0xff232323),
                           fontSize: 15,
                         )),
                   ),
@@ -77,7 +78,7 @@ class Success extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Text("    15 seconds",
                       style: TextStyle(
-                        color: Colors.deepOrangeAccent,
+                        color: Color(0xfff16c28),
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       )),

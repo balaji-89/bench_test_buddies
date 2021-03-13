@@ -34,15 +34,13 @@ class User {
   }
 
   login(LoginRequest loginRequest) async {
-    print('reached');
     try {
       Response response = await dio.post('/login', data: loginRequest.toJson());
       return LoginResponse.fromJson(response.data);
     } on DioError catch (err) {
-      print("user $err");
-      print('${err.response}');
-      print('${err.response.data}');
+      print("${ErrorResponse.fromJson(err.response.data)}");
       throw ErrorResponse.fromJson(err.response.data);
+
     }
   }
 

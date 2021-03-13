@@ -97,6 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
         } catch (error) {
           if (error ==
               "Email already in Use.") {
+            Provider.of<SignInUp>(context,listen:false).emailErrorText=null;
             Navigator.of(context)
                 .pushReplacement(
                 MaterialPageRoute(
@@ -119,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
           centerTitle: true,
           title: Text(
             'Sign up',
-            style: TextStyle(fontWeight:FontWeight.w800,color: Color(0xFF232323), fontSize: 20),
+            style: TextStyle(fontWeight:FontWeight.w700,color: Color(0xFF232323), fontSize: 20),
           ),
           backgroundColor: Colors.white,
           elevation: 1,

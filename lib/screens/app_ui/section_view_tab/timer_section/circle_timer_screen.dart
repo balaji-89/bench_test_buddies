@@ -1,14 +1,14 @@
 import 'dart:ui';
 
-import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/user_data_token.dart';
+import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/exercise_timer_home.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/timer_section/task_finished_time_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_timer/simple_timer.dart';
-import 'package:intl/intl.dart';
 
 import 'settings.dart';
 
@@ -54,6 +54,46 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
       endsOnTime = DateTime.now().add(initialTime);
     });
   }
+  void doneFunction(){
+    _timerController.pause();
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Completed'),
+          content: Text('Are you sure you want to mark it completed?'),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _timerController.start();
+                },
+                child: Text('No')),
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onTimeOver();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TaskFinishedTimerScreen(
+                                exerciseName: widget
+                                    .exerciseName,
+                                initialTimeSet: widget
+                                    .timeSelected,
+                                totalTimeTaken:
+                                totalTime,
+                                extendedBy:
+                                extendedTime,
+                                startedTime:
+                                startedTime,
+                                endedTime:
+                                finishedTime,
+                              )));
+                },
+                child: Text('Yes')),
+          ],
+        ));
+  }
 
   @override
   void initState() {
@@ -72,6 +112,35 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
   Color backgroundColor = Color(0xFF4667EE);
   bool pause = false;
 
+  void resetFunction(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Reset'),
+              content: Text(
+                'Are you sure you want to reset the timer?',
+                style: TextStyle(color: Color(0xff232323)),
+              ),
+              actions: [
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _timerController.start();
+                    },
+                    child: Text('No')),
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ExerciseTimerHome()));
+                    },
+                    child: Text('Yes'))
+              ],
+            ));
+  }
+
   void resumeFunction() {
     _timerController.start();
     changeEndsOnTime();
@@ -85,12 +154,13 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
   void pauseFunction() {
     _timerController.pause();
     setState(() {
-      backgroundColor = Color.fromRGBO(214, 167, 47, 1);
+      backgroundColor = Color(0xfff79703);
       pause = true;
     });
   }
 
   void onTimeOver() {
+    _timerController.stop();
     finishedTime = DateTime.now();
     totalTime = finishedTime.subtract(Duration(
       hours: startedTime.hour,
@@ -138,7 +208,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Color(0xff232323),
           ),
           onPressed: () {
             returnDialog();
@@ -149,7 +219,8 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
           alignment: Alignment.bottomCenter,
           child: Text("Exercise Timer",
               style: TextStyle(
-                color: Colors.black,
+                fontWeight:FontWeight.w600,
+                color: Color(0xff232323),
                 fontSize: 19,
               )),
         ),
@@ -163,6 +234,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                 'Settings',
                 textAlign: TextAlign.end,
                 style: TextStyle(
+                  fontWeight: FontWeight.w600,
                   fontSize: 15,
                   color: Theme.of(context).primaryColor,
                 ),
@@ -187,8 +259,8 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 17,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xff232323),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -205,14 +277,14 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                         timerStyle: TimerStyle.ring,
                         backgroundColor: backgroundColor,
                         onEnd: onTimeOver,
-                        progressIndicatorColor: Colors.white.withOpacity(0.9),
+                        progressIndicatorColor: Color(0xffffffff).withOpacity(0.9),
                         progressIndicatorDirection:
                             TimerProgressIndicatorDirection.clockwise,
                         progressTextCountDirection:
                             TimerProgressTextCountDirection.count_down,
                         displayProgressIndicator: true,
                         progressTextStyle: TextStyle(
-                          color: Colors.black,
+                          color: Color(0xff232323),
                           fontSize: 45,
                         ),
                         strokeWidth: 15,
@@ -246,15 +318,15 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                           children: [
                             GestureDetector(
                               onTap: () {
-                                _timerController.reset();
-                                _timerController.start();
+                                resetFunction(context);
                               },
                               child: CircleAvatar(
                                 radius: constraints.maxHeight * 0.065,
-                                backgroundColor: Color.fromRGBO(189, 74, 74, 1),
+                                backgroundColor: Color(0xffE55c4f),
                                 child: Text("Reset",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 16)),
+                                        color: Color(0xffffffff),
+                                        fontSize: 16)),
                               ),
                             ),
                             GestureDetector(
@@ -264,32 +336,20 @@ class _CircleTimerScreenState extends State<CircleTimerScreen>
                               child: CircleAvatar(
                                   radius: constraints.maxHeight * 0.065,
                                   backgroundColor: pause == true
-                                      ? Colors.green
-                                      : Color.fromRGBO(214, 167, 47, 1),
+                                      ? Color(0xff4caf50)
+                                      : Color(0xfff79703),
                                   child: Text(
                                       pause == true ? "Resume" : "Pause",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 15))),
+                                          color: Color(0xffffffff),
+                                          fontSize: 15))),
                             ),
                           ],
                         ),
                       ),
                       Center(
                         child: GestureDetector(
-                          onTap: () {
-                            onTimeOver();
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TaskFinishedTimerScreen(
-                                          exerciseName: widget.exerciseName,
-                                          initialTimeSet: widget.timeSelected,
-                                          totalTimeTaken: totalTime,
-                                          extendedBy: extendedTime,
-                                          startedTime: startedTime,
-                                          endedTime: finishedTime,
-                                        )));
-                          },
+                          onTap:doneFunction,
                           child: CircleAvatar(
                             radius: constraints.maxHeight * 0.065,
                             backgroundColor: Theme.of(context).primaryColor,

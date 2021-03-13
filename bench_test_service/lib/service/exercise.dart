@@ -39,7 +39,6 @@ class Exercise {
   }
 
   Future<String> emailVerification(String email, int code) async {
-    print('$email  $code');
     try {
       http.Response response = await http.post('$baseUrl/email/verify', body: {
         'email': email,
@@ -49,12 +48,9 @@ class Exercise {
         throw Exception();
       }
       Map map = jsonDecode(response.body);
-      print('success $map');
       return map["message"];
     } catch (error) {
-      print('error $error');
-      var map = jsonDecode(error);
-      throw map["message"];
+      throw error;
     }
   }
 
@@ -70,8 +66,7 @@ class Exercise {
       Map map = jsonDecode(response.body);
       return map["message"];
     } catch (error) {
-      String errorMessage = (json.decode(error))["message"];
-      throw errorMessage;
+      throw error;
     }
   }
 
@@ -213,7 +208,11 @@ class Exercise {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           });
+      print(response.body);
       var convertedData=jsonDecode(response.body);
+      if(convertedData["message"].contains("you did't book marked any questions!")){
+        return [];
+      }
       return convertedData["data"];
     } catch (err) {
       print(err);
@@ -260,7 +259,6 @@ class Exercise {
         var convertedData=jsonDecode(response.body);
         return convertedData["data"];
       } catch(error){
-        print('error $error');
         throw error["message"];
       }
   }

@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
+import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/upload_image_screen/selected_image_view.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../home_tabs.dart';
 
@@ -24,6 +27,7 @@ class _PractisedImagesState extends State<PractisedImages> {
         width: constraints.maxWidth,
         margin: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.04),
         child: RaisedButton(
+          elevation: 0,
           textColor: Colors.white,
           color: Color(0xFF4667EE),
           child: Text(
@@ -41,16 +45,10 @@ class _PractisedImagesState extends State<PractisedImages> {
   }
 
   Future getCamera() async {
-    setState(() {
-      isLoading=true;
-    });
     var clickedImage = await ImagePicker().getImage(source: ImageSource.camera);
-    setState(() {
-      isLoading=true;
-    });
     if (clickedImage != null) {
       var image = File(clickedImage.path);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
+      Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => SelectedImageView(selectedImages: [image])));
     }
   }
@@ -116,13 +114,16 @@ class _PractisedImagesState extends State<PractisedImages> {
 
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserLevel>(context).userData;
+    final userCurrentExercise = Provider.of<Exercises>(context)
+        .findExerciseById(userData.userExerciseId);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Color(0xff232323),
           ),
           onPressed: () {
             Navigator.of(context)
@@ -131,10 +132,10 @@ class _PractisedImagesState extends State<PractisedImages> {
         ),
         title: Text('Practised Images',
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff232323),
                 fontSize: 18,
-                letterSpacing: 0.2)),
+            )),
         elevation: 1,
         centerTitle: true,
         titleSpacing: 0.3,
@@ -152,11 +153,11 @@ class _PractisedImagesState extends State<PractisedImages> {
                 height: constraints.maxHeight * 0.1,
                 width: constraints.maxWidth,
                 child: Center(
-                  child: Text('Class 1 Amalgam Cavity',
+                  child: Text(userCurrentExercise.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xff232323),
+                        fontWeight: FontWeight.w600,
                         fontSize: 17,
                       )),
                 ),

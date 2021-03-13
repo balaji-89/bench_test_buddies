@@ -44,7 +44,7 @@ class _SettingsState extends State<Settings> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Color(0xff232323),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -53,8 +53,9 @@ class _SettingsState extends State<Settings> {
         centerTitle: true,
         title: Text("Settings",
             style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
+              color: Color(0xff232323),
+              fontSize: 19.5,
+              fontWeight: FontWeight.w600
             )),
       ),
       body: SizedBox(
@@ -82,11 +83,11 @@ class _SettingsState extends State<Settings> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('${_settings[index]['setting']}',textAlign:TextAlign.center,style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          color: Color(0xff232323),
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.w500,
                         ),),
-                        Switch(activeColor: Colors.green,value: _settings[index]['status'], onChanged: (value){
+                        Switch(activeColor: Color(0xff4caf50),value: _settings[index]['status'], onChanged: (value){
                           setState(() {
                             _settings[index]['status']=value;
                           });
@@ -99,8 +100,8 @@ class _SettingsState extends State<Settings> {
                       color: Theme.of(context).accentColor,
                       padding: EdgeInsets.only(left: 7,top:7),
                       child: Text(
-                        '${_settings[index]['description']}',textAlign:TextAlign.left,style: TextStyle(
-                        color: Colors.black87,
+                        '   ${_settings[index]['description']}',textAlign:TextAlign.left,style: TextStyle(
+                        color: Color(0xff232323).withOpacity(0.8),
                         fontSize: 10,
                       ),
                       ),

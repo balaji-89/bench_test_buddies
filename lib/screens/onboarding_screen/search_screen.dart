@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:bench_test_buddies/provider/country_provider.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
+import 'package:bench_test_service/service/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +43,6 @@ class SearchScreen extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    query.substring(0).toUpperCase();
     var countryNames =
         Provider.of<CountryProvider>(context, listen: false).getCountryNames;
     final List country = query.isEmpty

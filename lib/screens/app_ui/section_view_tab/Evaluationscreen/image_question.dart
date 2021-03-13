@@ -45,7 +45,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: Color(0xff232323),
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -53,10 +53,10 @@ class _ImageQuestionState extends State<ImageQuestion> {
           ),
           title: Text('Evaluation',
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff232323),
                   fontSize: 18,
-                  letterSpacing: 0.2)),
+              )),
           elevation: 1,
           centerTitle: true,
           titleSpacing: 0.3,
@@ -78,7 +78,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
                     fontSize: 15,
                     color: isLastQuestion
                         ? Theme.of(context).primaryColor
-                        : Theme.of(context).accentColor,
+                        : Colors.grey.withOpacity(0.7),
                   ),
                 ))
           ],
@@ -94,12 +94,17 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   child: Text('Criteria: ${currentQuestionSet.title}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xff232323),
+                        fontWeight: FontWeight.w600,
                         fontSize: 17,
                       )),
                 ),
               ),
+              // currentQuestionSet.image.length<=1?SizedBox(
+              //   height: constraints.maxHeight * 0.46,
+              //   width: constraints.maxWidth,
+              //     child: Text('${currentQuestionSet.image[0]}'),
+              // ):
               SizedBox(
                 height: constraints.maxHeight * 0.46,
                 width: constraints.maxWidth,
@@ -122,7 +127,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
               Container(
                 width: constraints.maxWidth * 1,
                 height: constraints.maxHeight * 0.05,
-                color: Colors.grey.withOpacity(0.3),
+                color: Theme.of(context).accentColor,
                 margin: EdgeInsets.only(bottom: 20),
                 child: Center(
                   child: RichText(
@@ -133,14 +138,15 @@ class _ImageQuestionState extends State<ImageQuestion> {
                               "Q.${evaluationQuestionPath.currentQuestionIndex + 1} /",
                           style: TextStyle(
                             fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff232323),
                           ),
                         ),
                         TextSpan(
                           text: "${evaluationQuestionPath.questions.length}",
                           style: TextStyle(
-                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff232323),
                             fontSize: 15,
                           ),
                         ),
@@ -156,7 +162,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -194,8 +200,8 @@ class _ImageQuestionState extends State<ImageQuestion> {
                       child: Text(
                         "Yes",
                         style: TextStyle(
-                          color: yesButtonColor==true?Colors.white:Colors.black,
-                          fontWeight: FontWeight.bold,
+                          color: yesButtonColor==true?Color(0xffffffff):Color(0xff232323),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -203,9 +209,9 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   Container(
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
-                    color:noButtonColor==true?Theme.of(context).primaryColor:Colors.white,
+                    color:noButtonColor==true?Theme.of(context).primaryColor:Color(0xffffffff),
                     child: OutlineButton(
-                      color: noButtonColor==true?Theme.of(context).primaryColor:Colors.white,
+                      color: noButtonColor==true?Theme.of(context).primaryColor:Color(0xffffffff),
                       borderSide: BorderSide(
                         color: Colors.grey,
                         style: BorderStyle.solid,
@@ -227,8 +233,8 @@ class _ImageQuestionState extends State<ImageQuestion> {
                       child: Text(
                         "No",
                         style: TextStyle(
-                          color: noButtonColor==true?Colors.white:Colors.black,
-                          fontWeight: FontWeight.bold,
+                          color: noButtonColor==true?Color(0xffffffff):Color(0xff232323),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),

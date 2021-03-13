@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/model/attempt_official_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
@@ -21,11 +23,11 @@ class ResultsScoreCard extends StatelessWidget {
         CircularStackEntry(
           <CircularSegmentEntry>[
             CircularSegmentEntry(
-                userScore.toDouble(), Colors.green,
+                userScore.toDouble(), Color(0xff4caf50),
                 rankKey: 'S1'),
             CircularSegmentEntry(
               (totalScore - userScore).toDouble(),
-              Colors.deepOrangeAccent,
+              Color(0xfff16c28),
               rankKey: 'S1',
             ),
           ],
@@ -38,7 +40,7 @@ class ResultsScoreCard extends StatelessWidget {
                 rankKey: 'S2'),
             CircularSegmentEntry(
               (totalScore- bestScore).toDouble(),
-              Colors.red,
+              Color(0xffE55c4f),
               rankKey: 'S2',
             ),
           ],
@@ -83,14 +85,14 @@ class ResultsScoreCard extends StatelessWidget {
                               size: chartSize,
                               initialChartData: pieData[index],
                               labelStyle: TextStyle(
-                                color: Colors.black,
+                                color: Color(0xff232323),
                                 fontWeight: FontWeight.w600,
                                 fontSize: 25,
                               ),
                             ),
                             Text(index == 0 ? 'Your Score' : 'Ideal Score',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Color(0xff232323),
                                   fontSize: 13,
                                 )),
                           ]),
@@ -111,16 +113,16 @@ class ResultsScoreCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: constraints.maxWidth * 0.21,
+                      width: constraints.maxWidth * 0.23,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CircleAvatar(
                             radius: 4,
-                            backgroundColor: Colors.green,
+                            backgroundColor: Color(0xff4caf50),
                           ),
-                          Text('${userScore.toString()} Correct')
+                          Text('${userScore.toString()} Correct',style: TextStyle(color:Color(0xff232323),fontWeight: FontWeight.w500,fontSize: 13),)
                         ],
                       ),
                     ),
@@ -132,10 +134,10 @@ class ResultsScoreCard extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 4,
-                            backgroundColor: Colors.red,
+                            backgroundColor: Color(0xffE55c4f),
                           ),
                           Text(
-                              '${(totalScore - userScore).toString()} Wrong')
+                              '${(totalScore - userScore).toString()} Wrong',style: TextStyle(color:Color(0xff232323),fontWeight: FontWeight.w500,fontSize: 13),)
                         ],
                       ),
                     ),
@@ -151,7 +153,7 @@ class ResultsScoreCard extends StatelessWidget {
               Text(
                 'Buddy Words',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Color(0xff232323),
                     fontWeight: FontWeight.w600,
                     fontSize: 17,
                     letterSpacing: 0.3,
@@ -171,7 +173,8 @@ class ResultsScoreCard extends StatelessWidget {
                 child: Text(
                   'Hey Balaji, dont worry about this.Apparently try this exercise again with a vit of extra revision and you will score high.!. we are confident about this',
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Color(0xff232323),
+                      fontWeight: FontWeight.w300,
                       letterSpacing: 0.2,
                       wordSpacing: 1.4,
                       height: 1.5,

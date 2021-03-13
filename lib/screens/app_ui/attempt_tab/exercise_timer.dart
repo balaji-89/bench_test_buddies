@@ -15,7 +15,6 @@ class ExerciseTimer extends StatelessWidget {
     int formattedMinutes;
     int formattedSeconds;
     List<String> splitTime=apiTime.split(":");
-    print(splitTime);
     formattedHour=int.parse(splitTime[0]);
     formattedMinutes=int.parse(splitTime[1]);
     formattedSeconds=int.parse(splitTime[2]);
@@ -44,7 +43,7 @@ class ExerciseTimer extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Color(0xfff232323),
           ),
           onPressed: () {
             Navigator.of(context).pop();
@@ -52,10 +51,10 @@ class ExerciseTimer extends StatelessWidget {
         ),
         title: Text('Exercise Timer',
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                color: Color(0xff232323),
                 fontSize: 18,
-                letterSpacing: 0.7)),
+            )),
         elevation: 1,
         centerTitle: true,
         titleSpacing: 0.3,
@@ -66,7 +65,7 @@ class ExerciseTimer extends StatelessWidget {
         itemBuilder: (context, index) => Container(
           height: MediaQuery.of(context).size.height * 0.13,
           width: MediaQuery.of(context).size.width,
-          color: Colors.white,
+          color: Color(0xffffffff),
           padding: EdgeInsets.only(left: 14, top: 16, bottom: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -75,10 +74,10 @@ class ExerciseTimer extends StatelessWidget {
               Text(
                 '${attemptKey[index]}:',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Color(0xFF232323),
                   wordSpacing: 0.4,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
                 ),
               ),
               if (index <= 2)
@@ -94,9 +93,9 @@ class ExerciseTimer extends StatelessWidget {
                           text: '${DateFormat.m().format(getTimeFromString(attemptValue[index]))}m'),
                     ],
                     style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
@@ -104,9 +103,9 @@ class ExerciseTimer extends StatelessWidget {
                 Text(
                   '${DateFormat().add_jm().format(getTimeFromString(attemptValue[index]))}',
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
             ],

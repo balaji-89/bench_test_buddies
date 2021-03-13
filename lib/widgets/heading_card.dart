@@ -21,7 +21,7 @@ class HeadingCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         color: Colors.transparent,
-        boxShadow: [
+        boxShadow: arrow==true?[
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
             offset: Offset(1, 1),
@@ -34,7 +34,7 @@ class HeadingCard extends StatelessWidget {
             blurRadius: 1.0,
             spreadRadius: 1,
           ),
-        ],
+        ]:[],
       ),
       child: LayoutBuilder(
           builder: (context, constraints) => ListTile(

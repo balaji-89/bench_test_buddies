@@ -61,12 +61,12 @@ class _SelectedImageViewState extends State<SelectedImageView> {
             },
           ),
           iconTheme: IconThemeData(
-            color: Color(0xFF1a1a4b),
+            color: Color(0xff232323),
           ),
           centerTitle: true,
           title: Text(
             'Image Gallery',
-            style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+            style: TextStyle(color: Color(0xff232323), fontSize: 18,fontWeight:FontWeight.w600),
           ),
           backgroundColor: Colors.white,
           elevation: 1,
@@ -87,9 +87,9 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                 child: Text(
                   'More',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -215,10 +215,11 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                           bottom: MediaQuery.of(context).size.height * 0.04),
                       alignment: Alignment.center,
                       child: RaisedButton(
+                        elevation: 0,
                         textColor: Colors.white,
                         color: Color(0xFF4667EE),
                         child: Text(
-                          'Uploaded Images',
+                          'Upload Images',
                           style: TextStyle(fontSize: 14),
                         ),
                         onPressed: () async {
@@ -239,6 +240,7 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                             setState(() {
                               isLoading = false;
                             });
+                            Navigator.of(context).pop();
                             Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
                               builder: (context) => UploadedImageView(

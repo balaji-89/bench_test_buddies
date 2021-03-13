@@ -542,7 +542,7 @@ class _SetupScreenState extends State<SetupScreen> {
     return Scaffold(
       appBar: AppBar(
           iconTheme: IconThemeData(
-            color: Color(0xFF1a1a4b),
+            color: Color(0xFF232323),
           ),
           centerTitle: true,
           elevation: 1,

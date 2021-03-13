@@ -24,17 +24,27 @@ class _ViewResultHomeState extends State<ViewResultHome> {
   @override
   Widget build(BuildContext context) {
     String userToken = Provider.of<UserLogData>(context, listen: false).token;
-    final heights = MediaQuery.of(context).size;
+    final mediaQuery = MediaQuery.of(context).size;
     List<Widget> list = [
-      Text(
-        "Score Card",
-        style: TextStyle(fontSize: 18),
+      SizedBox(
+        height: mediaQuery.height*0.033,
+        width:mediaQuery.width*0.4,
+        child: Text(
+          "Score Card",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18,color:Color(0xff232323)),
+        ),
       ),
-      Text(
-        "View Solution",
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 18,
+      SizedBox(
+        height: mediaQuery.height*0.03,
+        width:mediaQuery.width*0.45,
+        child: Text(
+          "View Solution",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xff232323),
+            fontSize: 18,
+          ),
         ),
       ),
     ];
@@ -46,7 +56,8 @@ class _ViewResultHomeState extends State<ViewResultHome> {
         title: Text(
           'View Results',
           style: TextStyle(
-            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff232323),
           ),
         ),
         leading: IconButton(
@@ -56,7 +67,7 @@ class _ViewResultHomeState extends State<ViewResultHome> {
           },
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Color(0xff232323),
           ),
         ),
       ),
@@ -84,12 +95,13 @@ class _ViewResultHomeState extends State<ViewResultHome> {
                 children: <Widget>[
                   Container(
                     constraints: BoxConstraints(maxHeight: 250.0),
-                    height: heights.height * 0.08,
+                    height: mediaQuery.height * 0.08,
                     child: Material(
                       color: Theme.of(context).accentColor,
                       child: TabBar(
+                        indicatorColor: Theme.of(context).primaryColor,
                         tabs: list,
-                        labelColor: Colors.black,
+                        labelColor: Color(0xff232323),
                       ),
                     ),
                   ),

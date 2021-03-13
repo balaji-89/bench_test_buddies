@@ -61,8 +61,9 @@ class _HomePageState extends State<HomePage>
       await Provider.of<AttemptOfficial>(context, listen: false)
           .initializeUserAttempt(token, userSelected.id);
       dataLoaded = true;
-      await Provider.of<BookmarksProvider>(context, listen: false)
+       Provider.of<BookmarksProvider>(context, listen: false)
           .getAllBookmarks(token);
+       Provider.of<ViewResultProvider>(context, listen: false).initializeData(token);
     }
   }
 
@@ -149,10 +150,10 @@ class _HomePageState extends State<HomePage>
                 }),
             title: Text(appBarNames[value],
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                     color: Colors.black,
                     fontSize: 18,
-                    letterSpacing: 0.8)),
+                )),
             elevation: 1,
             centerTitle: true,
             titleSpacing: 0.3,

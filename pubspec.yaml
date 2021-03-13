@@ -76,7 +76,7 @@ flutter:
     - family: SFPro
       fonts:
         - asset: assets/fonts/SF Pro Text/FontsFree-Net-SFProText-Bold.ttf
-          weight: 800
+          weight: 700
         - asset: assets/fonts/SF Pro Text/FontsFree-Net-SFProText-Semibold.ttf
           weight: 600
         - asset: assets/fonts/SF Pro Text/FontsFree-Net-SFProText-Medium-1.ttf

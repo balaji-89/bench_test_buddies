@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
@@ -74,10 +76,10 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
         leading: SizedBox(),
         title: Text('Timer Summary',
             style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Color(0xFF232323),
                 fontSize: 18,
-                letterSpacing: 0.7)),
+                )),
         elevation: 1,
         centerTitle: true,
         titleSpacing: 0.3,
@@ -94,7 +96,7 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                     style: TextStyle(
                       fontSize: 17,
                       color: Color(0xFF232323),
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -118,7 +120,7 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                             style: TextStyle(
                               color: Color(0xFF232323),
                               wordSpacing: 0.4,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               fontSize: 16,
                             ),
                           ),
@@ -135,8 +137,8 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                                           '${DateFormat.m().format(attemptValue[index])}m'),
                                 ],
                                 style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
                                   color: Theme.of(context).primaryColor,
                                 ),
                               ),
@@ -145,8 +147,8 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                             Text(
                               '${DateFormat().add_jm().format(attemptValue[index])}',
                               style: TextStyle(
-                                fontSize: 21,
-                                fontWeight: FontWeight.w700,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
@@ -165,13 +167,14 @@ class _TaskFinishedTimerScreenState extends State<TaskFinishedTimerScreen> {
                 ),
                 Container(
                     height: MediaQuery.of(context).size.height * 0.065,
-                    width: MediaQuery.of(context).size.width * 0.7,
+                    width: MediaQuery.of(context).size.width * 0.72,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     margin: EdgeInsets.only(bottom: 12),
                     child: RaisedButton(
-                        textColor: Colors.white,
+                      elevation: 0,
+                        textColor: Color(0xffffffff),
                         color: Theme.of(context).primaryColor,
-                        child: Text('Continue to upload the images'),
+                        child: Text('Continue to upload the images',style: TextStyle(fontSize: 14,),),
                         onPressed: () {
                           Provider.of<UserLevel>(context, listen: false)
                               .changeUserStage(currentExerciseStages['step']);

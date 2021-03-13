@@ -22,8 +22,7 @@ class ScoreCard extends StatelessWidget {
 
     void initializeScores( data){
       final scoreCard=data;
-      print("CALLED");
-      userScore = int.parse(scoreCard["actual_score"]);
+       userScore = int.parse(scoreCard["actual_score"]);
        bestScore = int.parse(scoreCard["expected_score"]);
        //TODO:change the hard coded total score as ScoreCard["ma_score"]
        totalScore=int.parse('20');
@@ -33,11 +32,11 @@ class ScoreCard extends StatelessWidget {
           CircularStackEntry(
             <CircularSegmentEntry>[
               CircularSegmentEntry(
-                  userScore.toDouble(), Colors.green,
+                  userScore.toDouble(), Color(0xff4caf50),
                   rankKey: 'S1'),
               CircularSegmentEntry(
                 (totalScore- userScore).toDouble(),
-                Colors.deepOrangeAccent,
+                Color(0xfff16c28),
                 rankKey: 'S1',
               ),
             ],
@@ -50,7 +49,7 @@ class ScoreCard extends StatelessWidget {
                   rankKey: 'S2'),
               CircularSegmentEntry(
                 (totalScore - bestScore).toDouble(),
-                Colors.red,
+                Color(0xffe55c4f),
                 rankKey: 'S2',
               ),
             ],
@@ -66,7 +65,7 @@ class ScoreCard extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Color(0xff232323),
           ),
           onPressed: () {
             Navigator.of(context).pop();
@@ -74,10 +73,10 @@ class ScoreCard extends StatelessWidget {
         ),
         title: Text('Score Card',
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                color: Color(0xff232323),
                 fontSize: 18,
-                letterSpacing: 0.7)),
+            )),
         elevation: 1,
         centerTitle: true,
         titleSpacing: 0.3,
@@ -122,14 +121,14 @@ class ScoreCard extends StatelessWidget {
                                 size: chartSize,
                                 initialChartData: pieData[index],
                                 labelStyle: TextStyle(
-                                  color: Colors.black,
+                                  color: Color(0xff232323),
                                   fontWeight: FontWeight.w600,
                                   fontSize: 25,
                                 ),
                               ),
                               Text(index == 0 ? 'Your Score' : 'Ideal Score',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Color(0xff232323),
                                     fontSize: 13,
                                   )),
                             ]),
@@ -156,9 +155,10 @@ class ScoreCard extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 4,
-                                backgroundColor: Colors.green,
+                                backgroundColor: Color(0xff4caf50),
                               ),
-                              Text('${userScore.toString()} Correct')
+                              Text('${userScore.toString()} Correct',style: TextStyle(
+                              ),)
                             ],
                           ),
                         ),
@@ -170,7 +170,7 @@ class ScoreCard extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 4,
-                                backgroundColor: Colors.red,
+                                backgroundColor: Color(0xffe55c4f),
                               ),
                               Text(
                                   '${(totalScore- userScore).toString()} Wrong')
@@ -189,10 +189,9 @@ class ScoreCard extends StatelessWidget {
                   Text(
                     'Buddy Words',
                     style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
+                        color: Color(0xff232323),
+                        fontWeight: FontWeight.w500,
                         fontSize: 17,
-                        letterSpacing: 0.3,
                         wordSpacing: 2),
                     textAlign: TextAlign.center,
                   ),
@@ -210,9 +209,9 @@ class ScoreCard extends StatelessWidget {
               buddyWords,
 
                       style: TextStyle(
-                          color: Colors.black87,
-                          letterSpacing: 0.2,
+                          color: Color(0xff232323),
                           wordSpacing: 1.5,
+                          fontWeight:FontWeight.w400,
                           height: 1.5,
                           fontSize: 12),
                     ),

@@ -87,17 +87,17 @@ class _ViewSolutionsState extends State<ViewSolutions> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isBookMarked == true
-              ? Colors.grey.withOpacity(0.6)
-              : Colors.orangeAccent,
+              ? Theme.of(context).accentColor
+              : Color(0xfff79703),
           borderRadius: BorderRadiusDirectional.circular(3),
         ),
         child: Text(
           isBookMarked == true ? 'UnBookmark' : 'Bookmark',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: isBookMarked == true ? Colors.black : Colors.white,
+            color: isBookMarked == true ? Color(0xff232323) : Color(0xffffffff),
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),
@@ -145,14 +145,14 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                 ? Text(
                     checkBoxKeys[index],
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xff232323),
                       fontSize: 14,
                     ),
                   )
                 : Text(
                     checkBoxKeys[index],
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xff232323),
                       fontSize: 12,
                     ),
                   ),
@@ -224,21 +224,21 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                           : incorrect[i])
                               ? (checkedIndex == 0
                                   ? (isTrueForAllType[i] == 1
-                                      ? Colors.green
-                                      : Colors.red)
+                                      ? Color(0xff4caf50)
+                                      : Color(0xffE55c4f))
                                   : checkedIndex == 1
-                                      ? Colors.green
-                                      : Colors.red)
+                                      ? Color(0xff4caf50)
+                                      : Color(0xffE55c4f))
                               : Colors.transparent,
                           border: checkedIndex == 0
                               ? Border.all(
                                   color: isTrueForAllType[i] == 1
-                                      ? Colors.green
-                                      : Colors.red,
+                                      ? Color(0xff4caf50)
+                                      : Color(0xffE55c4f),
                                   width: 1.5)
                               : checkedIndex == 1
-                                  ? Border.all(color: Colors.green, width: 1)
-                                  : Border.all(color: Colors.red, width: 1),
+                                  ? Border.all(color: Color(0xff4caf50), width: 1)
+                                  : Border.all(color: Color(0xffE55c4f), width: 1),
                         ),
                         child: Center(
                             child: Text(
@@ -256,8 +256,8 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                           : checkedIndex == 1
                                               ? correct[i]
                                               : incorrect[i])
-                                  ? Colors.white
-                                  : Colors.black),
+                                  ? Color(0xffffffff)
+                                  : Color(0xff232323)),
                         )),
                       ),
                     );
@@ -296,12 +296,12 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                           border: checkedIndex == 0
                               ? Border.all(
                                   color: isTrueForAllType[i] == 1
-                                      ? Colors.green
-                                      : Colors.red,
+                                      ? Color(0xff4caf50)
+                                      : Color(0xffE55c4f),
                                   width: 1.5)
                               : checkedIndex == 1
-                                  ? Border.all(color: Colors.green, width: 1)
-                                  : Border.all(color: Colors.red, width: 1),
+                                  ? Border.all(color: Color(0xff4caf50), width: 1)
+                                  : Border.all(color: Color(0xffE55c4f), width: 1),
                         ),
                         child: Center(
                             child: Text(
@@ -310,7 +310,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                               : checkedIndex == 1
                                   ? correct[i].toString()
                                   : incorrect[i].toString(),
-                          style: TextStyle(
+                          style: TextStyle(color:Color(0xff232323),
                               fontSize: 18, fontWeight: FontWeight.w500),
                         )),
                       ),
@@ -347,8 +347,8 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                               child: Text(
                                   'Question No:${selectedAttemptId.toString()}',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffffffff),
+                                      fontWeight: FontWeight.w600,
                                       fontSize: 15)),
                             ),
                             SizedBox(
@@ -369,19 +369,19 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                           .question,
                                       style: TextStyle(
                                           fontSize: 15,
-                                          fontWeight: FontWeight.w700,
+                                          fontWeight: FontWeight.w600,
                                           color:
                                               Theme.of(context).primaryColor),
                                     ),
                                     Text(
                                       'Your response: Yes',
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.red),
+                                      style: TextStyle(fontWeight: FontWeight.w300,
+                                          fontSize: 15, color: Color(0xffE55c4f)),
                                     ),
                                     Text(
                                       'Correct answer: No',
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.green),
+                                      style: TextStyle(fontWeight: FontWeight.w300,
+                                          fontSize: 15, color: Color(0xff4caf50)),
                                     )
                                   ],
                                 ),
@@ -411,7 +411,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                       : 'Click to view the video',
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w400,
                                     fontSize: 15,
                                   ),
                                 ),
@@ -420,7 +420,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                   alignment: Alignment.centerRight,
                                   icon: Icon(
                                     Icons.arrow_forward,
-                                    color: Colors.black,
+                                    color: Color(0xff232323),
                                     size: 18,
                                   ),
                                   onPressed: () {},
@@ -443,7 +443,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -452,11 +452,11 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                                 listen: false)
                                             .individualQuestion
                                             .explanation,
-                                        textAlign: TextAlign.center,
+                                        textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
-                                          color: Colors.black,
+                                          color: Color(0xff232323),
                                         )),
                                   ],
                                 )),
@@ -476,7 +476,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -488,7 +488,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
-                                          color: Colors.black,
+                                          color: Color(0xff232323),
                                         )),
                                   ],
                                 )),
@@ -508,7 +508,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
                                         fontSize: 18,
                                       ),
                                     ),
@@ -520,7 +520,7 @@ class _ViewSolutionsState extends State<ViewSolutions> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
-                                          color: Colors.black,
+                                          color: Color(0xff232323),
                                         )),
                                   ],
                                 )),

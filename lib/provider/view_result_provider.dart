@@ -84,11 +84,15 @@ class BookmarksProvider with ChangeNotifier {
     if(bookmarks.isEmpty){
     try {
       List response = await Exercise().getAllBookmarks(token);
+      if(response.isEmpty){
+        return bookmarks=[];
+      }
       response.map((element) {
         bookmarks.add(element["id"]);
       }).toList();
       return bookmarks;
     } on Exception catch (error) {
+      print(error);
       throw error;
     }}
   }

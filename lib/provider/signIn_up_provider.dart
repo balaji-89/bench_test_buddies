@@ -39,7 +39,6 @@ class SignInUp with ChangeNotifier {
       isLoading = false;
       notifyListeners();
       var errorMessage = error.message;
-
       if (errorMessage.contains('name') || errorMessage.contains('Name')) {
         userErrorText = errorMessage;
         passwordErrorText = null;
@@ -69,7 +68,6 @@ class SignInUp with ChangeNotifier {
     try {
       String message = await Exercise().emailVerification(email, code);
       emailVerified = true;
-      print('message $message');
       notifyListeners();
       return message;
     } catch (error) {
@@ -108,14 +106,15 @@ class SignIn with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      User().login(LoginRequest(emailAddress, password)).then((value)async{
-             userData = value.data;
-            await Provider.of<UserLogData>(context, listen: false)
-                .assigningData(userData, context, "signIn");
-          });
+      await User().login(LoginRequest(emailAddress, password)).then((value) async {
+        userData = value.data;
+        await Provider.of<UserLogData>(context, listen: false)
+            .assigningData(userData, context, "signIn");
+      });
 
       return userData;
     }  catch (error) {
+      print('ReachedError');
       isLoading = false;
       notifyListeners();
       var errorMessage = error.message;
@@ -145,15 +144,14 @@ class SignIn with ChangeNotifier {
     }
   }
 
-  Future codeVerification(String code)async{
+  Future codeVerification(String code) async {
     try {
-      var response=await User().resetPasswordCodeVerification(forgetEmailId, code);
+      var response =
+          await User().resetPasswordCodeVerification(forgetEmailId, code);
       return response;
-    }  catch (error) {
+    } catch (error) {
       throw error;
     }
-
-
   }
 
   Future changeUserPassword(String newPassword, context) async {

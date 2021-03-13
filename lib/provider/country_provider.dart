@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bench_test_service/bench_test_service.dart';
+import 'package:flutter/material.dart';
 
 class CountryProvider with ChangeNotifier {
   String userToken;
@@ -13,26 +13,27 @@ class CountryProvider with ChangeNotifier {
 
   var selectedCountry;
 
-  void initializeUserToken(String token) {
+  Future initialiseCountry(String token) async {
+    print('initialize country provider');
     userToken = token;
-  }
-
-  Future initialiseCountry() async {
     try {
       var response = await User().getCountries(userToken);
       (response.data).map((country) {
         countryNames.add(country);
       }).toList();
+      print(countryNames);
     } catch (error) {
       print(error.message);
     }
   }
 
   List<String> get getCountryNames {
+    print('country Names $countryNames');
     List<String> onlyNames = [];
     countryNames.map((e) {
       onlyNames.add(e.name);
     }).toList();
+    print(onlyNames);
     return onlyNames;
   }
 
@@ -86,7 +87,8 @@ class CountryProvider with ChangeNotifier {
   }
 
   Future updateSetupQuestion() async {
-    var message=await User().postAnswers(selectedAnswers.reversed.toList(), userToken);
+    var message =
+        await User().postAnswers(selectedAnswers.reversed.toList(), userToken);
     print(message);
     notifyListeners();
   }
