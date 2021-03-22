@@ -19,6 +19,11 @@ class SignInUp with ChangeNotifier {
     passwordInvisible = !passwordInvisible;
     notifyListeners();
   }
+  void clearData(){
+    userErrorText=null;
+    emailErrorText=null;
+    passwordErrorText=null;
+  }
 
   Future<void> signUp(
       userName, emailAddress, password, confirmPassword, context) async {
@@ -31,8 +36,8 @@ class SignInUp with ChangeNotifier {
       RegisterResponse registerResponse = await User().register(
           RegisterRequest(userName, emailAddress, password, password));
       logInResponse = registerResponse.data;
-      await Provider.of<UserLogData>(context, listen: false)
-          .assigningData(logInResponse, context, "signUp");
+      // await Provider.of<UserLogData>(context, listen: false)
+      //     .assigningData(logInResponse, context, "don'tInitialize");
       isLoading = false;
       notifyListeners();
     } on ErrorResponse catch (error) {
@@ -98,23 +103,36 @@ class SignIn with ChangeNotifier {
     passwordInvisible = !passwordInvisible;
     notifyListeners();
   }
+  void changeLoading(){
+    isLoading=!isLoading;
+  }
+  void clearData(){
+    emailErrorText=null;
+    passwordErrorText=null;
+  }
 
   Future<dynamic> signIn(emailAddress, password, context) async {
     emailErrorText = null;
     var userData;
+    var response;
     passwordErrorText = null;
     isLoading = true;
     notifyListeners();
     try {
-      await User().login(LoginRequest(emailAddress, password)).then((value) async {
+      await User()
+          .login(LoginRequest(emailAddress, password))
+          .then((value) async {
         userData = value.data;
-        await Provider.of<UserLogData>(context, listen: false)
-            .assigningData(userData, context, "signIn");
+        response = await Provider.of<UserLogData>(context, listen: false)
+            .assigningData(userData, context, "initializeSetUpQuestion");
       });
-
-      return userData;
-    }  catch (error) {
+      if (response.isEmpty) {
+        return [];
+      }
+      return [1];//1 refers, there is setup questions available for the user
+    } catch (error) {
       print('ReachedError');
+      print(error);
       isLoading = false;
       notifyListeners();
       var errorMessage = error.message;
@@ -159,7 +177,7 @@ class SignIn with ChangeNotifier {
       LoginResponse userData =
           await User().resetPassword(forgetEmailId, newPassword);
       await Provider.of<UserLogData>(context, listen: false)
-          .assigningData(userData.data, context, "signIn");
+          .assigningData(userData.data, context, "don'tInitialize");
       return userData.message;
     } catch (error) {
       throw error;

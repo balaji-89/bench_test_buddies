@@ -73,8 +73,9 @@ class _PasswordCodeVerificationState extends State<PasswordCodeVerification> {
             child: ListTile(
               leading: CircleAvatar(
                 radius: 26,
-                backgroundImage:
-                AssetImage("assets/on_boarding_images/VerificationIcon.png"),
+                backgroundColor:Color(0xfff95d8d),
+                child:
+                Image.asset("assets/on_boarding_images/VerificationIcon.png",fit: BoxFit.cover,),
               ),
               title: SizedBox(
                 width: constraints.maxWidth * 0.65,

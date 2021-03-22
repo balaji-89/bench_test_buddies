@@ -54,6 +54,19 @@ class Exercise {
     }
   }
 
+  Future googleLogIn(String idToken)async{
+    try {
+      var response=await http.post('$baseUrl/login-with-google',body: {
+        "id_token":idToken
+      });
+      print(response.body);
+    } on Exception catch (e) {
+      print(e);
+      throw e;
+    }
+
+  }
+
   Future<String> resendEmailVerification(String email) async {
     try {
       http.Response response = await http.post('$baseUrl/email/resend', body: {

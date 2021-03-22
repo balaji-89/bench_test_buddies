@@ -62,17 +62,6 @@ class ViewResultProvider with ChangeNotifier {
     }
   }
 
-  Future storeBookMarks(int evaluationId, String token) async {
-    try {
-      await Exercise().saveBookmark(evaluationId, token);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  Future removeBookMarks() async {
-    try {} catch (error) {}
-  }
 }
 
 
@@ -117,5 +106,22 @@ class BookmarksProvider with ChangeNotifier {
      } on Exception catch (e) {
        throw e;
      }
+  }
+  Future storeBookMarks(int evaluationId, String token) async {
+    try {
+      await Exercise().saveBookmark(evaluationId, token);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future removeBookmarks(int bookmarkId,String token)async{
+    try {
+      String response=await Exercise().unBookmark(bookmarkId, token);
+      return response;
+    }  catch (e) {
+        throw e;
+    }
+
   }
 }

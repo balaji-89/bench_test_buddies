@@ -14,14 +14,12 @@ class CountryProvider with ChangeNotifier {
   var selectedCountry;
 
   Future initialiseCountry(String token) async {
-    print('initialize country provider');
     userToken = token;
     try {
       var response = await User().getCountries(userToken);
-      (response.data).map((country) {
-        countryNames.add(country);
-      }).toList();
-      print(countryNames);
+        (response.data).map((country) {
+          countryNames.add(country);
+        }).toList();
     } catch (error) {
       print(error.message);
     }
@@ -62,15 +60,21 @@ class CountryProvider with ChangeNotifier {
   List<int> selectedAnswers = [];
   bool isLoading = false;
 
-  Future<void> getQuestionsSet() async {
+  Future getQuestionsSet() async {
+    print('reached get question');
     try {
       var response = await User().getQuestions(userToken);
-      setUp1 = response.message.firstWhere((element) {
-        return element.id == 1;
-      });
-      setUp2 = response.message.firstWhere((element) => element.id == 2);
+      if (response.message.isEmpty) {
+        return [];
+      } else {
+        setUp1 = response.message.firstWhere((element) {
+          return element.id == 1;
+        });
+        setUp2 = response.message.firstWhere((element) => element.id == 2);
+        return [1];
+      }
     } catch (error) {
-      print(" error here ${error.message}");
+      throw error.message;
     }
   }
 
@@ -87,6 +91,7 @@ class CountryProvider with ChangeNotifier {
   }
 
   Future updateSetupQuestion() async {
+    print(selectedAnswers);
     var message =
         await User().postAnswers(selectedAnswers.reversed.toList(), userToken);
     print(message);

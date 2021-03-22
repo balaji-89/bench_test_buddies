@@ -26,7 +26,6 @@ class User {
     try {
       Response response =
           await dio.post('/register', data: registerRequest.toJson());
-
       return RegisterResponse.fromJson(response.data);
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
@@ -36,11 +35,10 @@ class User {
   login(LoginRequest loginRequest) async {
     try {
       Response response = await dio.post('/login', data: loginRequest.toJson());
+      print(response.data);
       return LoginResponse.fromJson(response.data);
     } on DioError catch (err) {
-      print("${ErrorResponse.fromJson(err.response.data)}");
       throw ErrorResponse.fromJson(err.response.data);
-
     }
   }
 
@@ -71,13 +69,11 @@ class User {
   }
 
   Future resetPassword(String mail, String newPassword) async {
-    print('reached');
     try {
       Response response = await dio.post('/reset-password',
           data: {"email": mail, "password": newPassword});
       return LoginResponse.fromJson(response.data);
     } on DioError catch (err) {
-      print('error $err');
       throw ErrorResponse.fromJson(err.response.data);
     }
   }
@@ -130,6 +126,9 @@ class User {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           }));
+      // if ((response.data)["message"] == "already answered") {
+      //   return [];
+      // }
       return CountryResponse.fromJson(response.data);
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
@@ -143,7 +142,12 @@ class User {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           }));
-      return SignupQuestionResponse.fromJson(response.data);
+      if ((response.data)["message"] == "already answered") {
+        return SignupQuestionResponse(message: []);
+      } else {
+        print('reached');
+        print(SignupQuestionResponse.fromJson(response.data));
+        return SignupQuestionResponse.fromJson(response.data);}
     } on DioError catch (err) {
       throw ErrorResponse.fromJson(err.response.data);
     }

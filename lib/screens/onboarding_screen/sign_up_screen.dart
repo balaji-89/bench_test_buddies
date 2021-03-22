@@ -1,4 +1,3 @@
-import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,78 +48,87 @@ class _SignUpPageState extends State<SignUpPage> {
       return null;
   }
 
+  void clearData() {
+    Provider.of<SignInUp>(context, listen: false).clearData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final mediaQueryHeight = MediaQuery.of(context).size.height;
-    final mediaQueryWidth = MediaQuery.of(context).size.width;
+    final mediaQueryHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final mediaQueryWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
-    bool isLoading = Provider.of<SignInUp>(context).isLoading;
+    bool isLoading = Provider
+        .of<SignInUp>(context)
+        .isLoading;
 
-    Future logInFunction()async{
+    Future logInFunction() async {
       FocusScope.of(context).unfocus();
       if (formKey.currentState.validate()) {
         try {
-          await Provider.of<SignInUp>(
-              context,
-              listen: false)
-              .signUp(
-              userController.text,
-              emailController.text,
-              passwordController.text,
-              passwordController.text,
-              context
-          )
+          await Provider.of<SignInUp>(context, listen: false)
+              .signUp(userController.text, emailController.text,
+              passwordController.text, passwordController.text, context)
               .then((value) {
-            if (Provider.of<SignInUp>(
-                context,listen:false)
+            if (Provider
+                .of<SignInUp>(context, listen: false)
                 .emailVerified ==
                 true) {
-              return Navigator.of(context)
-                  .pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SetupScreen()));
+              clearData();
+              return Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => SignInPage()));
             }
-            if (Provider.of<SignInUp>(
-                context,listen:false)
+            if (Provider
+                .of<SignInUp>(context, listen: false)
                 .emailVerified !=
-                true)
-             Navigator.of(context)
-                .pushReplacement(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        EmailVerification(
-                          emailController
-                              .text,""//empty String to verify know whether userNAme is already exists or not
-                        )));
+                true) clearData();
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    EmailVerification(emailController.text,
+                        "" //empty String to verify know whether userNAme is already exists or not
+                    )));
           });
         } catch (error) {
-          if (error ==
-              "Email already in Use.") {
-            Provider.of<SignInUp>(context,listen:false).emailErrorText=null;
-            Navigator.of(context)
-                .pushReplacement(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        EmailVerification(
-                          emailController
-                              .text,error
-                        )));
+          if (error == "Email already in Use.") {
+            Provider
+                .of<SignInUp>(context, listen: false)
+                .emailErrorText = null;
+            clearData();
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    EmailVerification(emailController.text, error)));
           }
         }
       }
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme
+          .of(context)
+          .backgroundColor,
       appBar: AppBar(
           iconTheme: IconThemeData(
             color: Color(0xFF1a1a4b),
           ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              clearData();
+              Navigator.of(context).pop();
+            },
+          ),
           centerTitle: true,
           title: Text(
             'Sign up',
-            style: TextStyle(fontWeight:FontWeight.w700,color: Color(0xFF232323), fontSize: 20),
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF232323),
+                fontSize: 20),
           ),
           backgroundColor: Colors.white,
           elevation: 1,
@@ -128,12 +136,18 @@ class _SignUpPageState extends State<SignUpPage> {
             FlatButton(
               textColor: Colors.blueAccent,
               onPressed: () {
+                clearData();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => SignInPage()));
               },
               child: Text(
                 "Sign in",
-                style: TextStyle(color:Theme.of(context).primaryColor,fontSize: 16,fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
               ),
               shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
@@ -153,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       horizontal: 14,
                     ),
                     child:
-                        Consumer<SignInUp>(builder: (context, instance, child) {
+                    Consumer<SignInUp>(builder: (context, instance, child) {
                       return Form(
                         key: formKey,
                         child: Column(
@@ -214,54 +228,67 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             Consumer<SignInUp>(
                                 builder: (context, classObject, child) {
-                              return TextFormField(
-                                decoration: InputDecoration(
-                                    labelText: 'Password',
-                                    errorText: instance.passwordErrorText,
-                                    errorStyle: TextStyle(color: Color(0xffE54839)),
-                                    labelStyle: TextStyle(color: Color(0xffB1B1B1)),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color(0xffE54839), width: 2.0),
-                                    ),
-                                    focusedErrorBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color(0xffE54839), width: 2.0),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: classObject.passwordInvisible
-                                          ? Icon(Icons.visibility_off)
-                                          : Icon(Icons.visibility),
-                                      onPressed: () {
-                                        classObject.changePasswordVisibility();
-                                      },
-                                    )),
-                                keyboardType: TextInputType.visiblePassword,
-                                controller: passwordController,
-                                textInputAction: TextInputAction.done,
-                                obscureText: classObject.passwordInvisible,
-                                validator: (String enteredPassword) {
-                                  return passwordValidation(enteredPassword);
-                                },
-                              );
-                            }),
+                                  return TextFormField(
+                                    decoration: InputDecoration(
+                                        labelText: 'Password',
+                                        errorText: instance.passwordErrorText,
+                                        errorStyle:
+                                        TextStyle(color: Color(0xffE54839)),
+                                        labelStyle:
+                                        TextStyle(color: Color(0xffB1B1B1)),
+                                        errorBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xffE54839),
+                                              width: 2.0),
+                                        ),
+                                        focusedErrorBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xffE54839),
+                                              width: 2.0),
+                                        ),
+                                        suffixIcon: IconButton(
+                                          icon: classObject.passwordInvisible
+                                              ? Icon(Icons.visibility_off)
+                                              : Icon(Icons.visibility),
+                                          onPressed: () {
+                                            classObject
+                                                .changePasswordVisibility();
+                                          },
+                                        )),
+                                    keyboardType: TextInputType.visiblePassword,
+                                    controller: passwordController,
+                                    textInputAction: TextInputAction.done,
+                                    obscureText: classObject.passwordInvisible,
+                                    validator: (String enteredPassword) {
+                                      return passwordValidation(
+                                          enteredPassword);
+                                    },
+                                  );
+                                }),
                             Container(
                                 height: mediaQueryHeight * 0.065,
-                                width: MediaQuery.of(context).size.width - 30,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width - 30,
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: RaisedButton(
                                   textColor: disableButton
                                       ? Color(0xFF232323)
                                       : Color(0xFFFFFFFF),
                                   color: disableButton
-                                      ? Theme.of(context).accentColor
-                                      : Theme.of(context).primaryColor,
+                                      ? Theme
+                                      .of(context)
+                                      .accentColor
+                                      : Theme
+                                      .of(context)
+                                      .primaryColor,
                                   child: Text('Sign up'),
                                   onPressed: disableButton
                                       ? null
                                       : () async {
-                                        await logInFunction();
-                                        },
+                                    await logInFunction();
+                                  },
                                 )),
                           ],
                         ),
@@ -308,9 +335,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 width: mediaQueryWidth,
                 child: Center(
                     child: CircularProgressIndicator(
-                  strokeWidth: 5,
-                  backgroundColor: Theme.of(context).primaryColor,
-                )))
+                      strokeWidth: 5,
+                      backgroundColor: Theme
+                          .of(context)
+                          .primaryColor,
+                    )))
         ],
       ),
     );

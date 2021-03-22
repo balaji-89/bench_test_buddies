@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:bench_test_buddies/on_boarding_setup/set_up.dart';
 import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/signIn_up_provider.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/screens/app_ui/home_exercises_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,18 +52,29 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
   }
 
+  void clearData() {
+    Provider.of<SignIn>(context, listen: false).clearData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryHeight = MediaQuery.of(context).size.height;
     final mediaQueryWidth = MediaQuery.of(context).size.width;
 
-    bool isLoading = Provider.of<SignIn>(context).isLoading;
+    bool isLoading = Provider.of<SignIn>(context, listen: false).isLoading;
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
           iconTheme: IconThemeData(
             color: Color(0xFF1a1a4b),
+          ),
+          leading: IconButton(
+            onPressed: (){
+              clearData();
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back),
           ),
           centerTitle: true,
           title: Text(
@@ -77,6 +90,7 @@ class _SignInPageState extends State<SignInPage> {
             FlatButton(
               textColor: Colors.blueAccent,
               onPressed: () {
+                clearData();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => SignUpPage()));
               },
@@ -214,19 +228,45 @@ class _SignInPageState extends State<SignInPage> {
                                                         passwordController.text,
                                                         context)
                                                     .then((value) async {
-                                                      if(value!=null){
-                                                  await Provider.of<Exercises>(
-                                                          context,
-                                                          listen: false)
-                                                      .getAllExercise(
-                                                          value.token);
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context)
-                                                      .pushReplacement(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  HomeExerciseList()));}
+                                                  if (Provider.of<UserLogData>(context,listen: false).token != null) {
+                                                    if (value.isNotEmpty) {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          SetupScreen()));
+                                                      Provider.of<SignIn>(
+                                                              context,
+                                                              listen: false)
+                                                          .changeLoading();
+                                                    } else {
+                                                      await Provider.of<
+                                                                  Exercises>(
+                                                              context,
+                                                              listen: false)
+                                                          .getAllExercise(
+                                                              Provider.of<UserLogData>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .token);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          HomeExerciseList()));
+                                                      Provider.of<SignIn>(
+                                                              context,
+                                                              listen: false)
+                                                          .changeLoading();
+                                                    }
+                                                  }
                                                 });
+                                                isLoading = false;
                                               } catch (error) {
                                                 // showDialog(
                                                 //     context: context,

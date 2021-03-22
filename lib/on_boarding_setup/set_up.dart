@@ -15,7 +15,6 @@ class SetupScreen extends StatefulWidget {
 class _SetupScreenState extends State<SetupScreen> {
   int setupIndex = 4;
   int answerSelected;
-
   bool answerSelection = false;
   bool isLoading = false;
 
@@ -69,9 +68,9 @@ class _SetupScreenState extends State<SetupScreen> {
             title: Text(
               'Enter your Origin Country',
               style: TextStyle(
-                fontSize: 18,
+                 fontSize: 16,
                 color: const Color(0xff232323),
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
                 height: 1.3333333333333333,
               ),
               textAlign: TextAlign.left,
@@ -129,8 +128,13 @@ class _SetupScreenState extends State<SetupScreen> {
                       : Theme.of(context).accentColor,
                   child: Text(
                     'Next',
-                    style: TextStyle(fontSize: 15,color: Color(0xff232323),
-                  ),),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: countryInstance.selectedCountry != null
+                          ? Color(0xffffffff)
+                          : Color(0xff232323),
+                    ),
+                  ),
                   onPressed: () async {
                     if (countryInstance.selectedCountry != null) {
                       await Provider.of<CountryProvider>(context, listen: false)
@@ -158,7 +162,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 width: constraints.maxWidth * 0.9,
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(
-                    top: 18, bottom: constraints.maxHeight * 0.07),
+                    top: 18, bottom: constraints.maxHeight * 0.045),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: ListView.builder(
@@ -178,7 +182,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         )),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
+                margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.04),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 26,
@@ -192,7 +196,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       Provider.of<CountryProvider>(context, listen: false)
                           .getOnlyQuestion(2),
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 16,
                         color: const Color(0xff232323),
                         fontWeight: FontWeight.w600,
                         height: 1.3333333333333333,
@@ -203,7 +207,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
               ),
               Container(
-                  height: constraints.maxHeight * 0.21,
+                  height: constraints.maxHeight * 0.31,
                   margin: EdgeInsets.only(
                     bottom: 13,
                   ),
@@ -277,14 +281,14 @@ class _SetupScreenState extends State<SetupScreen> {
                     ),
                   )),
               Container(
-                  height: constraints.maxHeight * 0.08,
+                  height: constraints.maxHeight * 0.07,
                   margin: EdgeInsets.symmetric(
                     horizontal: constraints.maxWidth * 0.07,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                   ),
-                  child:FlatButton(
+                  child: FlatButton(
                       disabledTextColor: Color(0xFF232323),
                       disabledColor: Color(0xFFEFEFEF),
                       textColor: Color(0xffffffff),
@@ -319,7 +323,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 width: constraints.maxWidth * 0.9,
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(
-                    top: 18, bottom: constraints.maxHeight * 0.07),
+                    top: 18, bottom: constraints.maxHeight * 0.04),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: ListView.builder(
@@ -339,7 +343,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         )),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.05),
+                margin: EdgeInsets.only(bottom: constraints.maxHeight * 0.04),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Color(0xfff8cf26),
@@ -351,9 +355,9 @@ class _SetupScreenState extends State<SetupScreen> {
                     Provider.of<CountryProvider>(context, listen: false)
                         .getOnlyQuestion(1),
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 16,
                       color: const Color(0xff232323),
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       height: 1.3333333333333333,
                     ),
                     textAlign: TextAlign.left,
@@ -365,7 +369,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     Provider.of<CountryProvider>(context, listen: false)
                         .getOnlyAnswers(1);
                 return Container(
-                    height: constraints.maxHeight * 0.3,
+                    height: constraints.maxHeight * 0.21,
                     child: new ListView.separated(
                       itemCount: question2list.length,
                       physics: const NeverScrollableScrollPhysics(),
@@ -394,7 +398,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                             Radius.circular(3)),
                                         color: Colors.white,
                                         border: Border.all(
-                                            color:Color(0xFF4667EE),
+                                            color: Color(0xFF4667EE),
                                             width: 1.3,
                                             style: BorderStyle.solid),
                                       ),
@@ -439,7 +443,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     ));
               }),
               Container(
-                  height: constraints.maxHeight * 0.08,
+                  height: constraints.maxHeight * 0.07,
                   margin: EdgeInsets.symmetric(
                     horizontal: constraints.maxWidth * 0.05,
                   ),
@@ -477,7 +481,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 width: constraints.maxWidth * 0.9,
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(
-                    top: 18, bottom: constraints.maxHeight * 0.07),
+                    top: 18, bottom: constraints.maxHeight * 0.045),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: ListView.builder(
@@ -507,9 +511,9 @@ class _SetupScreenState extends State<SetupScreen> {
                   title: Text(
                     'Hey! You are done with the intial setup.Start practicing.Best wishes.',
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: 16.5,
                       color: const Color(0xff232323),
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       height: 1.3333333333333333,
                     ),
                     textAlign: TextAlign.left,
@@ -517,7 +521,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 ),
               ),
               Container(
-                  height: constraints.maxHeight * 0.07,
+                  height: constraints.maxHeight * 0.068,
                   margin: EdgeInsets.symmetric(
                       horizontal: constraints.maxWidth * 0.04),
                   child: RaisedButton(
@@ -529,6 +533,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       style: TextStyle(fontSize: 14),
                     ),
                     onPressed: () {
+                      Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => HomeExerciseList()));
                     },

@@ -44,7 +44,7 @@ class _EmailVerificationState extends State<EmailVerification> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined),
+          icon: Icon(Icons.arrow_back_outlined,color:Color(0xff232323)),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -71,8 +71,9 @@ class _EmailVerificationState extends State<EmailVerification> {
                   child: ListTile(
                     leading: CircleAvatar(
                       radius: 26,
-                      backgroundImage:
-                          AssetImage("assets/on_boarding_images/VerificationIcon.png"),
+                      backgroundColor:Color(0xfff95d8d),
+                      child:
+                      Image.asset("assets/on_boarding_images/VerificationIcon.png",fit: BoxFit.cover,),
                     ),
                     title: SizedBox(
                       width: constraints.maxWidth * 0.65,
@@ -181,7 +182,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                                                       .pushReplacement(
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  SetupScreen()));
+                                                                  SignInPage()));
                                                 }
                                               },
                                               child: Text('Ok'))
