@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 import 'forget_pass_credential_entering.dart';
 
 class PasswordCodeVerification extends StatefulWidget {
+  String mailId;
+
+  PasswordCodeVerification(this.mailId);
 
   @override
   _PasswordCodeVerificationState createState() =>
@@ -223,7 +226,17 @@ class _PasswordCodeVerificationState extends State<PasswordCodeVerification> {
                           });
 
                           try {
-                           //TODO:resend code functionality
+                            await Provider.of<SignInUp>(context,
+                                listen: false)
+                                .resendCodeForVerification(widget.mailId)
+                                .then((String value) {
+                              if(value.contains("sent")){
+                                showSnackBar();
+                              }
+                              setState(() {
+                                resendClicked = false;
+                              });
+                            });
                           } catch (error) {
                             showDialog(
                                 context: context,

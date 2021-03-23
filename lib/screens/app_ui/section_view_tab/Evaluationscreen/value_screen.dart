@@ -76,7 +76,7 @@ class _ValueScreenState extends State<ValueScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Container(
-                  width: heights.width * 0.92,
+                  width: 343,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Theme.of(context).accentColor,
@@ -107,13 +107,11 @@ class _ValueScreenState extends State<ValueScreen> {
                 child: InkWell(
                   onTap: () {
                     if (onTap == true)
-
-
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => Degree()));
                   },
                   child: Container(
-                    width: heights.width * 0.95,
+                    width: 343,
                     height: heights.height * 0.06,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(

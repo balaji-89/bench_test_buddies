@@ -29,7 +29,7 @@ class _ForgetPasswordscreenState extends State<ForgetPasswordscreen> {
         centerTitle: true,
         title: Text(
           'Forgot Password',
-          style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 20),
+          style: TextStyle(color: Color(0xFF1a1a4b), fontSize: 17,fontWeight:FontWeight.w700,),
         ),
         backgroundColor: Colors.white,
         elevation: 1,
@@ -94,7 +94,7 @@ class _ForgetPasswordscreenState extends State<ForgetPasswordscreen> {
                                           Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      PasswordCodeVerification()));
+                                                      PasswordCodeVerification(emailController.text)));
                                         }});
                                       }  catch (error) {
                                         setState(() {

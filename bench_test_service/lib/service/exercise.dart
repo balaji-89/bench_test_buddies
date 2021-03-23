@@ -54,17 +54,15 @@ class Exercise {
     }
   }
 
-  Future googleLogIn(String idToken)async{
+  Future googleLogIn(String idToken) async {
     try {
-      var response=await http.post('$baseUrl/login-with-google',body: {
-        "id_token":idToken
-      });
+      var response = await http
+          .post('$baseUrl/login-with-google', body: {"id_token": idToken});
       print(response.body);
     } on Exception catch (e) {
       print(e);
       throw e;
     }
-
   }
 
   Future<String> resendEmailVerification(String email) async {
@@ -126,33 +124,41 @@ class Exercise {
     }
   }
 
-  Future<String> storeImages(
+  Future storeImages(
       int attemptId, int exerciseId, List<File> images, String token) async {
-    var response;
-    images.map((singleImage) async {
-      try {
-        var request = http.MultipartRequest(
-            "POST", Uri.parse('$baseUrl/exercise/store-images'));
-        String fileName = singleImage.path.split('/').last;
-        request.files.add(http.MultipartFile(
-          'images[]',
-          singleImage.readAsBytes().asStream(),
-          singleImage.lengthSync(),
-          filename: fileName,
-          contentType: MediaType('image', 'jpeg'),
-        ));
-        request.headers.addAll(
-            {"Accept": "application/json", "Authorization": "Bearer $token"});
-        request.fields.addAll({
-          "attempt_id": attemptId.toString(),
-          "exercise_id": exerciseId.toString()
-        });
-        return await request.send();
-      } on Exception catch (error) {
-        print(error);
-        throw error;
-      }
+    List<http.MultipartFile> newList = new List<http.MultipartFile>();
+    images.map((image) {
+      String fileName = image.path.split('/').last;
+      newList.add(http.MultipartFile(
+        'images[0][image]',
+        image.readAsBytes().asStream(),
+        image.lengthSync(),
+        filename: fileName,
+        //contentType: MediaType('image', 'jpeg'),
+      ));
     }).toList();
+    try {
+      var request = http.MultipartRequest(
+          "POST", Uri.parse('$baseUrl/exercise/store-images'));
+      request.files.addAll(newList);
+      request.headers.addAll(
+          {"Accept": "application/json", "Authorization": "Bearer $token"});
+      request.fields.addAll({
+        "attempt_id": attemptId.toString(),
+        "exercise_id": exerciseId.toString(),
+        "images[0][view]": "top view",
+      });
+      http.StreamedResponse response = await request.send();
+      var acknowledgementMessage = await response.stream.bytesToString();
+      if (acknowledgementMessage.contains("successfully uploaded")) {
+        return "success";
+      } else {
+        throw Exception("failure");
+      }
+    } on Exception catch (error) {
+      print(error);
+      throw error;
+    }
   }
 
   Future<List> getAttemptTimeSummary(int attemptId, String token) async {
@@ -217,13 +223,15 @@ class Exercise {
 
   Future getAllBookmarks(String token) async {
     try {
-      http.Response response = await http.get('$baseUrl/bookmark/get/all', headers: {
+      http.Response response = await http.get('$baseUrl/bookmark/get/all',
+          headers: {
             "Accept": "application/json",
             "Authorization": "Bearer $token"
           });
       print(response.body);
-      var convertedData=jsonDecode(response.body);
-      if(convertedData["message"].contains("you did't book marked any questions!")){
+      var convertedData = jsonDecode(response.body);
+      if (convertedData["message"]
+          .contains("you did't book marked any questions!")) {
         return [];
       }
       return convertedData["data"];
@@ -235,21 +243,21 @@ class Exercise {
 
   Future getBookmarkedData(int bookMarkedId, String token) async {
     try {
-      http.Response response = await http.get(
-        '$baseUrl/bookmark/get/$bookMarkedId', headers: {
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        });
+      http.Response response =
+          await http.get('$baseUrl/bookmark/get/$bookMarkedId', headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      });
       var convertedData = jsonDecode(response.body);
       return convertedData["data"];
-    }  catch (error) {
+    } catch (error) {
       print(error);
       throw json.decode(error);
     }
   }
 
-  Future unBookmark(int bookmarkId,String token)async{
-    try{
+  Future unBookmark(int bookmarkId, String token) async {
+    try {
       Response response = await dio.get(
         '/unbookmark/$bookmarkId',
         options: Options(headers: {
@@ -258,22 +266,23 @@ class Exercise {
         }),
       );
       return response.data["message"];
-    }on DioError catch(error){
+    } on DioError catch (error) {
       throw error.message;
     }
   }
 
-  Future getImages(int attemptId,String token)async{
-      try{
-        http.Response response =await http.get('$baseUrl/attemptImage/get/$attemptId',headers: {
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        });
-        var convertedData=jsonDecode(response.body);
-        return convertedData["data"];
-      } catch(error){
-        throw error["message"];
-      }
+  Future getImages(int attemptId, String token) async {
+    try {
+      http.Response response =
+          await http.get('$baseUrl/attemptImage/get/$attemptId', headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      });
+      var convertedData = jsonDecode(response.body);
+      return convertedData["data"];
+    } catch (error) {
+      throw error["message"];
+    }
   }
 
   /// The Parameter [option] takes only values "all", "correct" and "incorrect"

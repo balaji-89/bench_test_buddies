@@ -267,10 +267,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 }),
                             Container(
                                 height: mediaQueryHeight * 0.065,
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width - 30,
+                                width: 343,
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: RaisedButton(
                                   textColor: disableButton

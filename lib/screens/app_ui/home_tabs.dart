@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage>
                 )),
             elevation: 1,
             centerTitle: true,
-            titleSpacing: 0.3,
+            titleSpacing: 0.1,
             bottom: PreferredSize(
               preferredSize:
                   Size.fromHeight(MediaQuery.of(context).size.height * 0.08),
@@ -173,9 +173,9 @@ class _HomePageState extends State<HomePage>
                   ),
                   labelColor: Colors.black87,
                   labelStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
-                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.3,
+                    fontSize: 16,
                     color: Colors.black87,
                   ),
                   indicatorColor: Theme.of(context).primaryColor,

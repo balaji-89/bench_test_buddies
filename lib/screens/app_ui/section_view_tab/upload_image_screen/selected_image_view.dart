@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:bench_test_buddies/provider/attempt_official_provider.dart';
+import 'package:bench_test_buddies/provider/exercise_provider.dart';
 import 'package:bench_test_buddies/provider/exercise_stages.dart';
+import 'package:bench_test_buddies/provider/user_data_token.dart';
 import 'package:bench_test_buddies/provider/users_level.dart';
 import 'package:bench_test_buddies/screens/app_ui/section_view_tab/upload_image_screen/view_uploaded_images.dart';
+import 'package:bench_test_service/service/exercise.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +29,19 @@ class _SelectedImageViewState extends State<SelectedImageView> {
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<UserLevel>(context, listen: true).userData;
+    final userData = Provider
+        .of<UserLevel>(context, listen: true)
+        .userData;
     final currentExerciseStages =
-        Provider.of<ExerciseStages>(context, listen: false)
-            .findByStage(userData.currentSection);
+    Provider.of<ExerciseStages>(context, listen: false)
+        .findByStage(userData.currentSection);
 
     final popupMenuItem = <PopupMenuEntry>[
       PopupMenuItem(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.06,
         child: Text('Upload from Gallery',
             style: TextStyle(
               fontSize: 15,
@@ -43,7 +52,10 @@ class _SelectedImageViewState extends State<SelectedImageView> {
         height: 4,
       ),
       PopupMenuItem(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.06,
         child: Text('Take a photo',
             style: TextStyle(
               fontSize: 15,
@@ -66,7 +78,10 @@ class _SelectedImageViewState extends State<SelectedImageView> {
           centerTitle: true,
           title: Text(
             'Image Gallery',
-            style: TextStyle(color: Color(0xff232323), fontSize: 18,fontWeight:FontWeight.w600),
+            style: TextStyle(
+                color: Color(0xff232323),
+                fontSize: 18,
+                fontWeight: FontWeight.w600),
           ),
           backgroundColor: Colors.white,
           elevation: 1,
@@ -81,7 +96,10 @@ class _SelectedImageViewState extends State<SelectedImageView> {
               },
               child: Container(
                 margin: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * 0.04,
+                  right: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.04,
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -89,91 +107,128 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: Theme.of(context).primaryColor,
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
                   ),
                 ),
               ),
               itemBuilder: (context) => popupMenuItem,
             ),
           ]),
-      body: isLoading == true
-          ? Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-              ),
-            )
-          : SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+      body: Stack(
+        children: [
+          SizedBox(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.5,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     child: ListView(
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.31,
-                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.31,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
                           child: ListView.separated(
                             padding: EdgeInsets.all(0),
-                            separatorBuilder: (context, index) => SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.015,
-                            ),
+                            separatorBuilder: (context, index) =>
+                                SizedBox(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.015,
+                                ),
                             scrollDirection: Axis.horizontal,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: widget.selectedImages.length,
                             itemBuilder: (context, index) {
                               return index < 2
                                   ? GestureDetector(
-                                      onLongPress: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              ImageDeletionScreen(
-                                            selectedIndex: index,
-                                            selectedImages:
-                                                widget.selectedImages,
-                                          ),
-                                        ))
-                                            .then((value) {
-                                          setState(() {
-                                            widget.selectedImages = value;
-                                          });
-                                        });
-                                      },
-                                      child: Container(
-                                        width:
-                                            (MediaQuery.of(context).size.width *
-                                                0.49),
-                                        height: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.31),
-                                        child: Image.file(
-                                          widget.selectedImages[index],
-                                          fit: BoxFit.cover,
+                                onLongPress: () {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ImageDeletionScreen(
+                                          selectedIndex: index,
+                                          selectedImages:
+                                          widget.selectedImages,
                                         ),
-                                      ),
-                                    )
+                                  ))
+                                      .then((value) {
+                                    setState(() {
+                                      widget.selectedImages = value;
+                                    });
+                                  });
+                                },
+                                child: Container(
+                                  width:
+                                  (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width *
+                                      0.49),
+                                  height: (MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height *
+                                      0.31),
+                                  child: Image.file(
+                                    widget.selectedImages[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
                                   : null;
                             },
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.007,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.007,
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.185,
-                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.185,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
                           child: ListView.separated(
                             padding: EdgeInsets.all(0),
-                            separatorBuilder: (context, index) => SizedBox(
-                              width: index >= 2
-                                  ? MediaQuery.of(context).size.width * 0.01
-                                  : 0,
-                            ),
+                            separatorBuilder: (context, index) =>
+                                SizedBox(
+                                  width: index >= 2
+                                      ? MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.01
+                                      : 0,
+                                ),
                             itemCount: widget.selectedImages.length,
                             physics: NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.horizontal,
@@ -183,18 +238,26 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                                   onLongPress: () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (context) => ImageDeletionScreen(
-                                        selectedIndex: index,
-                                        selectedImages: widget.selectedImages,
-                                      ),
+                                      builder: (context) =>
+                                          ImageDeletionScreen(
+                                            selectedIndex: index,
+                                            selectedImages: widget
+                                                .selectedImages,
+                                          ),
                                     ));
                                   },
                                   child: Container(
-                                    width: (MediaQuery.of(context).size.width *
+                                    width: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
                                         0.33),
                                     height:
-                                        (MediaQuery.of(context).size.height *
-                                            0.31),
+                                    (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height *
+                                        0.31),
                                     child: Image.file(
                                         widget.selectedImages[index],
                                         fit: BoxFit.cover),
@@ -209,10 +272,19 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                     ),
                   ),
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.07,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.8,
                       margin: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).size.height * 0.04),
+                          bottom: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.04),
                       alignment: Alignment.center,
                       child: RaisedButton(
                         elevation: 0,
@@ -227,35 +299,77 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                             isLoading = true;
                           });
                           try {
-                            // String response= await Exercise().storeImages(
-                            //      Provider.of<AttemptOfficial>(context,
-                            //              listen: false)
-                            //          .newCreatedAttempt,
-                            //      Provider.of<Exercises>(context, listen: false)
-                            //          .selectedExercise
-                            //          .id,
-                            //      widget.selectedImages,
-                            //      Provider.of<UserLogData>(context,listen:false).token);
-                            // print(' res[one $response');
-                            setState(() {
-                              isLoading = false;
-                            });
-                            Navigator.of(context).pop();
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => UploadedImageView(
-                                  uploadedImages: widget.selectedImages),
-                            ));
+                            String response = await Exercise().storeImages(
+                                Provider
+                                    .of<AttemptOfficial>(context,
+                                    listen: false)
+                                    .newCreatedAttempt,
+                                Provider
+                                    .of<Exercises>(context, listen: false)
+                                    .selectedExercise
+                                    .id,
+                                widget.selectedImages,
+                                Provider
+                                    .of<UserLogData>(context, listen: false)
+                                    .token);
+                            if (response == "success") {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.of(context).pop();
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (context) =>
+                                    UploadedImageView(
+                                        uploadedImages: widget.selectedImages),
+                              ));
+                            }
                           } on Exception catch (e) {
                             setState(() {
                               isLoading = false;
                             });
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Text(
+                                        "Something went wrong please try again later"),
+                                    actions: [
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Ok"))
+                                    ],
+                                  );
+                                });
                             print(e);
                           }
                         },
                       ))
                 ],
               )),
+          if (isLoading == true)
+            Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              color: Color(0xffffffff).withOpacity(0.4),
+              child: Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme
+                      .of(context)
+                      .primaryColor,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -292,7 +406,8 @@ class _SelectedImageViewState extends State<SelectedImageView> {
               barrierColor: Colors.black12,
               barrierDismissible: true,
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (context) =>
+                  AlertDialog(
                     elevation: 5,
                     title: Text('Gallery limit reached'),
                     content: Text('Your selection should be below 5 files'),
@@ -315,7 +430,10 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color:
-                                Theme.of(context).primaryColor.withOpacity(0.7),
+                            Theme
+                                .of(context)
+                                .primaryColor
+                                .withOpacity(0.7),
                             fontSize: 15,
                           ),
                         ),
@@ -343,7 +461,8 @@ class _SelectedImageViewState extends State<SelectedImageView> {
           barrierColor: Colors.black12,
           barrierDismissible: true,
           context: context,
-          builder: (context) => AlertDialog(
+          builder: (context) =>
+              AlertDialog(
                 elevation: 5,
                 title: Text('Gallery limit reached'),
                 content: Text(
@@ -354,7 +473,10 @@ class _SelectedImageViewState extends State<SelectedImageView> {
                       'OK',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Theme.of(context).primaryColor.withOpacity(0.7),
+                        color: Theme
+                            .of(context)
+                            .primaryColor
+                            .withOpacity(0.7),
                         fontSize: 15,
                       ),
                     ),

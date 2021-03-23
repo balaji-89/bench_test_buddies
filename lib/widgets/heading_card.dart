@@ -12,7 +12,7 @@ class HeadingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // final List<Map> stages = Provider.of<ExcerciseStages>(context).stages;
     return Container(
-      height: MediaQuery.of(context).size.height * 0.09,
+      height: 64,
       width: MediaQuery.of(context).size.width * 0.93,
       margin: EdgeInsets.symmetric(
         vertical: 8,
