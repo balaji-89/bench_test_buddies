@@ -15,8 +15,9 @@ class ImageQuestion extends StatefulWidget {
 
 class _ImageQuestionState extends State<ImageQuestion> {
   int userSelectedAnswer;
-  bool yesButtonColor=false;
-  bool noButtonColor=false;
+  bool yesButtonColor = false;
+  bool noButtonColor = false;
+  bool answerSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class _ImageQuestionState extends State<ImageQuestion> {
         Provider.of<EvaluationsQuestionsProvider>(context, listen: false);
     final carouselImage = [
       Container(
-        child: Text('${currentQuestionSet.image}'),
+        child: Image.network(
+            'https://innercircle.caapidsimplified.com/storage/app/public/api_images/${currentQuestionSet.image}'),
       ),
       Container(color: Colors.blue),
       Container(color: Colors.black)
@@ -53,9 +55,9 @@ class _ImageQuestionState extends State<ImageQuestion> {
           ),
           title: Text('Evaluation',
               style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff232323),
-                  fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff232323),
+                fontSize: 18,
               )),
           elevation: 1,
           centerTitle: true,
@@ -175,32 +177,44 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   Container(
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
-                    color:yesButtonColor==true?Theme.of(context).primaryColor:Colors.white,
+                    color: yesButtonColor == true
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
                     child: OutlineButton(
-                      color: yesButtonColor==true?Theme.of(context).primaryColor:Colors.white,
-
+                      color: yesButtonColor == true
+                          ? Theme.of(context).primaryColor
+                          : Colors.white,
                       borderSide: BorderSide(
                         style: BorderStyle.solid,
                         color: Colors.grey,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          yesButtonColor=true;
-                        });
-                        Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(1);
-                        if (!isLastQuestion) {
-                          Provider.of<EvaluationsQuestionsProvider>(context,
-                                  listen: false)
-                              .incrementQuestionIndex();
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => EvaluationHome()));
-                        }
-                      },
+                      onPressed: answerSelected == true
+                          ? () {}
+                          : () {
+                              setState(() {
+                                yesButtonColor = true;
+                                answerSelected = true;
+                              });
+                              Provider.of<EvaluationsQuestionsProvider>(context,
+                                      listen: false)
+                                  .storeUsersAnswers(1);
+                              if (!isLastQuestion) {
+                                Provider.of<EvaluationsQuestionsProvider>(
+                                        context,
+                                        listen: false)
+                                    .incrementQuestionIndex();
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EvaluationHome()));
+                              }
+                            },
                       child: Text(
                         "Yes",
                         style: TextStyle(
-                          color: yesButtonColor==true?Color(0xffffffff):Color(0xff232323),
+                          color: yesButtonColor == true
+                              ? Color(0xffffffff)
+                              : Color(0xff232323),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -209,31 +223,44 @@ class _ImageQuestionState extends State<ImageQuestion> {
                   Container(
                     height: constraints.maxHeight * 0.055,
                     width: constraints.maxWidth * 0.45,
-                    color:noButtonColor==true?Theme.of(context).primaryColor:Color(0xffffffff),
+                    color: noButtonColor == true
+                        ? Theme.of(context).primaryColor
+                        : Color(0xffffffff),
                     child: OutlineButton(
-                      color: noButtonColor==true?Theme.of(context).primaryColor:Color(0xffffffff),
+                      color: noButtonColor == true
+                          ? Theme.of(context).primaryColor
+                          : Color(0xffffffff),
                       borderSide: BorderSide(
                         color: Colors.grey,
                         style: BorderStyle.solid,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          noButtonColor=true;
-                        });
-                        Provider.of<EvaluationsQuestionsProvider>(context,listen: false).storeUsersAnswers(0);
-                        if (!isLastQuestion) {
-                          Provider.of<EvaluationsQuestionsProvider>(context,
-                                  listen: false)
-                              .incrementQuestionIndex();
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => EvaluationHome()));
-                        }
-                      },
+                      onPressed: answerSelected == true
+                          ? () {}
+                          : () {
+                              setState(() {
+                                answerSelected = true;
+                                noButtonColor = true;
+                              });
+                              Provider.of<EvaluationsQuestionsProvider>(context,
+                                      listen: false)
+                                  .storeUsersAnswers(0);
+                              if (!isLastQuestion) {
+                                Provider.of<EvaluationsQuestionsProvider>(
+                                        context,
+                                        listen: false)
+                                    .incrementQuestionIndex();
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EvaluationHome()));
+                              }
+                            },
                       child: Text(
                         "No",
                         style: TextStyle(
-                          color: noButtonColor==true?Color(0xffffffff):Color(0xff232323),
+                          color: noButtonColor == true
+                              ? Color(0xffffffff)
+                              : Color(0xff232323),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -255,10 +282,12 @@ class _ImageQuestionState extends State<ImageQuestion> {
               SizedBox(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight * 0.05,
-                child: ListView.builder(
+                child: ListView.separated(
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: questions.length,
+                  itemCount: evaluationQuestionPath.questions.length,
                   scrollDirection: Axis.horizontal,
+                  separatorBuilder: (context,index)=>SizedBox(
+                  ),
                   padding: EdgeInsets.all(0),
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -269,24 +298,28 @@ class _ImageQuestionState extends State<ImageQuestion> {
                         alignment: Alignment.center,
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
-                            color: questions[index]['bool'] == false ||
-                                    questions[index]['bool'] == 'in_progress'
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).backgroundColor,
+                            color:
+                                evaluationQuestionPath.currentQuestionIndex !=
+                                        index
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.circular(3),
-                            border: questions[index]['bool'] == 'in_progress'
-                                ? Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                  )
-                                : null),
+                            border:
+                                evaluationQuestionPath.currentQuestionIndex ==
+                                        index
+                                    ? Border.all(
+                                        color: Theme.of(context).primaryColor,
+                                      )
+                                    : null),
                         child: Text(
-                          "${questions[index]['question']}",
+                          "${index + 1}",
                           style: TextStyle(
                               fontSize: 18,
-                              color: questions[index]['bool'] == false ||
-                                      questions[index]['bool'] == 'in_progress'
-                                  ? Colors.white
-                                  : Theme.of(context).primaryColor),
+                              color:
+                                  evaluationQuestionPath.currentQuestionIndex !=
+                                          index
+                                      ? Colors.white
+                                      : Theme.of(context).primaryColor),
                         ),
                       ),
                     );
